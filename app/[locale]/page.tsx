@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Ravi } from "@/components/Ravi/Ravi";
 import { eraHref } from "@/lib/routes";
 import { eras } from "@/lib/content";
 import { getDictionary } from "@/lib/i18n";
@@ -11,7 +10,6 @@ export default async function LandingPage(props: LocaleParams) {
 
   return (
     <section className="mx-auto flex max-w-2xl flex-col items-center gap-4 text-center">
-      <Ravi speaking={false} className="w-28 sm:w-36" />
       <h1 className="text-3xl font-bold leading-snug sm:text-4xl">{t.welcomeTitle}</h1>
       <p className="text-lg leading-loose text-muted">{t.welcomeBody}</p>
       <Link

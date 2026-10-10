@@ -73,55 +73,8 @@ body {
   animation: fade-in 0.4s ease-out both;
 }
 
-/* Ravi: mouth moves and figure sways gently while he is speaking. */
-@keyframes ravi-talk {
-  0%,
-  100% {
-    transform: scaleY(0.4);
-  }
-  50% {
-    transform: scaleY(1.4);
-  }
-}
-@keyframes ravi-sway {
-  0%,
-  100% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(1.5deg);
-  }
-}
-@keyframes ravi-glow {
-  0%,
-  100% {
-    opacity: 0.15;
-  }
-  50% {
-    opacity: 0.35;
-  }
-}
-.ravi .ravi-mouth,
-.ravi .ravi-body {
-  transform-box: fill-box;
-  transform-origin: center;
-}
-.ravi .ravi-body {
-  transform-origin: bottom center;
-}
-.ravi[data-speaking="true"] .ravi-mouth {
-  animation: ravi-talk 0.32s ease-in-out infinite;
-}
-.ravi[data-speaking="true"] .ravi-body {
-  animation: ravi-sway 2.4s ease-in-out infinite;
-}
-.ravi[data-speaking="true"] .ravi-glow {
-  animation: ravi-glow 1.6s ease-in-out infinite;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .animate-fade-in,
-  .ravi * {
-    animation: none !important;
+  .animate-fade-in {
+    animation: none;
   }
 }

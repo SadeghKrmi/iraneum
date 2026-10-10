@@ -34,7 +34,6 @@ export default async function EraPage({ params }: Props) {
     return {
       id: scene.id,
       yearLabel: intro ? eraYears : formatYear(scene.year, locale, scene.circa),
-      chipLabel: intro ? t.intro : formatYear(scene.year, locale, scene.circa),
       title: scene.title[locale],
       text: scene.text[locale],
       audioSrc: findAudio(locale, era.id, scene.id),
@@ -51,7 +50,6 @@ export default async function EraPage({ params }: Props) {
       prevEraId={eras[position - 1]?.id ?? null}
       nextEraId={eras[position + 1]?.id ?? null}
       labels={{
-        keyYears: t.keyYears,
         play: t.play,
         pause: t.pause,
         previous: t.previousScene,

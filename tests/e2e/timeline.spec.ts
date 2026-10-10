@@ -46,6 +46,28 @@ test("[en] time flows left-to-right on the timeline", async ({ page }) => {
   expect(first!.x).toBeLessThan(second!.x);
 });
 
+test("[fa] an era's event points sit between it and the next era", async ({ page }) => {
+  await page.goto("/fa/");
+  const era = (await page.locator('a[data-era="achaemenid"]').boundingBox())!;
+  const next = (await page.locator('a[data-era="parthian"]').boundingBox())!;
+  for (const id of ["cyrus-defeats-media", "alexander"]) {
+    const point = (await page.locator(`a[data-event="${id}"]`).boundingBox())!;
+    expect(point.x, id).toBeLessThan(era.x);
+    expect(point.x, id).toBeGreaterThan(next.x + next.width - 1);
+  }
+});
+
+test("[en] an era's event points sit between it and the next era", async ({ page }) => {
+  await page.goto("/en/");
+  const era = (await page.locator('a[data-era="achaemenid"]').boundingBox())!;
+  const next = (await page.locator('a[data-era="parthian"]').boundingBox())!;
+  for (const id of ["cyrus-defeats-media", "alexander"]) {
+    const point = (await page.locator(`a[data-event="${id}"]`).boundingBox())!;
+    expect(point.x, id).toBeGreaterThan(era.x + era.width - 1);
+    expect(point.x, id).toBeLessThan(next.x);
+  }
+});
+
 test("timeline next/previous buttons move between eras", async ({ page }) => {
   await page.goto("/en/achaemenid/");
   await page.getByRole("button", { name: "Next checkpoint" }).click();

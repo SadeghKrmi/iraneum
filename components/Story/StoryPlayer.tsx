@@ -4,14 +4,11 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useEffectEvent, useRef, useState } from "react";
 import { dirOf, type Locale } from "@/lib/i18n";
 import { ChevronBackIcon, ChevronForwardIcon, PauseIcon, PlayIcon } from "../icons";
-import { Ravi } from "../Ravi/Ravi";
 import { eraHref } from "@/lib/routes";
-import { EventBar } from "./EventBar";
 
 export type PlayerScene = {
   id: string;
   yearLabel: string;
-  chipLabel: string;
   title: string;
   text: string;
   /** Narration audio; scenes without it are read at a comfortable pace instead. */
@@ -25,7 +22,7 @@ export type StoryPlayerProps = {
   scenes: PlayerScene[];
   prevEraId: string | null;
   nextEraId: string | null;
-  labels: { keyYears: string; play: string; pause: string; previous: string; next: string };
+  labels: { play: string; pause: string; previous: string; next: string };
 };
 
 const MIN_SWIPE_PX = 60;
@@ -118,7 +115,7 @@ function InteractiveStoryPlayer(props: StoryPlayerProps) {
         {...props}
         index={index}
         playing={playing}
-        onSelect={showScene}
+        interactive
         onStep={(d) => step(d, playing)}
         onTogglePlay={() => setPlaying((p) => !p)}
         swipeHandlers={swipe}
@@ -131,7 +128,7 @@ function InteractiveStoryPlayer(props: StoryPlayerProps) {
 type ViewProps = StoryPlayerProps & {
   index: number;
   playing: boolean;
-  onSelect?: (index: number) => void;
+  interactive?: boolean;
   onStep?: (delta: 1 | -1) => void;
   onTogglePlay?: () => void;
   swipeHandlers?: React.HTMLAttributes<HTMLDivElement>;
@@ -144,9 +141,9 @@ function StoryView({
   labels,
   index,
   playing,
+  interactive,
   prevEraId,
   nextEraId,
-  onSelect,
   onStep,
   onTogglePlay,
   swipeHandlers,
@@ -157,29 +154,28 @@ function StoryView({
 
   return (
     // data-interactive appears once the client player has replaced the pre-rendered first scene.
-    <div className="flex w-full max-w-4xl flex-col gap-5" data-story data-interactive={onSelect ? "" : undefined}>
+    <div
+      className="flex w-full max-w-3xl flex-col gap-5"
+      data-story
+      data-interactive={interactive ? "" : undefined}
+      data-playing={playing}
+    >
       <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <h1 className="text-2xl font-bold sm:text-3xl">{eraTitle}</h1>
         <p className="text-sm text-turquoise">{eraYears}</p>
       </header>
 
-      <div className="flex touch-pan-y items-start gap-3 sm:gap-6" {...swipeHandlers}>
-        <Ravi speaking={playing} className="w-20 shrink-0 sm:w-36" />
-        <article
-          key={scene.id}
-          data-scene={scene.id}
-          aria-live="polite"
-          className="animate-fade-in relative min-h-48 flex-1 rounded-3xl border border-line bg-surface/80 p-5 shadow-sm sm:p-7"
-        >
-          <span
-            aria-hidden
-            className="absolute -start-2 top-8 size-4 rotate-45 border-b border-s border-line bg-surface"
-          />
-          <p className="text-sm font-medium text-turquoise">{scene.yearLabel}</p>
-          <h2 className="mt-1 text-xl font-bold leading-snug text-gold sm:text-2xl">{scene.title}</h2>
-          <p className="mt-3 text-base leading-loose sm:text-lg">{scene.text}</p>
-        </article>
-      </div>
+      <article
+        key={scene.id}
+        data-scene={scene.id}
+        aria-live="polite"
+        className="animate-fade-in min-h-48 touch-pan-y rounded-3xl border border-line bg-surface/80 p-5 shadow-sm sm:p-7"
+        {...swipeHandlers}
+      >
+        <p className="text-sm font-medium text-turquoise">{scene.yearLabel}</p>
+        <h2 className="mt-1 text-xl font-bold leading-snug text-gold sm:text-2xl">{scene.title}</h2>
+        <p className="mt-3 text-base leading-loose sm:text-lg">{scene.text}</p>
+      </article>
 
       <div className="flex items-center justify-center gap-3">
         <RoundButton label={labels.previous} disabled={atStart} onClick={() => onStep?.(-1)}>
@@ -198,15 +194,6 @@ function StoryView({
           <ChevronForwardIcon />
         </RoundButton>
       </div>
-
-      {scenes.length > 1 && (
-        <EventBar
-          label={labels.keyYears}
-          chips={scenes.map((s) => ({ id: s.id, label: s.chipLabel, title: s.title }))}
-          current={index}
-          onSelect={(i) => onSelect?.(i)}
-        />
-      )}
     </div>
   );
 }
