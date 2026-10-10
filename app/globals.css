@@ -1,24 +1,127 @@
 @import "tailwindcss";
 @import "@fontsource-variable/vazirmatn";
 
-@theme {
-  --font-sans: "Vazirmatn Variable", ui-sans-serif, system-ui, sans-serif;
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-  --color-night: #0e1524;
-  --color-surface: #172238;
-  --color-line: #2c3a57;
-  --color-parchment: #f3ead8;
-  --color-muted: #a7b0c2;
-  --color-gold: #d9a441;
-  --color-turquoise: #3fb8af;
+/* Light theme (default without JS); dark theme follows the system or the saved choice. */
+:root {
+  --bg: #f6f0e2;
+  --bg-glow: #fffaf0;
+  --surface: #fffaf0;
+  --line: #dccfb4;
+  --fg: #1f2433;
+  --muted: #5c6475;
+  --gold: #8a5d0c;
+  --turquoise: #17716b;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1524;
+    --bg-glow: #1b2a47;
+    --surface: #172238;
+    --line: #2c3a57;
+    --fg: #f3ead8;
+    --muted: #a7b0c2;
+    --gold: #d9a441;
+    --turquoise: #3fb8af;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #0e1524;
+  --bg-glow: #1b2a47;
+  --surface: #172238;
+  --line: #2c3a57;
+  --fg: #f3ead8;
+  --muted: #a7b0c2;
+  --gold: #d9a441;
+  --turquoise: #3fb8af;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-sans: "Vazirmatn Variable", ui-sans-serif, system-ui, sans-serif;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-gold: var(--gold);
+  --color-turquoise: var(--turquoise);
 }
 
 html {
-  background: var(--color-night);
-  color: var(--color-parchment);
+  background: var(--bg);
+  color: var(--fg);
 }
 
 body {
-  background: radial-gradient(ellipse at top, #1b2a47 0%, var(--color-night) 60%);
+  background: radial-gradient(ellipse at top, var(--bg-glow) 0%, var(--bg) 60%);
   min-height: 100dvh;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out both;
+}
+
+/* Ravi: mouth moves and figure sways gently while he is speaking. */
+@keyframes ravi-talk {
+  0%,
+  100% {
+    transform: scaleY(0.4);
+  }
+  50% {
+    transform: scaleY(1.4);
+  }
+}
+@keyframes ravi-sway {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(1.5deg);
+  }
+}
+@keyframes ravi-glow {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.ravi .ravi-mouth,
+.ravi .ravi-body {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.ravi .ravi-body {
+  transform-origin: bottom center;
+}
+.ravi[data-speaking="true"] .ravi-mouth {
+  animation: ravi-talk 0.32s ease-in-out infinite;
+}
+.ravi[data-speaking="true"] .ravi-body {
+  animation: ravi-sway 2.4s ease-in-out infinite;
+}
+.ravi[data-speaking="true"] .ravi-glow {
+  animation: ravi-glow 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .ravi * {
+    animation: none !important;
+  }
 }

@@ -1,0 +1,149 @@
+{
+  "id": "achaemenid",
+  "start": -550,
+  "end": -330,
+  "title": {
+    "fa": "هخامنشیان",
+    "en": "Achaemenid Empire"
+  },
+  "summary": {
+    "fa": "کوروش بزرگ نخستین شاهنشاهی پارسی را بنیان می‌گذارد؛ قلمرویی که از رود سند تا مصر و دریای اژه گسترده شد.",
+    "en": "Cyrus the Great founds the first Persian empire, which grew to stretch from the Indus to Egypt and the Aegean."
+  },
+  "events": [
+    {
+      "id": "cyrus-defeats-media",
+      "year": -550,
+      "title": {
+        "fa": "کوروش بر مادها پیروز می‌شود",
+        "en": "Cyrus defeats the Medes"
+      },
+      "text": {
+        "fa": "کوروش دوم، شاه انشان در پارس، بر آستیاگ، پادشاه ماد، پیروز می‌شود و هگمتانه (همدان)، پایتخت ماد، را می‌گیرد. از این پس پارسیان رهبری مردمان فلات ایران را در دست دارند.",
+        "en": "Cyrus II, king of Anshan in Persis, defeats his overlord Astyages, king of the Medes, and takes the Median capital, Ecbatana (Hamadan). From now on the Persians lead the peoples of the Iranian plateau."
+      }
+    },
+    {
+      "id": "fall-of-sardis",
+      "year": -547,
+      "circa": true,
+      "title": {
+        "fa": "سقوط سارد",
+        "en": "The fall of Sardis"
+      },
+      "text": {
+        "fa": "کرزوس، پادشاه ثروتمند لیدی، به قلمرو پارس حمله می‌کند. کوروش به سوی غرب می‌تازد، او را شکست می‌دهد و سارد، پایتخت لیدی، را می‌گیرد؛ آناتولی و شهرهای یونانی ایونیا به فرمان پارس درمی‌آیند.",
+        "en": "Croesus, the famously rich king of Lydia, attacks Persian territory. Cyrus marches west, defeats him and captures his capital, Sardis, bringing Anatolia and the Greek cities of Ionia under Persian rule."
+      }
+    },
+    {
+      "id": "babylon",
+      "year": -539,
+      "title": {
+        "fa": "گشوده شدن دروازه‌های بابل",
+        "en": "Babylon opens its gates"
+      },
+      "text": {
+        "fa": "سپاه کوروش بابل، بزرگ‌ترین شهر آن روزگار، را بدون نبردی بزرگ می‌گیرد. استوانهٔ کوروش روایت او را ثبت کرده است: او خود را بازسازندهٔ آیین‌ها معرفی می‌کند و مردمان کوچانده‌شده و پیکره‌های خدایانشان را به سرزمین‌هایشان بازمی‌گرداند. به روایت کتاب مقدس عبری، یهودیان تبعیدی در بابل نیز اجازهٔ بازگشت به سرزمین خود را یافتند.",
+        "en": "Cyrus's army takes Babylon, the greatest city of its day, without a major battle. The Cyrus Cylinder records his account: he presents himself as a restorer of worship, returning deported peoples and the statues of their gods to their homes. According to the Hebrew Bible, the Judeans exiled in Babylon were also allowed to return."
+      }
+    },
+    {
+      "id": "cambyses-egypt",
+      "year": -525,
+      "title": {
+        "fa": "کمبوجیه مصر را می‌گشاید",
+        "en": "Cambyses conquers Egypt"
+      },
+      "text": {
+        "fa": "کمبوجیهٔ دوم، پسر کوروش، سپاه مصر را در پلوسیوم، در کرانهٔ دلتای نیل، شکست می‌دهد و فرعون مصر می‌شود. اکنون شاهنشاهی از آسیای میانه تا آفریقا گسترده است.",
+        "en": "Cyrus's son Cambyses II defeats the Egyptian army at Pelusium, on the edge of the Nile Delta, and becomes pharaoh. The empire now stretches from Central Asia to Africa."
+      }
+    },
+    {
+      "id": "darius-behistun",
+      "year": -522,
+      "title": {
+        "fa": "داریوش یکم به شاهی می‌رسد",
+        "en": "Darius I takes the throne"
+      },
+      "text": {
+        "fa": "پس از مرگ کمبوجیه و شورش مردی که خود را بردیا، برادر او، می‌خواند، داریوش یکم تاج و تخت را به دست می‌گیرد و شورش‌ها را در سراسر شاهنشاهی فرومی‌نشاند. او شرح پیروزی‌هایش را به سه زبان بر صخرهٔ بیستون می‌نگارد؛ سنگ‌نبشته‌ای که بعدها کلید خواندن خط میخی شد.",
+        "en": "After the death of Cambyses and the revolt of a man claiming to be his brother Bardiya, Darius I seizes the throne and puts down rebellions across the empire. He records his victories in three languages on the cliff of Behistun (Bisotun), an inscription that later became the key to deciphering cuneiform."
+      }
+    },
+    {
+      "id": "persepolis",
+      "year": -518,
+      "circa": true,
+      "title": {
+        "fa": "برپایی تخت جمشید",
+        "en": "Persepolis rises"
+      },
+      "text": {
+        "fa": "داریوش ساختن تخت جمشید (پارسه) را بر صفه‌ای بزرگ در فارس آغاز می‌کند. سنگ‌نگاره‌های آن نمایندگان سرزمین‌های گوناگون را نشان می‌دهند که برای شاه هدیه می‌آورند. داریوش شاهنشاهی را به ساتراپی‌ها بخش می‌کند، مالیات و سکه را سامان می‌دهد و استان‌های دور را با راه شاهی به هم پیوند می‌دهد.",
+        "en": "Darius begins building Persepolis (Parsa) on a great terrace in Fars. Its reliefs show delegations from across the empire bringing gifts to the king. Darius also organizes the empire into satrapies, regulates taxes and coinage, and links distant provinces with the Royal Road."
+      }
+    },
+    {
+      "id": "marathon",
+      "year": -490,
+      "title": {
+        "fa": "ماراتن",
+        "en": "Marathon"
+      },
+      "text": {
+        "fa": "پس از شورش شهرهای یونانی ایونیا با یاری آتن، داریوش سپاهی از راه دریای اژه می‌فرستد. در ماراتن، آتنیان نیروی پیاده‌شدهٔ پارسی را شکست می‌دهند؛ شکستی کوچک برای شاهنشاهی، اما افسانه‌ای بنیادین برای یونانیان.",
+        "en": "After the Ionian Greek cities revolt with help from Athens, Darius sends an expedition across the Aegean. At Marathon the Athenians defeat the Persian landing force: a small setback for the empire, but a founding legend for the Greeks."
+      }
+    },
+    {
+      "id": "xerxes-greece",
+      "year": -480,
+      "title": {
+        "fa": "لشکرکشی خشایارشا به یونان",
+        "en": "Xerxes invades Greece"
+      },
+      "text": {
+        "fa": "خشایارشای یکم، پسر داریوش، با سپاهی بزرگ به یونان می‌رود. او در ترموپیل پیروز می‌شود و آتن را به آتش می‌کشد، اما ناوگانش در سالامیس شکست می‌خورد و سال بعد سپاهش در پلاته شکست می‌یابد. گسترش شاهنشاهی به سوی غرب در اینجا پایان می‌یابد.",
+        "en": "Darius's son Xerxes I leads a huge army into Greece. He wins at Thermopylae and burns Athens, but his fleet is defeated at Salamis, and the next year his army is beaten at Plataea. The empire's westward expansion ends here."
+      }
+    },
+    {
+      "id": "alexander",
+      "year": -330,
+      "title": {
+        "fa": "اسکندر و پایان شاهنشاهی",
+        "en": "Alexander and the end of the empire"
+      },
+      "text": {
+        "fa": "اسکندر مقدونی داریوش سوم را در ایسوس و گوگمل شکست می‌دهد. در سال ۳۳۰ پیش از میلاد تخت جمشید به آتش کشیده می‌شود و داریوش سوم در گریز به دست بسوس، ساتراپ خود، کشته می‌شود. بیش از دو سده فرمانروایی هخامنشیان به پایان می‌رسد.",
+        "en": "Alexander of Macedon defeats Darius III at Issus and Gaugamela. In 330 BCE Persepolis is burned, and Darius III is killed while fleeing by his own satrap, Bessus. More than two centuries of Achaemenid rule come to an end."
+      }
+    }
+  ],
+  "references": [
+    {
+      "author": "Pierre Briant",
+      "title": "From Cyrus to Alexander: A History of the Persian Empire",
+      "publisher": "Eisenbrauns",
+      "year": 2002
+    },
+    {
+      "author": "Amélie Kuhrt",
+      "title": "The Persian Empire: A Corpus of Sources from the Achaemenid Period",
+      "publisher": "Routledge",
+      "year": 2007
+    },
+    {
+      "author": "Encyclopaedia Iranica",
+      "title": "Achaemenid Dynasty",
+      "url": "https://www.iranicaonline.org/articles/achaemenid-dynasty"
+    },
+    {
+      "author": "The British Museum",
+      "title": "The Cyrus Cylinder (1880,0617.1941)",
+      "url": "https://www.britishmuseum.org/collection/object/W_1880-0617-1941"
+    }
+  ]
+}

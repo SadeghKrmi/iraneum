@@ -29,3 +29,10 @@ describe("formatYearRange", () => {
     expect(formatYearRange(-247, 224, "en")).toBe("247 BCE – 224 CE");
   });
 });
+
+describe("approximate years", () => {
+  it("adds 'c.' / 'حدود' for circa dates", () => {
+    expect(formatYear(-547, "en", true)).toBe("c. 547 BCE");
+    expect(formatYear(-547, "fa", true)).toBe("حدود ۵۴۷ پیش از میلاد");
+  });
+});

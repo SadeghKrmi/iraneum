@@ -1,8 +1,8 @@
 import type { Locale } from "./i18n";
 
-const eraLabels: Record<Locale, { bce: string; ce: string }> = {
-  fa: { bce: "پیش از میلاد", ce: "میلادی" },
-  en: { bce: "BCE", ce: "CE" },
+const eraLabels: Record<Locale, { bce: string; ce: string; circa: string }> = {
+  fa: { bce: "پیش از میلاد", ce: "میلادی", circa: "حدود" },
+  en: { bce: "BCE", ce: "CE", circa: "c." },
 };
 
 const numberFormats: Record<Locale, Intl.NumberFormat> = {
@@ -11,12 +11,13 @@ const numberFormats: Record<Locale, Intl.NumberFormat> = {
 };
 
 /** Formats an astronomical-style year (negative = BCE) for display, e.g. -550 → "550 BCE" / "۵۵۰ پیش از میلاد". */
-export function formatYear(year: number, locale: Locale): string {
+export function formatYear(year: number, locale: Locale, circa = false): string {
   if (!Number.isInteger(year) || year === 0) {
     throw new Error(`Invalid year: ${year} (use negative integers for BCE; there is no year 0)`);
   }
   const era = eraLabels[locale];
-  return `${numberFormats[locale].format(Math.abs(year))} ${year < 0 ? era.bce : era.ce}`;
+  const text = `${numberFormats[locale].format(Math.abs(year))} ${year < 0 ? era.bce : era.ce}`;
+  return circa ? `${era.circa} ${text}` : text;
 }
 
 /** Formats a span of years; the era label is written once when both ends share it. */
