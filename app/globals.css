@@ -1,0 +1,24 @@
+@import "tailwindcss";
+@import "@fontsource-variable/vazirmatn";
+
+@theme {
+  --font-sans: "Vazirmatn Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --color-night: #0e1524;
+  --color-surface: #172238;
+  --color-line: #2c3a57;
+  --color-parchment: #f3ead8;
+  --color-muted: #a7b0c2;
+  --color-gold: #d9a441;
+  --color-turquoise: #3fb8af;
+}
+
+html {
+  background: var(--color-night);
+  color: var(--color-parchment);
+}
+
+body {
+  background: radial-gradient(ellipse at top, #1b2a47 0%, var(--color-night) 60%);
+  min-height: 100dvh;
+}
