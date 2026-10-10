@@ -84,7 +84,7 @@ test("arrow keys on the timeline follow the reading direction", async ({ page })
   await page.keyboard.press("ArrowLeft"); // in RTL, left = later in time
   await expect(page).toHaveURL(/\/fa\/parthian\/$/);
   await page.keyboard.press("ArrowRight");
-  await expect(page).toHaveURL(/\/fa\/achaemenid\/$/);
+  await expect(page).toHaveURL(/\/fa\/achaemenid\/$/, { timeout: 20_000 });
 
   await page.goto("/en/achaemenid/");
   await page.locator('a[data-era="achaemenid"]').focus();
@@ -96,10 +96,10 @@ test("language switcher keeps the era and the scene", async ({ page }) => {
   await page.goto("/fa/achaemenid/?e=babylon");
   await expect(page.locator('article[data-scene="babylon"]')).toBeVisible();
   await page.getByRole("link", { name: "Switch to English" }).click();
-  await expect(page).toHaveURL(/\/en\/achaemenid\/\?e=babylon$/);
+  await expect(page).toHaveURL(/\/en\/achaemenid\/\?e=babylon$/, { timeout: 20_000 });
   await expect(page.getByRole("heading", { level: 2 })).toHaveText("Babylon opens its gates");
   await page.getByRole("link", { name: "تغییر زبان به فارسی" }).click();
-  await expect(page).toHaveURL(/\/fa\/achaemenid\/\?e=babylon$/);
+  await expect(page).toHaveURL(/\/fa\/achaemenid\/\?e=babylon$/, { timeout: 20_000 });
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("هخامنشیان");
 });
 

@@ -6,7 +6,8 @@ import { AtlasApp } from "@/components/Atlas/AtlasApp";
 import { HydrationMarker } from "@/components/HydrationMarker";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Menu } from "@/components/Menu/Menu";
-import { ThemeToggle, themeInitScript } from "@/components/ThemeToggle";
+import { ThemeScript } from "@/components/ThemeScript";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { findAudio } from "@/lib/audio";
 import { eras, scenesOf } from "@/lib/content";
 import { dirOf, getDictionary, isLocale, locales } from "@/lib/i18n";
@@ -48,7 +49,7 @@ export default async function LocaleLayout({ children, params }: Props) {
     <html lang={locale} dir={dirOf(locale)} suppressHydrationWarning>
       <body className="h-dvh overflow-hidden font-sans antialiased">
         {/* First thing in <body>: runs before anything is painted. (In <head> it trips React hydration.) */}
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <ThemeScript />
         <AtlasApp locale={locale} eras={eras} audio={audio} t={t} />
         <header className="pointer-events-none fixed inset-x-0 top-0 z-20 flex items-start justify-between gap-3 bg-gradient-to-b from-bg/90 to-transparent px-4 pb-8 pt-4 sm:px-6 [&>*]:pointer-events-auto">
           <Link href={`/${locale}/`} className="min-w-0 rounded-lg focus-visible:outline-2 focus-visible:outline-gold">

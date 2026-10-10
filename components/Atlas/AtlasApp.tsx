@@ -8,6 +8,7 @@ import type { Dictionary, Locale } from "@/lib/i18n";
 import { eraHref } from "@/lib/routes";
 import { MapStage } from "../Map/MapStage";
 import { Timeline } from "../Timeline/Timeline";
+import { usePersistentFlag } from "../usePersistentFlag";
 import { Dock } from "./Dock";
 import { EraCard } from "./EraCard";
 import { MapKey } from "./MapKey";
@@ -62,6 +63,8 @@ function Atlas({
   const scene = scenes[index] ?? null;
 
   const [playing, setPlaying] = useState(false);
+  const [cardOpen, setCardOpen] = usePersistentFlag("iraneum:card-open", true);
+  const [keyOpen, setKeyOpen] = usePersistentFlag("iraneum:key-open", true);
   const audioEl = useRef<HTMLAudioElement>(null);
 
   const showScene = (i: number) => {
@@ -125,7 +128,7 @@ function Atlas({
 
   return (
     <>
-      <MapStage locale={locale} era={era} scene={scene} noWebglText={t.noWebgl} />
+      <MapStage locale={locale} era={era} scene={scene} panelOpen={cardOpen} noWebglText={t.noWebgl} />
       {era && scene && (
         <EraCard
           locale={locale}
@@ -136,12 +139,14 @@ function Atlas({
           index={index}
           playing={playing}
           interactive={interactive}
+          open={cardOpen}
+          onToggle={setCardOpen}
           t={t}
           onSelect={showScene}
           onStep={step}
         />
       )}
-      {era && <MapKey t={t} />}
+      {era && <MapKey t={t} open={keyOpen} onToggle={setKeyOpen} />}
       <Dock
         t={t}
         year={year}

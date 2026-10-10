@@ -74,6 +74,23 @@ body {
   }
 }
 
+/* Thin, rounded, gold-tinted scrollbar on a transparent track. */
+@utility scrollbar-modern {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--gold) 45%, transparent) transparent;
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--gold) 45%, transparent);
+    border-radius: 9999px;
+  }
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;

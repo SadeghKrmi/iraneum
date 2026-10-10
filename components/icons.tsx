@@ -76,3 +76,31 @@ export const PauseIcon = ({ className = "size-5" }: IconProps) => (
     <rect x="14" y="5" width="4" height="14" rx="1" />
   </svg>
 );
+
+export const ChevronDownIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M6 9l6 6 6-6" />
+  </Icon>
+);
+
+export const ChevronUpIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M6 15l6-6 6 6" />
+  </Icon>
+);
+
+/** A side panel; mirrored in RTL so the panel is on the start side. */
+export const PanelIcon = ({ className = "size-5" }: IconProps) => (
+  <Icon className={`${className} rtl:-scale-x-100`}>
+    <rect x="3" y="4" width="18" height="16" rx="2.5" />
+    <path d="M9.5 4v16M5.5 8.5h2M5.5 12h2" />
+  </Icon>
+);
+
+/** Map layers, for the map key. */
+export const LayersIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M12 3 2.5 8 12 13l9.5-5z" />
+    <path d="M2.5 12.5 12 17.5l9.5-5M2.5 16.5 12 21.5l9.5-5" />
+  </Icon>
+);

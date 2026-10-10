@@ -100,3 +100,33 @@ test("pages hydrate without errors, also on repeated reloads", async ({ page }) 
   }
   expect(errors).toEqual([]);
 });
+
+test("the chosen theme survives a language switch", async ({ page }) => {
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.goto("/en/achaemenid/");
+  await page.getByRole("button", { name: "Toggle light and dark theme" }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  await page.getByRole("link", { name: "تغییر زبان به فارسی" }).click();
+  await expect(page).toHaveURL(/\/fa\/achaemenid\/$/, { timeout: 20_000 });
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+});
+
+test("no console errors while exploring", async ({ page }) => {
+  test.setTimeout(120_000);
+  const errors: string[] = [];
+  page.on("console", (m) => {
+    if (m.type() === "error") errors.push(m.text());
+  });
+  page.on("pageerror", (e) => errors.push(e.message));
+  await page.goto("/fa/achaemenid/");
+  await expect(page.locator('[data-map="ready"]')).toBeVisible({ timeout: 45_000 });
+  for (let i = 0; i < 3; i++) await page.getByRole("button", { name: "رویداد بعدی" }).click();
+  await page.getByRole("button", { name: "تغییر پوستهٔ روشن و تیره" }).click();
+  await page.locator('a[data-era="parthian"]').click();
+  await expect(page).toHaveURL(/\/fa\/parthian\/$/);
+  await page.getByRole("link", { name: "Switch to English" }).click();
+  // Switching language swaps the whole layout (and restarts the globe), so allow it some time.
+  await expect(page).toHaveURL(/\/en\/parthian\/$/, { timeout: 20_000 });
+  await expect(page.locator('[data-map="ready"]')).toBeVisible({ timeout: 45_000 });
+  expect(errors).toEqual([]);
+});

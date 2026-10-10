@@ -3,9 +3,9 @@
 import { Line } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useLayoutEffect, useMemo, useRef } from "react";
-import { EqualStencilFunc, KeepStencilOp, ShapeGeometry, type Material, type MeshBasicMaterial } from "three";
-import { fixWinding, toOutlines, toShapes, type LonLat } from "@/lib/geo";
-import { LAND_HEIGHT, LAND_STENCIL } from "./Land";
+import { EqualStencilFunc, KeepStencilOp, type Material, type MeshBasicMaterial } from "three";
+import { closeRing, densify, lonLatShapes, shapesOnSphere, toSphere, type LonLat } from "@/lib/geo";
+import { LAND_RADIUS, LAND_STENCIL } from "./constants";
 
 const FILL_OPACITY = 0.5;
 
@@ -22,11 +22,9 @@ function onLandOnly(material: Material) {
 /** An era's territory: a translucent fill with a glowing edge, fading in when the era changes. */
 export function Territory({ rings, color }: { rings: LonLat[][]; color: string }) {
   const { fill, outlines } = useMemo(() => {
-    const polygons = rings.map((ring) => fixWinding([ring]));
-    const fill = new ShapeGeometry(polygons.flatMap(toShapes), 2);
-    const outlines = polygons.flatMap(toOutlines).map((ring) =>
-      ring.map((p) => [p.x, LAND_HEIGHT + 0.04, p.z] as [number, number, number]),
-    );
+    const closed = rings.map((ring) => closeRing(ring));
+    const fill = shapesOnSphere(lonLatShapes(closed.map((ring) => [ring])), LAND_RADIUS + 0.03, 2);
+    const outlines = closed.map((ring) => densify(ring, 0.5).map((p) => toSphere(p, LAND_RADIUS + 0.05)));
     return { fill, outlines };
   }, [rings]);
 
@@ -38,15 +36,18 @@ export function Territory({ rings, color }: { rings: LonLat[][]; color: string }
     for (const line of edges.current) if (line) onLandOnly(line.material);
   }, [fill, outlines]);
 
-  // Fade in.
-  useFrame((_, dt) => {
+  // Fade in (asking for the next frame until done, since the map only redraws on request).
+  useFrame(({ invalidate }, dt) => {
     const m = fillMaterial.current;
-    if (m && m.opacity < FILL_OPACITY) m.opacity = Math.min(FILL_OPACITY, m.opacity + dt * 1.2);
+    if (m && m.opacity < FILL_OPACITY) {
+      m.opacity = Math.min(FILL_OPACITY, m.opacity + Math.min(dt, 0.1) * 1.2);
+      invalidate();
+    }
   });
 
   return (
     <group>
-      <mesh geometry={fill} rotation-x={-Math.PI / 2} position-y={LAND_HEIGHT + 0.02} renderOrder={3}>
+      <mesh geometry={fill} renderOrder={3}>
         <meshBasicMaterial ref={fillMaterial} color={color} transparent opacity={0} depthWrite={false} />
       </mesh>
       {outlines.map((points, i) => (

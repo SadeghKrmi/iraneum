@@ -1,29 +1,51 @@
-import { geoArea, geoCentroid, geoConicConformal, geoPath, type GeoContext } from "d3-geo";
+import { geoArea, geoBounds, geoCentroid } from "d3-geo";
 import type { MultiPolygon, Polygon } from "geojson";
-import { ShapePath, type Shape } from "three";
+import {
+  BufferGeometry,
+  Float32BufferAttribute,
+  ShapeGeometry,
+  ShapePath,
+  Vector3,
+  type Shape,
+} from "three";
+import { TessellateModifier } from "three/examples/jsm/modifiers/TessellateModifier.js";
 
 /** A [longitude, latitude] pair, as written in the era files. */
 export type LonLat = [number, number];
 
-/** Map units per radian. The region from Greece to the Indus is ~130 units wide. */
-const SCALE = 100;
+/** Globe radius in scene units: 1° of arc ≈ 1.75 units. */
+export const GLOBE_RADIUS = 100;
 
-/** Conformal conic projection centred on Iran, so shapes there look right. */
-export const projection = geoConicConformal()
-  .rotate([-52, 0])
-  .center([0, 32])
-  .parallels([25, 40])
-  .scale(SCALE)
-  .translate([0, 0])
-  .precision(0.1);
+const DEG = Math.PI / 180;
 
 /**
- * Projects lon/lat onto the map plane. Three.js uses x to the east and z toward the viewer (south),
- * so d3's screen-style y (down = south) becomes z directly.
+ * A point on (or above) the globe. Longitude 0 faces +z, east is +x, north is +y, so the
+ * scene's x/y axes match a map's east/north where the camera looks.
  */
-export function toPlane([lon, lat]: LonLat): { x: number; z: number } {
-  const [x, y] = projection([lon, lat]) ?? [0, 0];
-  return { x, z: y };
+export function toSphere([lon, lat]: LonLat, radius = GLOBE_RADIUS, target = new Vector3()): Vector3 {
+  const cosLat = Math.cos(lat * DEG);
+  return target.set(radius * cosLat * Math.sin(lon * DEG), radius * Math.sin(lat * DEG), radius * cosLat * Math.cos(lon * DEG));
+}
+
+/** Unit vectors pointing east and north on the surface at a point. */
+export function surfaceFrame([lon, lat]: LonLat) {
+  const east = new Vector3(Math.cos(lon * DEG), 0, -Math.sin(lon * DEG));
+  const north = new Vector3(
+    -Math.sin(lat * DEG) * Math.sin(lon * DEG),
+    Math.cos(lat * DEG),
+    -Math.sin(lat * DEG) * Math.cos(lon * DEG),
+  );
+  return { east, north, up: toSphere([lon, lat], 1) };
+}
+
+/** Longitude change from `from` to `to` the short way round, in -180…180. */
+export function shortestLonDelta(from: number, to: number) {
+  return ((((to - from) % 360) + 540) % 360) - 180;
+}
+
+/** Wraps a longitude into -180…180. */
+export function wrapLon(lon: number) {
+  return ((((lon + 180) % 360) + 360) % 360) - 180;
 }
 
 /**
@@ -40,53 +62,76 @@ export function fixWinding(rings: LonLat[][]): Polygon {
   return polygon;
 }
 
+function asMulti(rings: LonLat[][]): MultiPolygon {
+  return { type: "MultiPolygon", coordinates: rings.map((ring) => fixWinding([ring]).coordinates) };
+}
+
+/** Centre of one or more territory rings. */
+export function centroidOf(rings: LonLat[][]): LonLat {
+  return geoCentroid(asMulti(rings)) as LonLat;
+}
+
+/** Larger side of the rings' bounding box, in degrees: how far the camera stands back. */
+export function extentOf(rings: LonLat[][]): number {
+  const [[west, south], [east, north]] = geoBounds(asMulti(rings));
+  const width = east >= west ? east - west : east + 360 - west;
+  return Math.max(width * Math.cos(((south + north) / 2) * DEG), north - south);
+}
+
 /**
- * Converts polygons to Three.js shapes in the map plane (shape x = east, shape y = north,
- * so rotating the mesh by -90° about X lays it flat with north away from the viewer).
+ * Shapes in lon/lat space (x = lon, y = lat). Three.js works out which rings are holes.
+ * Polygons are treated as flat in lon/lat, which is how the territories are drawn.
  */
-export function toShapes(geometry: Polygon | MultiPolygon): Shape[] {
-  const shapePath = new ShapePath();
-  const context = pathContext(
-    (x, y) => void shapePath.moveTo(x, -y),
-    (x, y) => void shapePath.lineTo(x, -y),
-  );
-  // geoPath writes each ring as moveTo + lineTo…; ShapePath works out which rings are holes.
-  geoPath(projection, context)(geometry);
-  return shapePath.toShapes();
+export function lonLatShapes(polygons: number[][][][]): Shape[] {
+  const path = new ShapePath();
+  for (const polygon of polygons) {
+    for (const ring of polygon) {
+      path.moveTo(ring[0][0], ring[0][1]);
+      for (let i = 1; i < ring.length; i++) path.lineTo(ring[i][0], ring[i][1]);
+    }
+  }
+  return path.toShapes();
 }
 
-/** A drawing context for d3's geoPath that only records rings. */
-function pathContext(
-  moveTo: (x: number, y: number) => void,
-  lineTo: (x: number, y: number) => void,
-  closePath: () => void = () => {},
-): GeoContext {
-  return { beginPath: () => {}, moveTo, lineTo, closePath, arc: () => {} };
+/**
+ * Triangulates shapes and wraps them onto the globe at `radius`. Large triangles are split first
+ * (to at most `maxEdgeDegrees` per side) so the surface follows the curve instead of cutting through it.
+ */
+export function shapesOnSphere(shapes: Shape[], radius: number, maxEdgeDegrees = 2.5): BufferGeometry {
+  const flat = new ShapeGeometry(shapes, 1).toNonIndexed();
+  const geometry = new TessellateModifier(maxEdgeDegrees, 10).modify(flat);
+  flat.dispose();
+  const position = geometry.getAttribute("position");
+  const normals = new Float32Array(position.count * 3);
+  const v = new Vector3();
+  for (let i = 0; i < position.count; i++) {
+    toSphere([position.getX(i), position.getY(i)], radius, v);
+    position.setXYZ(i, v.x, v.y, v.z);
+    v.normalize();
+    normals.set([v.x, v.y, v.z], i * 3);
+  }
+  geometry.setAttribute("normal", new Float32BufferAttribute(normals, 3));
+  geometry.deleteAttribute("uv");
+  geometry.computeBoundingSphere();
+  return geometry;
 }
 
-/** Each ring as a list of projected points, for outlines. */
-export function toOutlines(geometry: Polygon | MultiPolygon): { x: number; z: number }[][] {
-  const rings: { x: number; z: number }[][] = [];
-  const context = pathContext(
-    (x, y) => void rings.push([{ x, z: y }]),
-    (x, y) => void rings[rings.length - 1].push({ x, z: y }),
-    () => {
-      const ring = rings[rings.length - 1];
-      if (ring?.length) ring.push(ring[0]);
-    },
-  );
-  geoPath(projection, context)(geometry);
-  return rings;
+/** Adds points so that no step of the ring is longer than `step` degrees (straight in lon/lat). */
+export function densify(ring: number[][], step = 1): LonLat[] {
+  const out: LonLat[] = [];
+  for (let i = 0; i < ring.length; i++) {
+    const [lon, lat] = ring[i];
+    const next = ring[i + 1];
+    out.push([lon, lat]);
+    if (!next) break;
+    const n = Math.ceil(Math.max(Math.abs(next[0] - lon), Math.abs(next[1] - lat)) / step);
+    for (let k = 1; k < n; k++) out.push([lon + ((next[0] - lon) * k) / n, lat + ((next[1] - lat) * k) / n]);
+  }
+  return out;
 }
 
-export function centroidOf(polygons: Polygon[]): LonLat {
-  const multi: MultiPolygon = { type: "MultiPolygon", coordinates: polygons.map((p) => p.coordinates) };
-  return geoCentroid(multi) as LonLat;
-}
-
-/** Size of the projected bounding box, used to choose how far the camera stands back. */
-export function projectedSize(polygons: Polygon[]): number {
-  const multi: MultiPolygon = { type: "MultiPolygon", coordinates: polygons.map((p) => p.coordinates) };
-  const [[x0, y0], [x1, y1]] = geoPath(projection).bounds(multi);
-  return Math.max(x1 - x0, y1 - y0);
+/** A closed copy of a ring (first point repeated at the end). */
+export function closeRing<T extends number[]>(ring: T[]): T[] {
+  const [first, last] = [ring[0], ring[ring.length - 1]];
+  return first[0] === last[0] && first[1] === last[1] ? ring : [...ring, first];
 }

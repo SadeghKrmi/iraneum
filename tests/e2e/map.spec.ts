@@ -20,7 +20,7 @@ test("the 3D map renders and follows the era and the event", async ({ page }) =>
 test("era card shows capitals and rulers, and its event list selects events", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name === "mobile", "phones show a compact card without these details");
   await page.goto("/en/achaemenid/");
-  const card = page.locator("aside[data-story]");
+  const card = page.locator("[data-story]");
   await expect(card.getByRole("heading", { level: 1 })).toHaveText("Achaemenid Empire");
   await expect(card).toContainText("Persepolis, Susa, Babylon, Ecbatana");
   await expect(card).toContainText("Cyrus II, Cambyses II, Darius I, Xerxes I");
@@ -32,7 +32,7 @@ test("era card shows capitals and rulers, and its event list selects events", as
 
 test("Persian card uses Persian digits", async ({ page }) => {
   await page.goto("/fa/achaemenid/");
-  await expect(page.locator("aside[data-story]")).toContainText("دورهٔ ۲ از ۶");
+  await expect(page.locator("[data-story]")).toContainText("دورهٔ ۲ از ۶");
 });
 
 test("space bar plays and pauses", async ({ page }) => {
@@ -56,4 +56,48 @@ test("without WebGL a notice replaces the map and the story still works", async 
   await expect(page.locator("[data-no-webgl]")).toBeVisible();
   await page.getByRole("button", { name: "Next event" }).click();
   await expect(page.getByRole("heading", { level: 2 })).toHaveText("Cyrus defeats the Medes");
+});
+
+test("labels follow the globe when it is dragged", async ({ page }) => {
+  test.setTimeout(90_000);
+  await page.goto("/en/parthian/");
+  await expect(map(page)).toHaveAttribute("data-map", "ready", { timeout: 45_000 });
+  const label = page.locator('[data-label="era-parthian"]');
+  await expect(label).toBeVisible();
+  await page.waitForTimeout(3000); // let the camera arrive
+  const before = await label.boundingBox();
+  const box = (await map(page).boundingBox())!;
+  const x = box.x + box.width * 0.75;
+  const y = box.y + box.height * 0.4;
+  await page.mouse.move(x, y);
+  await page.mouse.down();
+  for (let i = 1; i <= 10; i++) await page.mouse.move(x - i * 12, y + i * 4);
+  await page.mouse.up();
+  await expect.poll(async () => (await label.boundingBox())?.x).not.toBeCloseTo(before!.x, 0);
+});
+
+test("era card collapses and expands with its icons, and stays collapsed across eras", async ({ page }) => {
+  await page.goto("/en/achaemenid/");
+  const story = page.locator("[data-story]");
+  await expect(story).toHaveAttribute("data-open", "true");
+  await page.getByRole("button", { name: "Hide panel" }).first().click();
+  await expect(story).toHaveAttribute("data-open", "false");
+  await expect(page.locator("aside[inert]")).toHaveCount(1);
+  await page.getByRole("navigation", { name: "Timeline" }).locator('a[data-era="parthian"]').click();
+  await expect(page).toHaveURL(/\/en\/parthian\/$/);
+  await expect(page.locator("[data-story]")).toHaveAttribute("data-open", "false");
+  await page.getByRole("button", { name: "Show panel" }).click();
+  await expect(page.locator("[data-story]")).toHaveAttribute("data-open", "true");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Parthian Empire");
+});
+
+test("map key collapses to a layers button and expands again", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name === "mobile", "the map key is shown on wide screens only");
+  await page.goto("/en/achaemenid/");
+  const key = page.locator("[data-map-key]");
+  await expect(key).toHaveAttribute("data-open", "true");
+  await key.getByRole("button", { name: "Hide panel" }).click();
+  await expect(key).toHaveAttribute("data-open", "false");
+  await key.getByRole("button", { name: "Map key" }).click();
+  await expect(key).toHaveAttribute("data-open", "true");
 });

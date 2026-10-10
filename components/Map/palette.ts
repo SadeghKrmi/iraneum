@@ -3,6 +3,9 @@
 import { useSyncExternalStore } from "react";
 
 export type MapPalette = {
+  /** Space around the globe. */
+  background: string;
+  atmosphere: string;
   sea: string;
   land: string;
   coast: string;
@@ -16,9 +19,11 @@ export type MapPalette = {
 
 const palettes: Record<"light" | "dark", MapPalette> = {
   dark: {
-    sea: "#0d1830",
-    land: "#3a3d58",
-    coast: "#7f8bb3",
+    background: "#070c1a",
+    atmosphere: "#5b8fd6",
+    sea: "#0f1d3a",
+    land: "#4a4e6e",
+    coast: "#8c97bf",
     iranBorder: "#c9cfdf",
     capital: "#d9a441",
     label: "#f3ead8",
@@ -26,6 +31,8 @@ const palettes: Record<"light" | "dark", MapPalette> = {
     labelShadow: "0 1px 3px #000, 0 0 10px #000",
   },
   light: {
+    background: "#efe8d8",
+    atmosphere: "#8fb8de",
     sea: "#b6cbdd",
     land: "#efe5cf",
     coast: "#7d93ad",

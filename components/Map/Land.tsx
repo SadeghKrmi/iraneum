@@ -1,47 +1,93 @@
 "use client";
 
 import { Line } from "@react-three/drei";
-import { useMemo } from "react";
-import { BufferGeometry, ExtrudeGeometry, Float32BufferAttribute, ReplaceStencilOp } from "three";
-import type { MultiPolygon } from "geojson";
-import { toOutlines, toShapes } from "@/lib/geo";
+import { useEffect, useMemo, useState } from "react";
+import { BufferGeometry, DoubleSide, Float32BufferAttribute, ReplaceStencilOp } from "three";
+import { toSphere, type LonLat } from "@/lib/geo";
+import { LAND_RADIUS, LAND_STENCIL } from "./constants";
+import type { LandBuffers } from "./land.worker";
 import type { MapPalette } from "./palette";
 
-/** Height of the land above the sea, in map units. */
-export const LAND_HEIGHT = 0.35;
-/** Land writes this stencil value so territories can be drawn on land only. */
-export const LAND_STENCIL = 1;
+/** Today's borders of Iran: [polygon][ring][point]. */
+type IranBorder = LonLat[][][];
 
-export type RegionData = { land: MultiPolygon["coordinates"]; iran: MultiPolygon["coordinates"] };
+// Built once per page visit and reused, e.g. when switching language re-creates the map.
+let landOnce: Promise<LandBuffers> | null = null;
+let iranOnce: Promise<IranBorder> | null = null;
 
-export function Land({ region, palette }: { region: RegionData; palette: MapPalette }) {
-  const { land, coast, iran } = useMemo(() => {
-    const geometry: MultiPolygon = { type: "MultiPolygon", coordinates: region.land };
-    const land = new ExtrudeGeometry(toShapes(geometry), {
-      depth: LAND_HEIGHT,
-      bevelEnabled: false,
-      curveSegments: 1,
-    });
-    // All coastlines in one line-segment buffer: cheap to draw.
-    const points: number[] = [];
-    for (const ring of toOutlines(geometry)) {
-      for (let i = 1; i < ring.length; i++) {
-        const a = ring[i - 1];
-        const b = ring[i];
-        points.push(a.x, LAND_HEIGHT + 0.01, a.z, b.x, LAND_HEIGHT + 0.01, b.z);
-      }
-    }
+function loadLand(): Promise<LandBuffers> {
+  landOnce ??= new Promise<LandBuffers>((resolve, reject) => {
+    const worker = new Worker(new URL("./land.worker.ts", import.meta.url));
+    worker.onmessage = (e: MessageEvent<LandBuffers>) => {
+      resolve(e.data);
+      worker.terminate();
+    };
+    worker.onerror = (e) => {
+      landOnce = null;
+      reject(e);
+      worker.terminate();
+    };
+    worker.postMessage({ url: new URL("/geo/land-50m.json", location.href).href });
+  });
+  return landOnce;
+}
+
+function loadIran(): Promise<IranBorder> {
+  iranOnce ??= fetch("/geo/iran.json").then((r) => r.json() as Promise<IranBorder>);
+  return iranOnce;
+}
+
+/** Loads and builds the world's land in a worker; calls onReady once it's on screen. */
+export function Land({ palette, onReady }: { palette: MapPalette; onReady?: () => void }) {
+  const [buffers, setBuffers] = useState<LandBuffers | null>(null);
+  const [iran, setIran] = useState<IranBorder | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    loadLand()
+      .then((data) => {
+        if (!cancelled) setBuffers(data);
+      })
+      .catch(() => {});
+    loadIran()
+      .then((data) => {
+        if (!cancelled) setIran(data);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const geometry = useMemo(() => {
+    if (!buffers) return null;
+    const surface = new BufferGeometry();
+    surface.setAttribute("position", new Float32BufferAttribute(buffers.surface, 3));
+    surface.setAttribute("normal", new Float32BufferAttribute(buffers.normals, 3));
+    const walls = new BufferGeometry();
+    walls.setAttribute("position", new Float32BufferAttribute(buffers.walls, 3));
     const coast = new BufferGeometry();
-    coast.setAttribute("position", new Float32BufferAttribute(points, 3));
-    const iran = toOutlines({ type: "MultiPolygon", coordinates: region.iran })
-      .filter((ring) => ring.length > 8)
-      .map((ring) => ring.map((p) => [p.x, LAND_HEIGHT + 0.05, p.z] as [number, number, number]));
-    return { land, coast, iran };
-  }, [region]);
+    coast.setAttribute("position", new Float32BufferAttribute(buffers.coast, 3));
+    return { surface, walls, coast };
+  }, [buffers]);
 
+  const border = useMemo(
+    () =>
+      iran
+        ?.flatMap((polygon) => polygon)
+        .filter((ring) => ring.length > 8)
+        .map((ring) => ring.map((p) => toSphere(p, LAND_RADIUS + 0.06))),
+    [iran],
+  );
+
+  useEffect(() => {
+    if (geometry) onReady?.();
+  }, [geometry, onReady]);
+
+  if (!geometry) return null;
   return (
     <group>
-      <mesh geometry={land} rotation-x={-Math.PI / 2} renderOrder={1}>
+      <mesh geometry={geometry.surface} renderOrder={1}>
         <meshStandardMaterial
           color={palette.land}
           roughness={1}
@@ -51,10 +97,21 @@ export function Land({ region, palette }: { region: RegionData; palette: MapPale
           stencilZPass={ReplaceStencilOp}
         />
       </mesh>
-      <lineSegments geometry={coast} renderOrder={2}>
+      <mesh geometry={geometry.walls} renderOrder={1}>
+        <meshStandardMaterial
+          color={palette.land}
+          roughness={1}
+          flatShading
+          side={DoubleSide}
+          stencilWrite
+          stencilRef={LAND_STENCIL}
+          stencilZPass={ReplaceStencilOp}
+        />
+      </mesh>
+      <lineSegments geometry={geometry.coast} renderOrder={2}>
         <lineBasicMaterial color={palette.coast} transparent opacity={0.7} />
       </lineSegments>
-      {iran.map((points, i) => (
+      {border?.map((points, i) => (
         <Line
           key={i}
           points={points}

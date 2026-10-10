@@ -1,14 +1,16 @@
 "use client";
 
-import { MapControls } from "@react-three/drei";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { Vector3, type Camera, type PerspectiveCamera } from "three";
+import { Canvas, useThree } from "@react-three/fiber";
+import { useEffect, useMemo, useState } from "react";
+import type { PerspectiveCamera } from "three";
 import type { Era, Scene } from "@/lib/content";
-import { centroidOf, fixWinding, projectedSize, toPlane } from "@/lib/geo";
+import { centroidOf, extentOf } from "@/lib/geo";
 import { dirOf, type Locale } from "@/lib/i18n";
-import { Land, type RegionData } from "./Land";
-import { Capitals, EraLabel, EventMarker } from "./Markers";
+import { Globe } from "./Globe";
+import { GlobeRig, MAX_ALTITUDE, type GlobeGoal } from "./GlobeRig";
+import { LabelLayer, LabelProjector, type LabelElements, type MapLabel } from "./Labels";
+import { Land } from "./Land";
+import { Capitals, EventMarker } from "./Markers";
 import { useMapPalette } from "./palette";
 import { Territory } from "./Territory";
 
@@ -16,14 +18,14 @@ export type AtlasMapProps = {
   locale: Locale;
   era: Era | null;
   scene: Scene | null;
+  /** The era card is showing, so the view's centre moves out from under it. */
+  panelOpen: boolean;
   noWebglText: string;
   onReady?: () => void;
 };
 
-/** Pan limits around Iran, in map units. */
-const BOUNDS = { x: 75, z: 50 };
-/** The camera looks down at ~52° and approaches from the south. */
-const VIEW_DIRECTION = new Vector3(0, 1.3, 1).normalize();
+/** Iran, seen from far enough away to show the whole globe. */
+const HOME: GlobeGoal = { lon: 52, lat: 30, altitude: 230 };
 
 function webglAvailable() {
   try {
@@ -34,38 +36,71 @@ function webglAvailable() {
   }
 }
 
-export default function AtlasMap({ locale, era, scene, noWebglText, onReady }: AtlasMapProps) {
+export default function AtlasMap({ locale, era, scene, panelOpen, noWebglText, onReady }: AtlasMapProps) {
   const palette = useMapPalette();
   const [webgl] = useState(webglAvailable);
-  const [region, setRegion] = useState<RegionData | null>(null);
+  const [elements] = useState<LabelElements>(() => new Map());
 
-  useEffect(() => {
-    let cancelled = false;
-    fetch("/geo/region.json")
-      .then((r) => r.json())
-      .then((data: RegionData) => {
-        if (!cancelled) setRegion(data);
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const eraCentre = useMemo(() => (era ? centroidOf(era.territory) : null), [era]);
 
-  const focus = useMemo(() => {
-    if (scene?.at) return { ...toPlane(scene.at), distance: 40 };
-    if (era) {
-      const polygons = era.territory.map((ring) => fixWinding([ring]));
-      const size = projectedSize(polygons);
-      return { ...toPlane(centroidOf(polygons)), distance: Math.min(125, Math.max(35, size * 1.05)) };
+  const goal = useMemo<GlobeGoal>(() => {
+    if (scene?.at) return { lon: scene.at[0], lat: scene.at[1], altitude: 40 };
+    if (era && eraCentre) {
+      // 1° of arc is ~1.75 units; stand back far enough to see the whole territory.
+      const altitude = Math.min(MAX_ALTITUDE, Math.max(35, extentOf(era.territory) * 1.75 * 1.1));
+      return { lon: eraCentre[0], lat: eraCentre[1], altitude };
     }
-    return { x: 0, z: 0, distance: 85 };
-  }, [era, scene]);
+    return HOME;
+  }, [era, eraCentre, scene]);
 
-  const eraCentre = useMemo(
-    () => (era ? centroidOf(era.territory.map((ring) => fixWinding([ring]))) : null),
-    [era],
-  );
+  const labels = useMemo<MapLabel[]>(() => {
+    if (!era || !eraCentre) return [];
+    const shadow = { textShadow: palette.labelShadow };
+    const list: MapLabel[] = era.capitals.map((c) => ({
+      id: `capital-${c.name.en}`,
+      at: c.at,
+      height: 1.6,
+      content: (
+        <span className="block whitespace-nowrap text-xs font-medium" style={{ color: palette.label, ...shadow }}>
+          {c.name[locale]}
+        </span>
+      ),
+    }));
+    list.push({
+      id: `era-${era.id}`,
+      at: eraCentre,
+      height: 0.5,
+      content: (
+        <span
+          className="flex flex-col items-center text-center transition-opacity duration-500"
+          style={{ opacity: scene?.at ? 0.35 : 0.95 }}
+        >
+          <b lang="fa" dir="rtl" className="whitespace-nowrap text-4xl font-bold sm:text-5xl" style={{ color: "var(--gold)", ...shadow }}>
+            {era.title.fa}
+          </b>
+          <i lang="en" className="whitespace-nowrap text-xs uppercase not-italic tracking-[0.3em] sm:text-sm" style={{ color: palette.label, ...shadow }}>
+            {era.title.en}
+          </i>
+        </span>
+      ),
+    });
+    if (scene?.at && scene.type) {
+      list.push({
+        id: `event-${scene.id}`,
+        at: scene.at,
+        height: 2.6,
+        content: (
+          <span
+            className="block whitespace-nowrap text-sm font-bold"
+            style={{ color: scene.type === "battle" ? palette.battleLabel : palette.label, ...shadow }}
+          >
+            {scene.title[locale]}
+          </span>
+        ),
+      });
+    }
+    return list;
+  }, [era, eraCentre, scene, locale, palette]);
 
   if (!webgl) {
     return (
@@ -76,35 +111,28 @@ export default function AtlasMap({ locale, era, scene, noWebglText, onReady }: A
   }
 
   return (
-    <Canvas
-      camera={{ fov: 40, near: 0.5, far: 1200, position: [0, 110, 85] }}
-      gl={{ stencil: true, antialias: true }}
-      dpr={[1, 1.75]}
-    >
-      <color attach="background" args={[palette.sea]} />
-      <fog attach="fog" args={[palette.sea, 120, 260]} />
-      <hemisphereLight args={["#ffffff", palette.sea, 1.4]} />
-      <directionalLight position={[-40, 80, -30]} intensity={1.8} />
-      {region && <Land region={region} palette={palette} />}
-      {region && <ReadySignal onReady={onReady} />}
-      {era && <Territory key={era.id} rings={era.territory} color={era.color} />}
-      {era && <Capitals capitals={era.capitals} locale={locale} palette={palette} />}
-      {era && eraCentre && (
-        <EraLabel position={eraCentre} fa={era.title.fa} en={era.title.en} dimmed={!!scene?.at} palette={palette} />
-      )}
-      {scene?.at && scene.type && (
-        <EventMarker
-          key={scene.id}
-          position={scene.at}
-          type={scene.type}
-          title={scene.title[locale]}
-          palette={palette}
-        />
-      )}
-      <MapControls makeDefault enableDamping minDistance={14} maxDistance={130} maxPolarAngle={1.15} />
-      <CameraRig x={focus.x} z={focus.z} distance={focus.distance} />
-      {era && <PanelOffset rtl={dirOf(locale) === "rtl"} />}
-    </Canvas>
+    <>
+      <Canvas
+        camera={{ fov: 40, near: 0.5, far: 2000 }}
+        gl={{ stencil: true, antialias: true }}
+        dpr={[1, 1.75]}
+        // Draw only when something changes (camera moving, fades, pulses): saves battery on phones.
+        frameloop="demand"
+        // The globe handles dragging and pinching itself.
+        style={{ touchAction: "none", cursor: "grab" }}
+      >
+        <color attach="background" args={[palette.background]} />
+        <Globe palette={palette} />
+        <Land palette={palette} onReady={onReady} />
+        {era && <Territory key={era.id} rings={era.territory} color={era.color} />}
+        {era && <Capitals capitals={era.capitals} palette={palette} />}
+        {scene?.at && scene.type && <EventMarker key={scene.id} at={scene.at} type={scene.type} />}
+        <GlobeRig goal={goal} />
+        <LabelProjector labels={labels} elements={elements} />
+        {era && panelOpen && <PanelOffset rtl={dirOf(locale) === "rtl"} />}
+      </Canvas>
+      <LabelLayer labels={labels} elements={elements} />
+    </>
   );
 }
 
@@ -115,76 +143,19 @@ export default function AtlasMap({ locale, era, scene, noWebglText, onReady }: A
 function PanelOffset({ rtl }: { rtl: boolean }) {
   const camera = useThree((s) => s.camera) as PerspectiveCamera;
   const { width, height } = useThree((s) => s.size);
+  const invalidate = useThree((s) => s.invalidate);
   useEffect(() => {
     const wide = width >= 640;
     const x = wide ? (rtl ? 1 : -1) * Math.min(210, width * 0.16) : 0;
     const y = wide ? 0 : height * 0.2;
     camera.setViewOffset(width, height, x, y, width, height);
     camera.updateProjectionMatrix();
+    invalidate();
     return () => {
       camera.clearViewOffset();
       camera.updateProjectionMatrix();
+      invalidate();
     };
-  }, [camera, width, height, rtl]);
-  return null;
-}
-
-function ReadySignal({ onReady }: { onReady?: () => void }) {
-  useEffect(() => onReady?.(), [onReady]);
-  return null;
-}
-
-type Controls = {
-  target: Vector3;
-  update: () => void;
-  addEventListener: (type: "start", listener: () => void) => void;
-  removeEventListener: (type: "start", listener: () => void) => void;
-};
-
-/** Eases the camera to the focus whenever it changes; dragging the map takes over until the next change. */
-function CameraRig({ x, z, distance }: { x: number; z: number; distance: number }) {
-  const controls = useThree((s) => s.controls) as unknown as Controls | null;
-  const camera = useThree((s) => s.camera) as Camera;
-  const flying = useRef(true);
-
-  useEffect(() => {
-    flying.current = true;
-  }, [x, z, distance]);
-
-  useEffect(() => {
-    if (!controls) return;
-    const stop = () => {
-      flying.current = false;
-    };
-    controls.addEventListener("start", stop);
-    return () => controls.removeEventListener("start", stop);
-  }, [controls]);
-
-  useFrame((_, dt) => {
-    if (!controls) return;
-    const target = controls.target;
-
-    // Keep the view around Iran: shift camera and target together, so the angle doesn't change.
-    const shift = new Vector3(
-      Math.max(-BOUNDS.x, Math.min(BOUNDS.x, target.x)) - target.x,
-      0,
-      Math.max(-BOUNDS.z, Math.min(BOUNDS.z, target.z)) - target.z,
-    );
-    if (shift.lengthSq() > 0) {
-      target.add(shift);
-      camera.position.add(shift);
-    }
-
-    if (flying.current) {
-      const goal = new Vector3(x, 0, z);
-      const cameraGoal = goal.clone().addScaledVector(VIEW_DIRECTION, distance);
-      const k = 1 - Math.exp(-dt * 2.2);
-      target.lerp(goal, k);
-      camera.position.lerp(cameraGoal, k);
-      if (target.distanceTo(goal) < 0.02 && camera.position.distanceTo(cameraGoal) < 0.05) flying.current = false;
-    }
-    controls.update();
-  });
-
+  }, [camera, width, height, rtl, invalidate]);
   return null;
 }

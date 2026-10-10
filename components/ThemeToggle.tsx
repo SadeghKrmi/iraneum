@@ -4,7 +4,21 @@ import { MoonIcon, SunIcon } from "./icons";
 
 export const THEME_STORAGE_KEY = "theme";
 
-/** Runs in <head> before first paint so the page never flashes the wrong theme. */
+/** Sets <html data-theme> from the saved choice, or the system preference when nothing is saved. */
+export function applyStoredTheme() {
+  let theme: string | null = null;
+  try {
+    theme = localStorage.getItem(THEME_STORAGE_KEY);
+  } catch {
+    // Storage can be unavailable (private mode); fall back to the system preference.
+  }
+  if (theme !== "light" && theme !== "dark") {
+    theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  document.documentElement.dataset.theme = theme;
+}
+
+/** The same logic as an inline script, run before first paint so the page never flashes the wrong theme. */
 export const themeInitScript = `(function(){try{var t=localStorage.getItem("${THEME_STORAGE_KEY}");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.dataset.theme=t}catch(e){}})()`;
 
 export function ThemeToggle({ label }: { label: string }) {
