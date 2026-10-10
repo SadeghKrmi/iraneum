@@ -2,6 +2,7 @@
   "id": "achaemenid",
   "start": -550,
   "end": -330,
+  "color": "#d9a441",
   "title": {
     "fa": "هخامنشیان",
     "en": "Achaemenid Empire"
@@ -10,10 +11,58 @@
     "fa": "کوروش بزرگ نخستین شاهنشاهی پارسی را بنیان می‌گذارد؛ قلمرویی که از رود سند تا مصر و دریای اژه گسترده شد.",
     "en": "Cyrus the Great founds the first Persian empire, which grew to stretch from the Indus to Egypt and the Aegean."
   },
+  "capitals": [
+    {
+      "name": {
+        "fa": "تخت جمشید",
+        "en": "Persepolis"
+      },
+      "at": [52.89, 29.93]
+    },
+    {
+      "name": {
+        "fa": "شوش",
+        "en": "Susa"
+      },
+      "at": [48.25, 32.19]
+    },
+    {
+      "name": {
+        "fa": "بابل",
+        "en": "Babylon"
+      },
+      "at": [44.42, 32.54]
+    },
+    {
+      "name": {
+        "fa": "هگمتانه",
+        "en": "Ecbatana"
+      },
+      "at": [48.51, 34.8]
+    }
+  ],
+  "rulers": {
+    "fa": "کوروش دوم، کمبوجیهٔ دوم، داریوش یکم، خشایارشا",
+    "en": "Cyrus II, Cambyses II, Darius I, Xerxes I"
+  },
+  "territory": [
+    [
+      [22.5, 41.0], [26.5, 42.5], [29.0, 41.3], [35.0, 42.0], [41.5, 41.5], [44.5, 43.0],
+      [47.5, 42.0], [49.5, 40.5], [53.5, 40.5], [55.5, 41.5], [59.0, 43.0], [62.0, 44.0],
+      [66.0, 43.0], [69.5, 42.5], [71.5, 40.5], [72.5, 37.5], [74.0, 35.5], [75.0, 32.5],
+      [73.5, 29.0], [71.0, 26.0], [68.5, 23.5], [66.0, 24.5], [61.0, 25.0], [57.0, 25.0],
+      [56.0, 26.5], [51.0, 27.5], [48.5, 29.5], [46.0, 30.5], [43.0, 32.0], [40.0, 33.5],
+      [38.5, 31.5], [36.0, 29.5], [34.0, 29.5], [33.5, 24.0], [32.5, 22.0], [31.0, 22.5],
+      [29.5, 24.0], [28.5, 27.0], [26.0, 29.5], [25.0, 31.5], [20.0, 30.5], [19.8, 32.5],
+      [22.0, 33.0], [24.0, 34.0], [27.5, 36.0], [26.0, 38.5], [25.5, 40.0]
+    ]
+  ],
   "events": [
     {
       "id": "cyrus-defeats-media",
       "year": -550,
+      "type": "battle",
+      "at": [48.51, 34.8],
       "title": {
         "fa": "کوروش بر مادها پیروز می‌شود",
         "en": "Cyrus defeats the Medes"
@@ -27,6 +76,8 @@
       "id": "fall-of-sardis",
       "year": -547,
       "circa": true,
+      "type": "battle",
+      "at": [28.04, 38.49],
       "title": {
         "fa": "سقوط سارد",
         "en": "The fall of Sardis"
@@ -39,6 +90,8 @@
     {
       "id": "babylon",
       "year": -539,
+      "type": "city",
+      "at": [44.42, 32.54],
       "title": {
         "fa": "گشوده شدن دروازه‌های بابل",
         "en": "Babylon opens its gates"
@@ -51,6 +104,8 @@
     {
       "id": "cambyses-egypt",
       "year": -525,
+      "type": "battle",
+      "at": [32.57, 31.04],
       "title": {
         "fa": "کمبوجیه مصر را می‌گشاید",
         "en": "Cambyses conquers Egypt"
@@ -63,6 +118,8 @@
     {
       "id": "darius-behistun",
       "year": -522,
+      "type": "monument",
+      "at": [47.44, 34.39],
       "title": {
         "fa": "داریوش یکم به شاهی می‌رسد",
         "en": "Darius I takes the throne"
@@ -76,6 +133,8 @@
       "id": "persepolis",
       "year": -518,
       "circa": true,
+      "type": "monument",
+      "at": [52.89, 29.93],
       "title": {
         "fa": "برپایی تخت جمشید",
         "en": "Persepolis rises"
@@ -88,6 +147,8 @@
     {
       "id": "marathon",
       "year": -490,
+      "type": "battle",
+      "at": [23.97, 38.15],
       "title": {
         "fa": "ماراتن",
         "en": "Marathon"
@@ -100,6 +161,8 @@
     {
       "id": "xerxes-greece",
       "year": -480,
+      "type": "battle",
+      "at": [23.5, 37.95],
       "title": {
         "fa": "لشکرکشی خشایارشا به یونان",
         "en": "Xerxes invades Greece"
@@ -112,6 +175,8 @@
     {
       "id": "alexander",
       "year": -330,
+      "type": "event",
+      "at": [52.89, 29.93],
       "title": {
         "fa": "اسکندر و پایان شاهنشاهی",
         "en": "Alexander and the end of the empire"

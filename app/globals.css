@@ -5,6 +5,8 @@
 
 /* Light theme (default without JS); dark theme follows the system or the saved choice. */
 :root {
+  /* Height of the bottom dock (controls + timeline); panels stop above it. */
+  --dock-h: 10.5rem;
   --bg: #f6f0e2;
   --bg-glow: #fffaf0;
   --surface: #fffaf0;
@@ -61,6 +63,15 @@ html {
 body {
   background: radial-gradient(ellipse at top, var(--bg-glow) 0%, var(--bg) 60%);
   min-height: 100dvh;
+}
+
+/* Numbers and dates: monospace in English; Persian keeps Vazirmatn (a monospace font would break its letters). */
+@utility font-num {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+  &:lang(fa) {
+    font-family: var(--font-sans);
+  }
 }
 
 @keyframes fade-in {

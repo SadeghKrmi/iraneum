@@ -1,7 +1,7 @@
 import { readdirSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { eras, INTRO_SCENE_ID, reservedSlugs, scenesOf } from "@/lib/content";
+import { eras, eventTypes, INTRO_SCENE_ID, reservedSlugs, scenesOf } from "@/lib/content";
 import { locales } from "@/lib/i18n";
 
 const slug = /^[a-z0-9-]+$/;
@@ -57,6 +57,32 @@ describe("eras content", () => {
     }
   });
 
+  it("has map data: colour, capitals, rulers and territory", () => {
+    for (const era of eras) {
+      expect(era.color, era.id).toMatch(/^#[0-9a-f]{6}$/i);
+      expect(era.capitals.length, era.id).toBeGreaterThan(0);
+      for (const c of era.capitals) {
+        for (const locale of locales) expect(c.name[locale]?.trim(), era.id).toBeTruthy();
+        expectLonLat(c.at, `${era.id} capital ${c.name.en}`);
+      }
+      for (const locale of locales) expect(era.rulers[locale]?.trim(), era.id).toBeTruthy();
+      expect(era.territory.length, era.id).toBeGreaterThan(0);
+      for (const ring of era.territory) {
+        expect(ring.length, `${era.id} territory ring`).toBeGreaterThanOrEqual(3);
+        for (const p of ring) expectLonLat(p, `${era.id} territory`);
+      }
+    }
+  });
+
+  it("gives every event a type and a place", () => {
+    for (const era of eras) {
+      for (const ev of era.events) {
+        expect(eventTypes, `${era.id}/${ev.id}`).toContain(ev.type);
+        expectLonLat(ev.at, `${era.id}/${ev.id}`);
+      }
+    }
+  });
+
   it("has complete references", () => {
     for (const era of eras) {
       for (const ref of era.references) {
@@ -66,3 +92,13 @@ describe("eras content", () => {
     }
   });
 });
+
+/** Coordinates must be [lon, lat] inside the area the map shows. */
+function expectLonLat(p: unknown, label: string) {
+  expect(Array.isArray(p) && p.length === 2, label).toBe(true);
+  const [lon, lat] = p as number[];
+  expect(lon, `${label}: longitude`).toBeGreaterThanOrEqual(0);
+  expect(lon, `${label}: longitude`).toBeLessThanOrEqual(110);
+  expect(lat, `${label}: latitude`).toBeGreaterThanOrEqual(-5);
+  expect(lat, `${label}: latitude`).toBeLessThanOrEqual(62);
+}

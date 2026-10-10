@@ -29,3 +29,8 @@ export function formatYearRange(start: number, end: number, locale: Locale): str
   }
   return `${formatYear(start, locale)} – ${formatYear(end, locale)}`;
 }
+
+/** A plain number in the locale's digits, e.g. 2 → "۲" in Persian. */
+export function formatNumber(n: number, locale: Locale): string {
+  return numberFormats[locale].format(n);
+}

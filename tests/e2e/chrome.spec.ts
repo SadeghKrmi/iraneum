@@ -89,6 +89,7 @@ test("language switch shows an icon and the other language's name", async ({ pag
 });
 
 test("pages hydrate without errors, also on repeated reloads", async ({ page }) => {
+  test.setTimeout(120_000); // every reload starts the 3D map again
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
   await page.addInitScript(() => localStorage.setItem("theme", "dark"));

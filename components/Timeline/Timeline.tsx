@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import type { Era } from "@/lib/content";
 import { formatYear } from "@/lib/dates";
 import { dirOf, type Locale } from "@/lib/i18n";
@@ -17,23 +16,10 @@ type Props = {
 };
 
 /**
- * Bottom timeline bar. Each era is a segment: its checkpoint, then small points for its marked years,
- * up to the next era's checkpoint. In Persian (RTL) time flows right-to-left, matching the reading direction.
+ * Timeline in the bottom dock. Each era is a segment: its checkpoint, then small points for its marked
+ * years, up to the next era's checkpoint. In Persian (RTL) time flows right-to-left, matching the reading direction.
  */
-export function Timeline(props: Props) {
-  // The current event comes from ?e=, which is only known in the browser; the pre-rendered bar has none.
-  return (
-    <Suspense fallback={<TimelineBar {...props} currentEventId={null} />}>
-      <TimelineWithEvent {...props} />
-    </Suspense>
-  );
-}
-
-function TimelineWithEvent(props: Props) {
-  return <TimelineBar {...props} currentEventId={useSearchParams().get("e")} />;
-}
-
-function TimelineBar({ locale, eras, labels, currentEventId }: Props & { currentEventId: string | null }) {
+export function Timeline({ locale, eras, labels, currentEventId }: Props & { currentEventId: string | null }) {
   const ids = eras.map((e) => e.id);
   const { selectedId, index, go, goTo } = useEraNav(locale, ids);
   const linkRefs = useRef(new Map<string, HTMLAnchorElement>());
@@ -67,10 +53,7 @@ function TimelineBar({ locale, eras, labels, currentEventId }: Props & { current
   };
 
   return (
-    <nav
-      aria-label={labels.timeline}
-      className="sticky bottom-0 z-10 border-t border-line bg-bg/90 pb-[env(safe-area-inset-bottom)] backdrop-blur"
-    >
+    <nav aria-label={labels.timeline}>
       <div className="flex items-center gap-1 px-2 sm:px-4">
         <StepButton label={labels.previous} disabled={index <= 0} onClick={() => go(-1)} flip={false} />
         <div className="min-w-0 flex-1 overflow-x-auto [mask-image:linear-gradient(to_right,transparent,black_1rem,black_calc(100%-1rem),transparent)] [scrollbar-width:none]">
