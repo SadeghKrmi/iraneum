@@ -46,6 +46,10 @@ Texts, territories and coordinates have had one review pass but are still simpli
 npm install
 npm run dev          # http://localhost:3000/fa/
 ```
+The browser checks (`npm run test:e2e`, `npm run smoke:dev`) need Playwright's Chromium, a one-time download:
+```bash
+npx playwright install --with-deps chromium   # --with-deps also installs the system libraries (Linux)
+```
 
 ## Check
 ```bash

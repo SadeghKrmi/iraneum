@@ -32,6 +32,20 @@ const freePort = () =>
     });
   });
 
+// The browser first: if it is missing, say so before waiting for the dev server.
+let browser;
+try {
+  browser = await chromium.launch({ args: SWIFTSHADER });
+} catch (err) {
+  if (!/Executable doesn't exist/.test(String(err))) throw err;
+  console.error(
+    "Playwright's Chromium isn't installed. Run once:\n" +
+      "  npx playwright install chromium\n" +
+      "(on a fresh Linux machine: npx playwright install --with-deps chromium)",
+  );
+  process.exit(1);
+}
+
 const port = await freePort();
 const base = `http://localhost:${port}`;
 // Its own process group, so stopping it also stops the next-server it starts.
@@ -63,7 +77,6 @@ for (let i = 0; ; i++) {
   await new Promise((r) => setTimeout(r, 500));
 }
 
-const browser = await chromium.launch({ args: SWIFTSHADER });
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 const problems = new Set();
 let current = "";
