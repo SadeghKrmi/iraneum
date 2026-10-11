@@ -18,7 +18,10 @@ A timeline bar at the bottom holds checkpoints. Pick one, and Ravi (راوی), t
       toward the horizon as you get close. Era card and map key collapse to icon buttons (remembered).
 - [x] **Step 5: the full set of eras.** 14 eras from Elam to the Islamic Republic, each with an intro,
       capitals, rulers, a territory, 5–9 events (type, place, fa + en) and references.
-- [ ] Next: relief (mountains), sea, routes and campaigns; compare civilizations
+- [x] **Step 6: a richer map.** Stylized mountain ranges (`content/map/mountains.json`), a wave-patterned sea,
+      campaign routes as animated arrows (37 events), and borders that change within an era
+      (Achaemenids, Afsharids).
+- [ ] Next: compare civilizations; publish online
 - [ ] Step 6: compare civilizations at the same moment
 - [ ] Step 7: polish (narration character, deploy)
 
@@ -54,6 +57,9 @@ Each era is one file, `content/eras/<id>.json`, listed in `content/eras/index.ts
   "references": [ { "author": "…", "title": "…", "publisher": "…", "year": 2002, "url": "https://…" } ]
 }
 ```
+Event map extras (optional): `route` (`[[lon, lat], …]`, a campaign drawn as an arrow, usually ending at the
+event's place) and `territory` (the borders from this event on: rings, or `"full"` for the era at its height).
+
 Map fields: `color` (territory colour), `capitals` (`{ "name": {fa, en}, "at": [lon, lat] }`), `rulers`
 (`{fa, en}`), `territory` (one ring of `[lon, lat]` points per area, drawn on land only), and for each event
 `type` (`battle`, `monument`, `city` or `event`) and `at` (`[lon, lat]`). All territories are simplified

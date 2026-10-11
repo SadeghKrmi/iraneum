@@ -7,7 +7,11 @@ export type MapPalette = {
   background: string;
   atmosphere: string;
   sea: string;
+  /** Lighter arcs of the sea's wave pattern. */
+  seaPattern: string;
   land: string;
+  mountain: string;
+  snow: string;
   coast: string;
   iranBorder: string;
   capital: string;
@@ -22,6 +26,9 @@ const palettes: Record<"light" | "dark", MapPalette> = {
     background: "#070c1a",
     atmosphere: "#5b8fd6",
     sea: "#0f1d3a",
+    seaPattern: "#3a5a92",
+    mountain: "#77738f",
+    snow: "#e8ecf4",
     land: "#4a4e6e",
     coast: "#8c97bf",
     iranBorder: "#c9cfdf",
@@ -34,6 +41,9 @@ const palettes: Record<"light" | "dark", MapPalette> = {
     background: "#efe8d8",
     atmosphere: "#8fb8de",
     sea: "#b6cbdd",
+    seaPattern: "#e4eef6",
+    mountain: "#b19a78",
+    snow: "#ffffff",
     land: "#efe5cf",
     coast: "#7d93ad",
     iranBorder: "#4b5468",
@@ -59,6 +69,9 @@ export function useMapPalette(): MapPalette {
   );
   return palettes[theme];
 }
+
+/** Arrow colours for routes: red for battles and campaigns, gold for other journeys. */
+export const routeColors = { battle: "#e0583f", other: "#d9a441" } as const;
 
 export const eventColors = {
   battle: "#e0583f",

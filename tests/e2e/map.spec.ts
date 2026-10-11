@@ -101,3 +101,14 @@ test("map key collapses to a layers button and expands again", async ({ page }, 
   await key.getByRole("button", { name: "Map key" }).click();
   await expect(key).toHaveAttribute("data-open", "true");
 });
+
+test("campaign routes and changing borders follow the story", async ({ page }) => {
+  await page.goto("/en/achaemenid/?e=cyrus-defeats-media");
+  await expect(map(page)).toHaveAttribute("data-map-route", "cyrus-defeats-media");
+  await expect(map(page)).toHaveAttribute("data-map-territory", "achaemenid/cyrus-defeats-media");
+  await page.getByRole("button", { name: "Next event" }).click();
+  await expect(map(page)).toHaveAttribute("data-map-territory", "achaemenid/fall-of-sardis");
+  await page.getByRole("link", { name: /Persepolis rises/ }).first().click();
+  await expect(map(page)).toHaveAttribute("data-map-route", "");
+  await expect(map(page)).toHaveAttribute("data-map-territory", "achaemenid");
+});

@@ -2,7 +2,7 @@
 
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useEffectEvent, useRef, useState } from "react";
-import { scenesOf, type Era } from "@/lib/content";
+import { scenesOf, territoryAt, type Era } from "@/lib/content";
 import { formatYear } from "@/lib/dates";
 import type { Dictionary, Locale } from "@/lib/i18n";
 import { eraHref } from "@/lib/routes";
@@ -128,7 +128,14 @@ function Atlas({
 
   return (
     <>
-      <MapStage locale={locale} era={era} scene={scene} panelOpen={cardOpen} noWebglText={t.noWebgl} />
+      <MapStage
+        locale={locale}
+        era={era}
+        scene={scene}
+        territory={era ? territoryAt(era, index) : null}
+        panelOpen={cardOpen}
+        noWebglText={t.noWebgl}
+      />
       {era && scene && (
         <EraCard
           locale={locale}

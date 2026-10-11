@@ -4,20 +4,24 @@ import { Canvas, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useState } from "react";
 import type { PerspectiveCamera } from "three";
 import { shortTitleOf, type Era, type Scene } from "@/lib/content";
-import { centroidOf, extentOf } from "@/lib/geo";
+import { centroidOf, extentOf, pointsFocus, type LonLat } from "@/lib/geo";
 import { dirOf, type Locale } from "@/lib/i18n";
 import { Globe } from "./Globe";
 import { GlobeRig, MAX_ALTITUDE, type GlobeGoal } from "./GlobeRig";
 import { LabelLayer, LabelProjector, type LabelElements, type MapLabel } from "./Labels";
 import { Land } from "./Land";
 import { Capitals, EventMarker } from "./Markers";
-import { useMapPalette } from "./palette";
+import { Mountains } from "./Mountains";
+import { routeColors, useMapPalette } from "./palette";
+import { Route } from "./Route";
 import { Territory } from "./Territory";
 
 export type AtlasMapProps = {
   locale: Locale;
   era: Era | null;
   scene: Scene | null;
+  /** The territory at the current scene: the era at its height, or a border change within the era. */
+  territory: { key: string; rings: LonLat[][] } | null;
   /** The era card is showing, so the view's centre moves out from under it. */
   panelOpen: boolean;
   noWebglText: string;
@@ -36,7 +40,7 @@ function webglAvailable() {
   }
 }
 
-export default function AtlasMap({ locale, era, scene, panelOpen, noWebglText, onReady }: AtlasMapProps) {
+export default function AtlasMap({ locale, era, scene, territory, panelOpen, noWebglText, onReady }: AtlasMapProps) {
   const palette = useMapPalette();
   const [webgl] = useState(webglAvailable);
   const [elements] = useState<LabelElements>(() => new Map());
@@ -44,6 +48,11 @@ export default function AtlasMap({ locale, era, scene, panelOpen, noWebglText, o
   const eraCentre = useMemo(() => (era ? centroidOf(era.territory) : null), [era]);
 
   const goal = useMemo<GlobeGoal>(() => {
+    if (scene?.at && scene.route) {
+      // Frame the whole campaign, from its start to the event's place.
+      const { centre, extent } = pointsFocus([...scene.route, scene.at]);
+      return { lon: centre[0], lat: centre[1], altitude: Math.min(220, Math.max(40, extent * 1.75 * 1.3)) };
+    }
     if (scene?.at) return { lon: scene.at[0], lat: scene.at[1], altitude: 40 };
     if (era && eraCentre) {
       // 1° of arc is ~1.75 units; stand back far enough to see the whole territory.
@@ -124,9 +133,17 @@ export default function AtlasMap({ locale, era, scene, panelOpen, noWebglText, o
         <color attach="background" args={[palette.background]} />
         <Globe palette={palette} />
         <Land palette={palette} onReady={onReady} />
-        {era && <Territory key={era.id} rings={era.territory} color={era.color} />}
+        <Mountains palette={palette} />
+        {era && territory && <Territory key={territory.key} rings={territory.rings} color={era.color} />}
         {era && <Capitals capitals={era.capitals} palette={palette} />}
         {scene?.at && scene.type && <EventMarker key={scene.id} at={scene.at} type={scene.type} />}
+        {scene?.route && (
+          <Route
+            key={scene.id}
+            points={scene.route}
+            color={scene.type === "battle" ? routeColors.battle : routeColors.other}
+          />
+        )}
         <GlobeRig goal={goal} />
         <LabelProjector labels={labels} elements={elements} />
         {era && panelOpen && <PanelOffset rtl={dirOf(locale) === "rtl"} />}

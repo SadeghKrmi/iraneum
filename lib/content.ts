@@ -28,6 +28,10 @@ export type EraEvent = {
   type: EventType;
   /** Where it happened. */
   at: LonLat;
+  /** A campaign or journey that leads to the place, drawn as an arrow: start → … → the event's place. */
+  route?: LonLat[];
+  /** The territory from this event on (rings), or "full" for the era's territory at its height. */
+  territory?: LonLat[][] | "full";
   title: Localized;
   text: Localized;
 };
@@ -63,6 +67,7 @@ export type Scene = {
   /** Missing for the era introduction. */
   type?: EventType;
   at?: LonLat;
+  route?: LonLat[];
   title: Localized;
   text: Localized;
 };
@@ -92,8 +97,30 @@ export function getEra(id: string): Era | undefined {
 export function scenesOf(era: Era): Scene[] {
   return [
     { id: INTRO_SCENE_ID, year: era.start, title: era.title, text: era.summary },
-    ...era.events.map(({ id, year, circa, type, at, title, text }) => ({ id, year, circa, type, at, title, text })),
+    ...era.events.map(({ id, year, circa, type, at, route, title, text }) => ({
+      id,
+      year,
+      circa,
+      type,
+      at,
+      route,
+      title,
+      text,
+    })),
   ];
+}
+
+/**
+ * The territory to show at a scene (0 = the era's intro): the latest border change up to that event,
+ * or the era at its height. `key` changes whenever the shape does (for fades and tests).
+ */
+export function territoryAt(era: Era, sceneIndex: number): { key: string; rings: LonLat[][] } {
+  for (let i = Math.min(sceneIndex, era.events.length) - 1; i >= 0; i--) {
+    const t = era.events[i].territory;
+    if (t === "full") return { key: era.id, rings: era.territory };
+    if (t) return { key: `${era.id}/${era.events[i].id}`, rings: t };
+  }
+  return { key: era.id, rings: era.territory };
 }
 
 export { generalReferences, pages };

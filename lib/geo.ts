@@ -1,4 +1,4 @@
-import { geoArea, geoBounds, geoCentroid } from "d3-geo";
+import { geoArea, geoBounds, geoCentroid, geoDistance, geoInterpolate } from "d3-geo";
 import type { MultiPolygon, Polygon } from "geojson";
 import {
   BufferGeometry,
@@ -134,4 +134,39 @@ export function densify(ring: number[][], step = 1): LonLat[] {
 export function closeRing<T extends number[]>(ring: T[]): T[] {
   const [first, last] = [ring[0], ring[ring.length - 1]];
   return first[0] === last[0] && first[1] === last[1] ? ring : [...ring, first];
+}
+
+/** Centre and size (degrees) of a set of points, e.g. a route, to frame it with the camera. */
+export function pointsFocus(points: LonLat[]): { centre: LonLat; extent: number } {
+  const multi = { type: "MultiPoint" as const, coordinates: points };
+  const [[west, south], [east, north]] = geoBounds(multi);
+  const width = east >= west ? east - west : east + 360 - west;
+  const midLat = (south + north) / 2;
+  const centre: LonLat = [wrapLon(west + width / 2), midLat];
+  return { centre, extent: Math.max(width * Math.cos(midLat * DEG), north - south) };
+}
+
+/**
+ * A route as points along great circles, every `step` degrees or less, lifted into a gentle arc
+ * (highest in the middle) so it reads clearly above the land and the territory.
+ */
+export function routeArc(points: LonLat[], baseRadius: number, step = 0.5): Vector3[] {
+  const legs: { interpolate: (t: number) => [number, number]; length: number }[] = [];
+  for (let i = 1; i < points.length; i++) {
+    const length = geoDistance(points[i - 1], points[i]) / DEG;
+    legs.push({ interpolate: geoInterpolate(points[i - 1], points[i]), length });
+  }
+  const total = legs.reduce((sum, leg) => sum + leg.length, 0) || 1;
+  const lift = Math.min(5, 0.6 + total * 0.06);
+  const out: Vector3[] = [];
+  let travelled = 0;
+  legs.forEach((leg, i) => {
+    const n = Math.max(1, Math.ceil(leg.length / step));
+    for (let k = i === 0 ? 0 : 1; k <= n; k++) {
+      const t = (travelled + (leg.length * k) / n) / total;
+      out.push(toSphere(leg.interpolate(k / n), baseRadius + lift * Math.sin(Math.PI * t)));
+    }
+    travelled += leg.length;
+  });
+  return out;
 }

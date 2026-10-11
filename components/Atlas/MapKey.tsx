@@ -53,6 +53,9 @@ export function MapKey({ t, open, onToggle }: Props) {
           <KeyItem label={`${t.type_city} / ${t.type_event}`}>
             <span className="size-2.5 rounded-full" style={{ background: eventColors.city }} />
           </KeyItem>
+          <KeyItem label={t.keyRoute}>
+            <span className="w-5 border-t-2 border-dashed" style={{ borderColor: eventColors.battle }} />
+          </KeyItem>
           <KeyItem label={t.keyIranToday}>
             <span className="w-5 border-t-2 border-dashed border-muted" />
           </KeyItem>
