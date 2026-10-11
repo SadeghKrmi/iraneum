@@ -127,20 +127,29 @@ test("the page never scrolls horizontally", async ({ page }) => {
   }
 });
 
-test("the open era unfolds its marked years as checkpoints; the other eras fold", async ({ page }) => {
-  await page.goto("/en/parthian/");
+test("the open era widens a little, shows its years and the current title; the others fade back", async ({ page }) => {
+  await page.goto("/en/parthian/?e=carrhae");
   const timeline = page.getByRole("navigation", { name: "Timeline" });
   const carrhae = timeline.locator('a[data-event="carrhae"]');
-  await carrhae.scrollIntoViewIfNeeded();
-  await expect(carrhae).toBeVisible();
+  await expect(carrhae).toBeInViewport();
+  await expect(carrhae).toHaveAttribute("aria-current", "true");
   await expect(carrhae).toContainText("53 BCE");
   await expect(carrhae).toContainText("Battle of Carrhae");
-  await expect(timeline.locator("a[data-event]")).toHaveCount(6); // only the Parthian events
-  await expect(timeline.locator('a[data-event="cyrus-defeats-media"]')).toHaveCount(0);
-  await expect(timeline.locator("a[data-era]")).toHaveCount(14); // every era stays reachable
+  // Other points of the open era show their year only…
+  const trajan = timeline.locator('a[data-event="trajan-ctesiphon"]');
+  await expect(trajan).toHaveText("116 CE");
+  // …and their title under the pointer, in place of the current one.
+  await trajan.hover();
+  await expect(trajan).toContainText("Trajan takes Ctesiphon");
+  await expect(carrhae).not.toContainText("Battle of Carrhae");
 
-  await carrhae.click();
-  await expect(page).toHaveURL(/\/en\/parthian\/\?e=carrhae$/);
-  await expect(carrhae).toHaveAttribute("aria-current", "true");
-  await expect(carrhae).toBeInViewport();
+  // The other eras keep their points, faded back; nothing folds away.
+  await expect(timeline.locator('[data-era-segment="parthian"]')).toHaveAttribute("data-state", "open");
+  await expect(timeline.locator('[data-era-segment="seleucid"]')).toHaveAttribute("data-state", "dimmed");
+  await expect(timeline.locator('a[data-event="cyrus-defeats-media"]')).toHaveCount(1);
+  await expect(timeline.locator('a[data-event="cyrus-defeats-media"]')).toHaveText("");
+
+  await trajan.click();
+  await expect(page).toHaveURL(/\/en\/parthian\/\?e=trajan-ctesiphon$/);
+  await expect(trajan).toHaveAttribute("aria-current", "true");
 });

@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { shortTitleOf, type Era } from "@/lib/content";
-import { formatYear } from "@/lib/dates";
+import { formatYear, formatYearShort } from "@/lib/dates";
 import { dirOf, type Locale } from "@/lib/i18n";
 import { eraHref } from "@/lib/routes";
 import { ChevronBackIcon, ChevronForwardIcon } from "../icons";
@@ -17,8 +17,8 @@ type Props = {
 
 /**
  * Timeline in the bottom dock. Each era is a segment: its checkpoint, then small points for its marked
- * years, up to the next era's checkpoint. Once an era is open, its segment widens and its marked years become
- * checkpoints with their year and title, while the other eras fold to their own checkpoint.
+ * years, up to the next era's checkpoint. The open era widens a little and shows a year under each point plus
+ * the current event's title; the other eras keep their shape and fade back.
  * In Persian (RTL) time flows right-to-left, matching the reading direction.
  */
 export function Timeline({ locale, eras, labels, currentEventId }: Props & { currentEventId: string | null }) {
@@ -27,6 +27,8 @@ export function Timeline({ locale, eras, labels, currentEventId }: Props & { cur
   const linkRefs = useRef(new Map<string, HTMLAnchorElement>());
   const selectedEra = index === -1 ? null : eras[index];
   const currentEvent = selectedEra?.events.find((ev) => ev.id === currentEventId) ?? null;
+  // A point of the open era under the pointer or keyboard focus: its title replaces the current one.
+  const [hoveredEvent, setHoveredEvent] = useState<string | null>(null);
 
   useEffect(() => {
     const key = currentEvent ? `${selectedId}/${currentEvent.id}` : selectedId;
@@ -64,21 +66,20 @@ export function Timeline({ locale, eras, labels, currentEventId }: Props & { cur
             <li aria-hidden className="pointer-events-none absolute inset-x-6 top-[calc(1.625rem-0.5px)] h-px bg-line" />
             {eras.map((era) => {
               const selected = era.id === selectedId;
-              const folded = !!selectedEra && !selected;
-              const count = folded ? 0 : era.events.length;
+              const count = era.events.length;
+              const state = selected ? "open" : selectedEra ? "dimmed" : "normal";
+              // The open era widens gently (room for a year under each point); the others keep their size.
+              const width = selected ? 9 + count * 4 : 9 + count * 1.5;
+              const titleId = hoveredEvent ?? currentEvent?.id;
               return (
                 <li
                   key={era.id}
-                  className="flex"
-                  style={
-                    folded
-                      ? { flex: "0 0 auto", marginInlineEnd: "1rem" }
-                      : selected
-                        ? // The open era: room for each marked year's label.
-                          { flex: `${count} 1 0`, minWidth: `${9 + count * 8.5}rem` }
-                        : // Eras with more marked years get a longer segment.
-                          { flex: `${1 + count * 0.12} 1 0`, minWidth: `${9 + count * 1.5}rem` }
-                  }
+                  data-era-segment={era.id}
+                  data-state={state}
+                  className={`flex transition-[min-width,flex-grow,opacity] duration-500 ${
+                    state === "dimmed" ? "opacity-50 focus-within:opacity-100 hover:opacity-100" : ""
+                  }`}
+                  style={{ flex: `${1 + count * (selected ? 0.3 : 0.12)} 1 0`, minWidth: `${width}rem` }}
                 >
                   <Link
                     ref={setRef(era.id)}
@@ -103,64 +104,55 @@ export function Timeline({ locale, eras, labels, currentEventId }: Props & { cur
                     </span>
                     <span className="whitespace-nowrap text-xs text-muted">{formatYear(era.start, locale)}</span>
                   </Link>
-                  {count > 0 && selected && (
-                    <span className="flex flex-1 justify-around px-1">
+                  {count > 0 && (
+                    <span className="flex flex-1 justify-around px-1" onMouseLeave={() => setHoveredEvent(null)}>
                       {era.events.map((ev) => {
-                        const current = ev.id === currentEvent?.id;
-                        const year = formatYear(ev.year, locale, ev.circa);
-                        return (
-                          <Link
-                            key={ev.id}
-                            ref={setRef(`${era.id}/${ev.id}`)}
-                            href={`${eraHref(locale, era.id)}?e=${ev.id}`}
-                            aria-label={`${year} — ${ev.title[locale]}`}
-                            title={`${year} — ${ev.title[locale]}`}
-                            aria-current={current ? "true" : undefined}
-                            data-event={ev.id}
-                            className="group flex w-32 shrink-0 animate-fade-in flex-col items-center gap-1 rounded-lg px-1 py-1 text-center focus-visible:outline-2 focus-visible:outline-gold"
-                          >
-                            <span className="flex h-5 items-center">
-                              <span
-                                className={
-                                  current
-                                    ? "size-3.5 rotate-45 rounded-[3px] bg-gold ring-4 ring-gold/30"
-                                    : "size-2.5 rotate-45 rounded-[2px] bg-turquoise transition-transform group-hover:scale-125"
-                                }
-                              />
-                            </span>
-                            <span
-                              className={`font-num whitespace-nowrap text-xs ${current ? "font-medium text-gold" : "text-muted group-hover:text-gold"}`}
-                            >
-                              {year}
-                            </span>
-                            <span
-                              className={`max-w-full truncate text-[0.7rem] leading-4 ${current ? "text-gold" : "text-fg/80 group-hover:text-gold"}`}
-                            >
-                              {ev.title[locale]}
-                            </span>
-                          </Link>
-                        );
-                      })}
-                    </span>
-                  )}
-                  {count > 0 && !selected && (
-                    // No era open (e.g. the landing page): every era shows small points for its marked years.
-                    <span className="flex flex-1 justify-around px-1">
-                      {era.events.map((ev) => {
+                        const current = selected && ev.id === currentEvent?.id;
                         const label = `${formatYear(ev.year, locale, ev.circa)} — ${ev.title[locale]}`;
+                        // Under the open era: a year under each point, and one title line for the current
+                        // event (or the one under the pointer or keyboard focus).
+                        const showTitle = selected && ev.id === titleId;
                         return (
                           <Link
                             key={ev.id}
                             ref={setRef(`${era.id}/${ev.id}`)}
                             href={`${eraHref(locale, era.id)}?e=${ev.id}`}
                             aria-label={label}
-                            title={label}
+                            title={selected ? undefined : label}
+                            aria-current={current ? "true" : undefined}
                             data-event={ev.id}
-                            className="group flex h-7 w-5 justify-center rounded-full py-1 focus-visible:outline-2 focus-visible:outline-gold"
+                            onMouseEnter={selected ? () => setHoveredEvent(ev.id) : undefined}
+                            onFocus={selected ? () => setHoveredEvent(ev.id) : undefined}
+                            onBlur={selected ? () => setHoveredEvent(null) : undefined}
+                            className="group relative flex h-7 w-5 justify-center rounded-full py-1 focus-visible:outline-2 focus-visible:outline-gold"
                           >
                             <span className="flex h-5 items-center">
-                              <span className="size-2 rounded-full bg-turquoise transition-transform group-hover:scale-150" />
+                              <span
+                                className={
+                                  current
+                                    ? "size-3.5 rounded-full bg-gold ring-4 ring-gold/30"
+                                    : `rounded-full bg-turquoise transition-transform group-hover:scale-150 ${selected ? "size-2.5" : "size-2"}`
+                                }
+                              />
                             </span>
+                            {selected && (
+                              <span
+                                className={`font-num absolute top-full whitespace-nowrap text-[0.7rem] ${
+                                  current ? "font-medium text-gold" : "text-muted group-hover:text-gold"
+                                }`}
+                              >
+                                {formatYearShort(ev.year, locale)}
+                              </span>
+                            )}
+                            {showTitle && (
+                              <span
+                                className={`absolute top-[calc(100%+1.1rem)] max-w-44 truncate whitespace-nowrap text-[0.7rem] font-medium ${
+                                  current ? "text-gold" : "text-fg"
+                                }`}
+                              >
+                                {ev.title[locale]}
+                              </span>
+                            )}
                           </Link>
                         );
                       })}
