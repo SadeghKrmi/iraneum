@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatYear, formatYearRange, formatYearShort } from "@/lib/dates";
+import { formatYear, formatYearRange } from "@/lib/dates";
 
 describe("formatYear", () => {
   it("formats BCE and CE years in English", () => {
@@ -41,15 +41,5 @@ describe("open-ended ranges", () => {
   it("reads 'today' for an era that continues", () => {
     expect(formatYearRange(1979, undefined, "en")).toBe("1979 CE – today");
     expect(formatYearRange(1979, undefined, "fa")).toBe("۱۹۷۹ میلادی – تاکنون");
-  });
-});
-
-describe("formatYearShort", () => {
-  it("abbreviates the era and leaves out 'circa'", () => {
-    expect(formatYearShort(-53, "en")).toBe("53 BCE");
-    expect(formatYearShort(116, "en")).toBe("116 CE");
-    expect(formatYearShort(-53, "fa")).toBe("۵۳ پ.م.");
-    expect(formatYearShort(1071, "fa")).toBe("۱۰۷۱ م.");
-    expect(() => formatYearShort(0, "en")).toThrow();
   });
 });

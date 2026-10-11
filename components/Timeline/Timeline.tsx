@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { shortTitleOf, type Era } from "@/lib/content";
-import { formatYear, formatYearShort } from "@/lib/dates";
+import { formatYear } from "@/lib/dates";
 import { dirOf, type Locale } from "@/lib/i18n";
 import { eraHref } from "@/lib/routes";
 import { ChevronBackIcon, ChevronForwardIcon } from "../icons";
@@ -16,9 +16,9 @@ type Props = {
 };
 
 /**
- * Timeline in the bottom dock. Each era is a segment: its checkpoint, then small points for its marked
- * years, up to the next era's checkpoint. The open era widens a little and shows a year under each point plus
- * the current event's title; the other eras keep their shape and fade back.
+ * Timeline in the bottom dock: a checkpoint for each era. The open era also shows a point for each of its
+ * marked years, between its checkpoint and the next era's; the current point (or the one under the pointer or
+ * keyboard focus) shows its year and title. The other eras fade back a little.
  * In Persian (RTL) time flows right-to-left, matching the reading direction.
  */
 export function Timeline({ locale, eras, labels, currentEventId }: Props & { currentEventId: string | null }) {
@@ -66,11 +66,9 @@ export function Timeline({ locale, eras, labels, currentEventId }: Props & { cur
             <li aria-hidden className="pointer-events-none absolute inset-x-6 top-[calc(1.625rem-0.5px)] h-px bg-line" />
             {eras.map((era) => {
               const selected = era.id === selectedId;
-              const count = era.events.length;
+              const count = selected ? era.events.length : 0;
               const state = selected ? "open" : selectedEra ? "dimmed" : "normal";
-              // The open era widens gently (room for a year under each point); the others keep their size.
-              const width = selected ? 9 + count * 4 : 9 + count * 1.5;
-              const titleId = hoveredEvent ?? currentEvent?.id;
+              const labelled = hoveredEvent ?? currentEvent?.id;
               return (
                 <li
                   key={era.id}
@@ -79,7 +77,8 @@ export function Timeline({ locale, eras, labels, currentEventId }: Props & { cur
                   className={`flex transition-[min-width,flex-grow,opacity] duration-500 ${
                     state === "dimmed" ? "opacity-50 focus-within:opacity-100 hover:opacity-100" : ""
                   }`}
-                  style={{ flex: `${1 + count * (selected ? 0.3 : 0.12)} 1 0`, minWidth: `${width}rem` }}
+                  // The open era gets room for its points; the others are just their checkpoint.
+                  style={{ flex: `${1 + count * 0.3} 1 0`, minWidth: `${10 + count * 2.5}rem` }}
                 >
                   <Link
                     ref={setRef(era.id)}
@@ -107,23 +106,21 @@ export function Timeline({ locale, eras, labels, currentEventId }: Props & { cur
                   {count > 0 && (
                     <span className="flex flex-1 justify-around px-1" onMouseLeave={() => setHoveredEvent(null)}>
                       {era.events.map((ev) => {
-                        const current = selected && ev.id === currentEvent?.id;
-                        const label = `${formatYear(ev.year, locale, ev.circa)} — ${ev.title[locale]}`;
-                        // Under the open era: a year under each point, and one title line for the current
-                        // event (or the one under the pointer or keyboard focus).
-                        const showTitle = selected && ev.id === titleId;
+                        const current = ev.id === currentEvent?.id;
+                        const year = formatYear(ev.year, locale, ev.circa);
+                        // Year and title only for the current point, or the one under the pointer or focus.
+                        const showLabel = ev.id === labelled;
                         return (
                           <Link
                             key={ev.id}
                             ref={setRef(`${era.id}/${ev.id}`)}
                             href={`${eraHref(locale, era.id)}?e=${ev.id}`}
-                            aria-label={label}
-                            title={selected ? undefined : label}
+                            aria-label={`${year} — ${ev.title[locale]}`}
                             aria-current={current ? "true" : undefined}
                             data-event={ev.id}
-                            onMouseEnter={selected ? () => setHoveredEvent(ev.id) : undefined}
-                            onFocus={selected ? () => setHoveredEvent(ev.id) : undefined}
-                            onBlur={selected ? () => setHoveredEvent(null) : undefined}
+                            onMouseEnter={() => setHoveredEvent(ev.id)}
+                            onFocus={() => setHoveredEvent(ev.id)}
+                            onBlur={() => setHoveredEvent(null)}
                             className="group relative flex h-7 w-5 justify-center rounded-full py-1 focus-visible:outline-2 focus-visible:outline-gold"
                           >
                             <span className="flex h-5 items-center">
@@ -131,26 +128,16 @@ export function Timeline({ locale, eras, labels, currentEventId }: Props & { cur
                                 className={
                                   current
                                     ? "size-3.5 rounded-full bg-gold ring-4 ring-gold/30"
-                                    : `rounded-full bg-turquoise transition-transform group-hover:scale-150 ${selected ? "size-2.5" : "size-2"}`
+                                    : "size-2.5 rounded-full bg-turquoise transition-transform group-hover:scale-150"
                                 }
                               />
                             </span>
-                            {selected && (
-                              <span
-                                className={`font-num absolute top-full whitespace-nowrap text-[0.7rem] ${
-                                  current ? "font-medium text-gold" : "text-muted group-hover:text-gold"
-                                }`}
-                              >
-                                {formatYearShort(ev.year, locale)}
-                              </span>
-                            )}
-                            {showTitle && (
-                              <span
-                                className={`absolute top-[calc(100%+1.1rem)] max-w-44 truncate whitespace-nowrap text-[0.7rem] font-medium ${
-                                  current ? "text-gold" : "text-fg"
-                                }`}
-                              >
-                                {ev.title[locale]}
+                            {showLabel && (
+                              <span className="absolute top-full flex animate-fade-in flex-col items-center whitespace-nowrap text-[0.7rem]">
+                                <span className={`font-num ${current ? "font-medium text-gold" : "text-muted"}`}>{year}</span>
+                                <span className={`max-w-48 truncate font-medium ${current ? "text-gold" : "text-fg"}`}>
+                                  {ev.title[locale]}
+                                </span>
                               </span>
                             )}
                           </Link>

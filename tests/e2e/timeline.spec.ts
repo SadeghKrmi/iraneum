@@ -62,8 +62,8 @@ test("[en] time flows left-to-right on the timeline", async ({ page }) => {
   expect(first!.x).toBeLessThan(second!.x);
 });
 
-test("[fa] an era's event points sit between it and the next era", async ({ page }) => {
-  await page.goto("/fa/");
+test("[fa] an open era's event points sit between it and the next era", async ({ page }) => {
+  await page.goto("/fa/achaemenid/");
   const era = (await page.locator('a[data-era="achaemenid"]').boundingBox())!;
   const next = (await page.locator('a[data-era="seleucid"]').boundingBox())!;
   for (const id of ["cyrus-defeats-media", "alexander"]) {
@@ -73,8 +73,8 @@ test("[fa] an era's event points sit between it and the next era", async ({ page
   }
 });
 
-test("[en] an era's event points sit between it and the next era", async ({ page }) => {
-  await page.goto("/en/");
+test("[en] an open era's event points sit between it and the next era", async ({ page }) => {
+  await page.goto("/en/achaemenid/");
   const era = (await page.locator('a[data-era="achaemenid"]').boundingBox())!;
   const next = (await page.locator('a[data-era="seleucid"]').boundingBox())!;
   for (const id of ["cyrus-defeats-media", "alexander"]) {
@@ -127,29 +127,32 @@ test("the page never scrolls horizontally", async ({ page }) => {
   }
 });
 
-test("the open era widens a little, shows its years and the current title; the others fade back", async ({ page }) => {
-  await page.goto("/en/parthian/?e=carrhae");
+test("only the open era shows its points; a point shows its year and title when current or hovered", async ({
+  page,
+}) => {
+  await page.goto("/en/");
   const timeline = page.getByRole("navigation", { name: "Timeline" });
+  await expect(timeline.locator("a[data-era]")).toHaveCount(14);
+  await expect(timeline.locator("a[data-event]")).toHaveCount(0); // no era open: checkpoints only
+
+  await page.goto("/en/parthian/");
+  await expect(timeline.locator("a[data-event]")).toHaveCount(6); // the Parthian points only
   const carrhae = timeline.locator('a[data-event="carrhae"]');
-  await expect(carrhae).toBeInViewport();
+  const trajan = timeline.locator('a[data-event="trajan-ctesiphon"]');
+  await expect(carrhae).toHaveText(""); // the open era alone shows no years
+  await expect(timeline.locator('[data-era-segment="seleucid"]')).toHaveAttribute("data-state", "dimmed");
+
+  await carrhae.click();
+  await expect(page).toHaveURL(/\/en\/parthian\/\?e=carrhae$/);
   await expect(carrhae).toHaveAttribute("aria-current", "true");
+  await expect(carrhae).toBeInViewport();
   await expect(carrhae).toContainText("53 BCE");
   await expect(carrhae).toContainText("Battle of Carrhae");
-  // Other points of the open era show their year only…
-  const trajan = timeline.locator('a[data-event="trajan-ctesiphon"]');
-  await expect(trajan).toHaveText("116 CE");
-  // …and their title under the pointer, in place of the current one.
+  await expect(trajan).toHaveText("");
+
+  // Hovering another point shows its year and title instead.
   await trajan.hover();
+  await expect(trajan).toContainText("116 CE");
   await expect(trajan).toContainText("Trajan takes Ctesiphon");
-  await expect(carrhae).not.toContainText("Battle of Carrhae");
-
-  // The other eras keep their points, faded back; nothing folds away.
-  await expect(timeline.locator('[data-era-segment="parthian"]')).toHaveAttribute("data-state", "open");
-  await expect(timeline.locator('[data-era-segment="seleucid"]')).toHaveAttribute("data-state", "dimmed");
-  await expect(timeline.locator('a[data-event="cyrus-defeats-media"]')).toHaveCount(1);
-  await expect(timeline.locator('a[data-event="cyrus-defeats-media"]')).toHaveText("");
-
-  await trajan.click();
-  await expect(page).toHaveURL(/\/en\/parthian\/\?e=trajan-ctesiphon$/);
-  await expect(trajan).toHaveAttribute("aria-current", "true");
+  await expect(carrhae).toHaveText("");
 });

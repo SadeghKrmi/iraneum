@@ -20,18 +20,6 @@ export function formatYear(year: number, locale: Locale, circa = false): string 
   return circa ? `${era.circa} ${text}` : text;
 }
 
-const shortEraLabels: Record<Locale, { bce: string; ce: string }> = {
-  fa: { bce: "پ.م.", ce: "م." },
-  en: { bce: "BCE", ce: "CE" },
-};
-
-/** A compact year for tight labels (no "circa"), e.g. -53 → "53 BCE" / "۵۳ پ.م.". */
-export function formatYearShort(year: number, locale: Locale): string {
-  formatYear(year, locale); // validates the year
-  const era = shortEraLabels[locale];
-  return `${numberFormats[locale].format(Math.abs(year))} ${year < 0 ? era.bce : era.ce}`;
-}
-
 /**
  * Formats a span of years; the era label is written once when both ends share it.
  * Without an end (an era that continues today) it reads "1979 CE – today".

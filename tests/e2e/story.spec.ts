@@ -28,8 +28,8 @@ test("next/previous event buttons and timeline points change the scene and the U
   await expect(page.locator('a[data-event="marathon"]')).toHaveAttribute("aria-current", "true");
 });
 
-test("event points work from any page", async ({ page }) => {
-  await page.goto("/en/about/");
+test("an open era's points lead to its events", async ({ page }) => {
+  await page.goto("/en/achaemenid/");
   await page.getByRole("link", { name: "539 BCE — Babylon opens its gates" }).click();
   await expect(page).toHaveURL(/\/en\/achaemenid\/\?e=babylon$/);
   await expect(page.getByRole("heading", { level: 2 })).toHaveText("Babylon opens its gates");
