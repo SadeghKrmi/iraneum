@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import type { Era } from "@/lib/content";
+import { shortTitleOf, type Era } from "@/lib/content";
 import { formatYear } from "@/lib/dates";
 import { dirOf, type Locale } from "@/lib/i18n";
 import { eraHref } from "@/lib/routes";
@@ -89,7 +89,7 @@ export function Timeline({ locale, eras, labels, currentEventId }: Props & { cur
                     <span
                       className={`whitespace-nowrap text-sm font-medium ${selected ? "text-gold" : "text-fg group-hover:text-gold"}`}
                     >
-                      {era.title[locale]}
+                      {shortTitleOf(era)[locale]}
                     </span>
                     <span className="whitespace-nowrap text-xs text-muted">{formatYear(era.start, locale)}</span>
                   </Link>

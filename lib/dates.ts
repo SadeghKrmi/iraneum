@@ -1,8 +1,8 @@
 import type { Locale } from "./i18n";
 
-const eraLabels: Record<Locale, { bce: string; ce: string; circa: string }> = {
-  fa: { bce: "پیش از میلاد", ce: "میلادی", circa: "حدود" },
-  en: { bce: "BCE", ce: "CE", circa: "c." },
+const eraLabels: Record<Locale, { bce: string; ce: string; circa: string; today: string }> = {
+  fa: { bce: "پیش از میلاد", ce: "میلادی", circa: "حدود", today: "تاکنون" },
+  en: { bce: "BCE", ce: "CE", circa: "c.", today: "today" },
 };
 
 const numberFormats: Record<Locale, Intl.NumberFormat> = {
@@ -20,8 +20,12 @@ export function formatYear(year: number, locale: Locale, circa = false): string 
   return circa ? `${era.circa} ${text}` : text;
 }
 
-/** Formats a span of years; the era label is written once when both ends share it. */
-export function formatYearRange(start: number, end: number, locale: Locale): string {
+/**
+ * Formats a span of years; the era label is written once when both ends share it.
+ * Without an end (an era that continues today) it reads "1979 CE – today".
+ */
+export function formatYearRange(start: number, end: number | undefined, locale: Locale): string {
+  if (end === undefined) return `${formatYear(start, locale)} – ${eraLabels[locale].today}`;
   if ((start < 0) === (end < 0)) {
     const era = eraLabels[locale];
     const fmt = numberFormats[locale];

@@ -1,6 +1,21 @@
 import { expect, test } from "./fixtures";
 
-const ERAS = ["elam", "achaemenid", "parthian", "sasanian", "safavid", "qajar"];
+const ERAS = [
+  "elam",
+  "medes",
+  "achaemenid",
+  "seleucid",
+  "parthian",
+  "sasanian",
+  "caliphate",
+  "seljuk",
+  "ilkhanate",
+  "safavid",
+  "afsharid",
+  "qajar",
+  "pahlavi",
+  "islamic-republic",
+];
 
 test("root forwards to the Persian site", async ({ page }) => {
   await page.goto("/");
@@ -18,6 +33,7 @@ test("Persian pages are right-to-left, English pages left-to-right", async ({ pa
 
 for (const locale of ["fa", "en"] as const) {
   test(`[${locale}] selecting each era opens its story`, async ({ page }) => {
+    test.setTimeout(150_000); // 14 eras, each flying the globe to a new place
     await page.goto(`/${locale}/`);
     const timeline = page.getByRole("navigation", { name: locale === "fa" ? "خط زمان" : "Timeline" });
     const links = timeline.locator("a[data-era]");
@@ -49,7 +65,7 @@ test("[en] time flows left-to-right on the timeline", async ({ page }) => {
 test("[fa] an era's event points sit between it and the next era", async ({ page }) => {
   await page.goto("/fa/");
   const era = (await page.locator('a[data-era="achaemenid"]').boundingBox())!;
-  const next = (await page.locator('a[data-era="parthian"]').boundingBox())!;
+  const next = (await page.locator('a[data-era="seleucid"]').boundingBox())!;
   for (const id of ["cyrus-defeats-media", "alexander"]) {
     const point = (await page.locator(`a[data-event="${id}"]`).boundingBox())!;
     expect(point.x, id).toBeLessThan(era.x);
@@ -60,7 +76,7 @@ test("[fa] an era's event points sit between it and the next era", async ({ page
 test("[en] an era's event points sit between it and the next era", async ({ page }) => {
   await page.goto("/en/");
   const era = (await page.locator('a[data-era="achaemenid"]').boundingBox())!;
-  const next = (await page.locator('a[data-era="parthian"]').boundingBox())!;
+  const next = (await page.locator('a[data-era="seleucid"]').boundingBox())!;
   for (const id of ["cyrus-defeats-media", "alexander"]) {
     const point = (await page.locator(`a[data-event="${id}"]`).boundingBox())!;
     expect(point.x, id).toBeGreaterThan(era.x + era.width - 1);
@@ -69,9 +85,9 @@ test("[en] an era's event points sit between it and the next era", async ({ page
 });
 
 test("timeline next/previous buttons move between eras", async ({ page }) => {
-  await page.goto("/en/achaemenid/");
+  await page.goto("/en/medes/");
   await page.getByRole("button", { name: "Next checkpoint" }).click();
-  await expect(page).toHaveURL(/\/en\/parthian\/$/);
+  await expect(page).toHaveURL(/\/en\/achaemenid\/$/);
   await page.getByRole("button", { name: "Previous checkpoint" }).click();
   await page.getByRole("button", { name: "Previous checkpoint" }).click();
   await expect(page).toHaveURL(/\/en\/elam\/$/);
@@ -82,14 +98,14 @@ test("arrow keys on the timeline follow the reading direction", async ({ page })
   await page.goto("/fa/achaemenid/");
   await page.locator('a[data-era="achaemenid"]').focus();
   await page.keyboard.press("ArrowLeft"); // in RTL, left = later in time
-  await expect(page).toHaveURL(/\/fa\/parthian\/$/);
+  await expect(page).toHaveURL(/\/fa\/seleucid\/$/);
   await page.keyboard.press("ArrowRight");
   await expect(page).toHaveURL(/\/fa\/achaemenid\/$/, { timeout: 20_000 });
 
   await page.goto("/en/achaemenid/");
   await page.locator('a[data-era="achaemenid"]').focus();
   await page.keyboard.press("ArrowRight");
-  await expect(page).toHaveURL(/\/en\/parthian\/$/);
+  await expect(page).toHaveURL(/\/en\/seleucid\/$/);
 });
 
 test("language switcher keeps the era and the scene", async ({ page }) => {

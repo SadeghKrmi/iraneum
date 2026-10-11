@@ -3,7 +3,7 @@
 import { Canvas, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useState } from "react";
 import type { PerspectiveCamera } from "three";
-import type { Era, Scene } from "@/lib/content";
+import { shortTitleOf, type Era, type Scene } from "@/lib/content";
 import { centroidOf, extentOf } from "@/lib/geo";
 import { dirOf, type Locale } from "@/lib/i18n";
 import { Globe } from "./Globe";
@@ -76,10 +76,10 @@ export default function AtlasMap({ locale, era, scene, panelOpen, noWebglText, o
           style={{ opacity: scene?.at ? 0.35 : 0.95 }}
         >
           <b lang="fa" dir="rtl" className="whitespace-nowrap text-4xl font-bold sm:text-5xl" style={{ color: "var(--gold)", ...shadow }}>
-            {era.title.fa}
+            {shortTitleOf(era).fa}
           </b>
           <i lang="en" className="whitespace-nowrap text-xs uppercase not-italic tracking-[0.3em] sm:text-sm" style={{ color: palette.label, ...shadow }}>
-            {era.title.en}
+            {shortTitleOf(era).en}
           </i>
         </span>
       ),

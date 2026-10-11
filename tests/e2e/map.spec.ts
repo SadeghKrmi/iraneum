@@ -32,7 +32,7 @@ test("era card shows capitals and rulers, and its event list selects events", as
 
 test("Persian card uses Persian digits", async ({ page }) => {
   await page.goto("/fa/achaemenid/");
-  await expect(page.locator("[data-story]")).toContainText("دورهٔ ۲ از ۶");
+  await expect(page.locator("[data-story]")).toContainText("دورهٔ ۳ از ۱۴");
 });
 
 test("space bar plays and pauses", async ({ page }) => {

@@ -1,0 +1,187 @@
+{
+  "id": "seljuk",
+  "start": 1037,
+  "end": 1194,
+  "color": "#d06f5a",
+  "title": {
+    "fa": "سلجوقیان",
+    "en": "Seljuk Empire"
+  },
+  "summary": {
+    "fa": "سلجوقیان، ترکانی از آسیای میانه، شاهنشاهی‌ای از آناتولی تا آسیای میانه می‌سازند و با وزیرانی ایرانی چون نظام‌الملک، با دیوان‌سالاری و فرهنگ ایرانی فرمان می‌رانند.",
+    "en": "The Seljuks, Turks from Central Asia, build an empire from Anatolia to Central Asia and, with Persian viziers such as Nizam al-Mulk, rule through Persian administration and culture."
+  },
+  "capitals": [
+    {
+      "name": {
+        "fa": "نیشابور",
+        "en": "Nishapur"
+      },
+      "at": [58.8, 36.21]
+    },
+    {
+      "name": {
+        "fa": "ری",
+        "en": "Rey"
+      },
+      "at": [51.43, 35.58]
+    },
+    {
+      "name": {
+        "fa": "اصفهان",
+        "en": "Isfahan"
+      },
+      "at": [51.67, 32.65]
+    },
+    {
+      "name": {
+        "fa": "مرو",
+        "en": "Merv"
+      },
+      "at": [61.84, 37.66]
+    }
+  ],
+  "rulers": {
+    "fa": "طغرل‌بیگ، آلب‌ارسلان، ملکشاه، سنجر",
+    "en": "Tughril, Alp Arslan, Malik-Shah, Sanjar"
+  },
+  "territory": [
+    [
+      [30.0, 39.5], [35.0, 41.5], [41.5, 41.4], [44.5, 42.5], [47.5, 42.0], [49.5, 40.5],
+      [53.5, 40.5], [56.0, 42.0], [60.0, 43.5], [64.0, 43.5], [68.0, 43.0], [71.5, 41.5],
+      [72.0, 39.5], [70.5, 37.5], [69.0, 35.0], [66.0, 32.0], [64.0, 30.0], [61.6, 27.0],
+      [61.6, 25.2], [57.5, 25.5], [56.3, 26.8], [52.0, 27.3], [50.0, 29.5], [48.0, 30.0],
+      [47.0, 29.0], [45.0, 29.0], [42.0, 30.5], [39.0, 30.0], [36.0, 30.0], [34.8, 31.5],
+      [35.5, 35.0], [36.0, 36.5], [32.0, 37.0]
+    ]
+  ],
+  "events": [
+    {
+      "id": "dandanaqan",
+      "year": 1040,
+      "type": "battle",
+      "at": [61.3, 37.3],
+      "title": {
+        "fa": "نبرد دندانقان",
+        "en": "Battle of Dandanaqan"
+      },
+      "text": {
+        "fa": "سلجوقیان سلطان مسعود غزنوی را در دندانقان شکست می‌دهند و خراسان را در دست می‌گیرند.",
+        "en": "The Seljuks defeat the Ghaznavid sultan Mas'ud at Dandanaqan and take control of Khorasan."
+      }
+    },
+    {
+      "id": "tughril-baghdad",
+      "year": 1055,
+      "type": "event",
+      "at": [44.37, 33.31],
+      "title": {
+        "fa": "طغرل در بغداد",
+        "en": "Tughril in Baghdad"
+      },
+      "text": {
+        "fa": "طغرل‌بیگ وارد بغداد می‌شود، به فرمانروایی آل‌بویه پایان می‌دهد و خلیفه او را سلطان می‌خواند.",
+        "en": "Tughril enters Baghdad, ends Buyid rule and is recognized by the caliph as sultan."
+      }
+    },
+    {
+      "id": "nizamiyya",
+      "year": 1067,
+      "type": "city",
+      "at": [44.37, 33.31],
+      "title": {
+        "fa": "نظامیه‌ها",
+        "en": "The Nizamiyya colleges"
+      },
+      "text": {
+        "fa": "خواجه نظام‌الملک، وزیر سلجوقیان، مدرسه‌های نظامیه را بنیان می‌گذارد که نخستین آن‌ها در بغداد است؛ او بعدها اندیشه‌هایش دربارهٔ حکومت را در سیاست‌نامه می‌نویسد.",
+        "en": "The vizier Nizam al-Mulk founds the Nizamiyya colleges, the first in Baghdad; he later sets out his ideas on government in the Siyasatnama."
+      }
+    },
+    {
+      "id": "manzikert",
+      "year": 1071,
+      "type": "battle",
+      "at": [42.52, 39.14],
+      "title": {
+        "fa": "نبرد ملازگرد",
+        "en": "Battle of Manzikert"
+      },
+      "text": {
+        "fa": "آلب‌ارسلان امپراتور روم شرقی، رومانوس چهارم، را در ملازگرد شکست می‌دهد و اسیر می‌کند؛ آناتولی به روی کوچ ترکان گشوده می‌شود.",
+        "en": "Alp Arslan defeats and captures the Byzantine emperor Romanos IV at Manzikert, opening Anatolia to Turkish settlement."
+      }
+    },
+    {
+      "id": "jalali-calendar",
+      "year": 1079,
+      "type": "event",
+      "at": [51.67, 32.65],
+      "title": {
+        "fa": "گاه‌شماری جلالی",
+        "en": "The Jalali calendar"
+      },
+      "text": {
+        "fa": "خیام و دیگر ستاره‌شناسان گاه‌شماری جلالی را برای ملکشاه فراهم می‌کنند؛ پایهٔ گاه‌شماری خورشیدی امروز ایران.",
+        "en": "Omar Khayyam and other astronomers complete the Jalali calendar for Malik-Shah, the basis of Iran's solar calendar today."
+      }
+    },
+    {
+      "id": "isfahan-domes",
+      "year": 1086,
+      "circa": true,
+      "type": "monument",
+      "at": [51.67, 32.65],
+      "title": {
+        "fa": "گنبدهای مسجد جامع اصفهان",
+        "en": "The domes of Isfahan's Friday Mosque"
+      },
+      "text": {
+        "fa": "دو گنبد بزرگ مسجد جامع اصفهان ساخته می‌شود؛ الگویی برای معماری مسجدهای ایرانی.",
+        "en": "The two great domes of the Friday Mosque of Isfahan are built, a model for Iranian mosque architecture."
+      }
+    },
+    {
+      "id": "qatwan",
+      "year": 1141,
+      "type": "battle",
+      "at": [66.6, 39.9],
+      "title": {
+        "fa": "نبرد قطوان",
+        "en": "Battle of Qatwan"
+      },
+      "text": {
+        "fa": "سلطان سنجر در دشت قطوان از قراختاییان شکست می‌خورد و قدرت سلجوقیان در خاور رو به افول می‌گذارد.",
+        "en": "Sultan Sanjar is defeated by the Qara Khitai on the Qatwan steppe, and Seljuk power in the east begins to fade."
+      }
+    },
+    {
+      "id": "toghrul-iii",
+      "year": 1194,
+      "type": "battle",
+      "at": [51.43, 35.58],
+      "title": {
+        "fa": "پایان سلجوقیان ایران",
+        "en": "The last Seljuk sultan of Iran"
+      },
+      "text": {
+        "fa": "طغرل سوم، آخرین سلطان سلجوقی ایران، در نبرد با تکش خوارزمشاه در نزدیکی ری کشته می‌شود.",
+        "en": "Toghrul III, the last Seljuk sultan of Iran, is killed near Rey in battle against the Khwarazmshah Tekish."
+      }
+    }
+  ],
+  "references": [
+    {
+      "author": "A. C. S. Peacock",
+      "title": "The Great Seljuk Empire",
+      "publisher": "Edinburgh University Press",
+      "year": 2015
+    },
+    {
+      "author": "J. A. Boyle (ed.)",
+      "title": "The Cambridge History of Iran, Vol. 5: The Saljuq and Mongol Periods",
+      "publisher": "Cambridge University Press",
+      "year": 1968
+    }
+  ]
+}

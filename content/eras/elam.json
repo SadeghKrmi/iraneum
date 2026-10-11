@@ -37,6 +37,107 @@
       [53.0, 27.6], [51.0, 28.4], [49.3, 29.8], [48.3, 30.2], [47.6, 31.0], [46.6, 32.2]
     ]
   ],
-  "events": [],
-  "references": []
+  "events": [
+    {
+      "id": "proto-elamite-writing",
+      "year": -3100,
+      "circa": true,
+      "type": "city",
+      "at": [48.25, 32.19],
+      "title": {
+        "fa": "خط در شوش",
+        "en": "Writing at Susa"
+      },
+      "text": {
+        "fa": "دبیران شوش خط آغاز‌ایلامی را پدید می‌آورند؛ یکی از کهن‌ترین خط‌های جهان که هنوز به‌طور کامل خوانده نشده است.",
+        "en": "Scribes at Susa develop Proto-Elamite writing, one of the earliest writing systems in the world, which is still only partly understood."
+      }
+    },
+    {
+      "id": "burnt-city",
+      "year": -2800,
+      "circa": true,
+      "type": "city",
+      "at": [61.33, 30.6],
+      "title": {
+        "fa": "شهر سوخته",
+        "en": "The Burnt City"
+      },
+      "text": {
+        "fa": "شهر سوخته در دلتای هیرمند در سیستان به یکی از بزرگ‌ترین شهرهای عصر مفرغ در فلات ایران بدل می‌شود و با لاجورد و فیروزه داد و ستد می‌کند.",
+        "en": "Shahr-e Sukhteh, on the Helmand delta in Sistan, grows into one of the largest Bronze Age cities of the Iranian plateau, trading in lapis lazuli and turquoise."
+      }
+    },
+    {
+      "id": "sack-of-ur",
+      "year": -2004,
+      "type": "battle",
+      "at": [46.1, 30.96],
+      "title": {
+        "fa": "ویرانی اور",
+        "en": "Elam sacks Ur"
+      },
+      "text": {
+        "fa": "سپاه ایلام شهر اور را ویران می‌کند و ایبی‌سین، آخرین پادشاه آن، را به اسارت می‌برد؛ پایان سلسلهٔ سوم اور.",
+        "en": "Elamite armies sack Ur and carry off its last king, Ibbi-Sin, ending the Third Dynasty of Ur."
+      }
+    },
+    {
+      "id": "chogha-zanbil",
+      "year": -1250,
+      "circa": true,
+      "type": "monument",
+      "at": [48.52, 32.01],
+      "title": {
+        "fa": "چغازنبیل",
+        "en": "Chogha Zanbil"
+      },
+      "text": {
+        "fa": "اونتاش‌ناپیریشا، پادشاه ایلام، زیگورات چغازنبیل را در نزدیکی شوش برای خدای اینشوشیناک می‌سازد؛ یکی از سالم‌ترین زیگورات‌های جهان.",
+        "en": "King Untash-Napirisha builds the ziggurat of Chogha Zanbil near Susa for the god Inshushinak. It is among the best-preserved ziggurats in the world."
+      }
+    },
+    {
+      "id": "hammurabi-stele",
+      "year": -1158,
+      "circa": true,
+      "type": "battle",
+      "at": [44.42, 32.54],
+      "title": {
+        "fa": "ستون حمورابی به شوش می‌رسد",
+        "en": "Hammurabi's stele comes to Susa"
+      },
+      "text": {
+        "fa": "شوتروک‌ناخونته به سرزمین بابل می‌تازد و آثاری نامدار را به‌عنوان غنیمت به شوش می‌آورد، از جمله ستون قانون حمورابی که باستان‌شناسان در سال ۱۹۰۱ آن را در شوش یافتند.",
+        "en": "Shutruk-Nakhunte raids Babylonia and brings famous monuments back to Susa as trophies, among them the stele of Hammurabi's laws, found there by archaeologists in 1901."
+      }
+    },
+    {
+      "id": "assyria-sacks-susa",
+      "year": -646,
+      "circa": true,
+      "type": "battle",
+      "at": [48.25, 32.19],
+      "title": {
+        "fa": "آشوربانیپال شوش را ویران می‌کند",
+        "en": "Ashurbanipal sacks Susa"
+      },
+      "text": {
+        "fa": "آشوربانیپال، پادشاه آشور، شوش را ویران می‌کند. ایلام به‌صورت پادشاهی کوچک‌تری باقی می‌ماند تا آنکه بخشی از شاهنشاهی پارس می‌شود.",
+        "en": "The Assyrian king Ashurbanipal destroys Susa. Elam survives as a smaller kingdom until it becomes part of the Persian empire."
+      }
+    }
+  ],
+  "references": [
+    {
+      "author": "D. T. Potts",
+      "title": "The Archaeology of Elam: Formation and Transformation of an Ancient Iranian State",
+      "publisher": "Cambridge University Press",
+      "year": 1999
+    },
+    {
+      "author": "Encyclopaedia Iranica",
+      "title": "Elam"
+    }
+  ]
 }

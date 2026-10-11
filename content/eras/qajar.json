@@ -41,6 +41,118 @@
       [44.0, 39.0], [43.5, 40.0]
     ]
   ],
-  "events": [],
-  "references": []
+  "events": [
+    {
+      "id": "tehran-crowned",
+      "year": 1796,
+      "type": "event",
+      "at": [51.39, 35.69],
+      "title": {
+        "fa": "تاج‌گذاری آغا محمدخان",
+        "en": "Agha Mohammad Khan crowned"
+      },
+      "text": {
+        "fa": "آغا محمدخان تاج‌گذاری می‌کند و تهران، که در ۱۷۸۶ پایتخت شده بود، مرکز فرمانروایی قاجار می‌شود.",
+        "en": "Agha Mohammad Khan is crowned shah, and Tehran, his capital since 1786, becomes the seat of the Qajars."
+      }
+    },
+    {
+      "id": "turkmenchay",
+      "year": 1828,
+      "type": "event",
+      "at": [47.33, 37.6],
+      "title": {
+        "fa": "گلستان و ترکمانچای",
+        "en": "Golestan and Turkmenchay"
+      },
+      "text": {
+        "fa": "پس از دو جنگ با روسیه، ایران با پیمان‌های گلستان (۱۸۱۳) و ترکمانچای (۱۸۲۸) سرزمین‌های قفقاز را از دست می‌دهد.",
+        "en": "After two wars with Russia, Iran loses its Caucasian provinces in the treaties of Golestan (1813) and Turkmenchay (1828)."
+      }
+    },
+    {
+      "id": "dar-al-funun",
+      "year": 1851,
+      "type": "city",
+      "at": [51.39, 35.69],
+      "title": {
+        "fa": "امیرکبیر و دارالفنون",
+        "en": "Amir Kabir and the Dar al-Funun"
+      },
+      "text": {
+        "fa": "امیرکبیر، صدراعظم اصلاح‌گر ناصرالدین‌شاه، دارالفنون، نخستین مدرسهٔ نوین ایران، را بنیان می‌گذارد.",
+        "en": "Amir Kabir, the reforming chief minister of Naser al-Din Shah, founds the Dar al-Funun, Iran's first modern college."
+      }
+    },
+    {
+      "id": "tobacco-protest",
+      "year": 1891,
+      "type": "event",
+      "at": [51.39, 35.69],
+      "title": {
+        "fa": "نهضت تنباکو",
+        "en": "The Tobacco Protest"
+      },
+      "text": {
+        "fa": "تحریم سراسری تنباکو شاه را وادار می‌کند امتیاز انحصار تنباکو را که به یک شرکت انگلیسی داده بود لغو کند.",
+        "en": "A nationwide boycott forces the shah to cancel a tobacco monopoly he had granted to a British company."
+      }
+    },
+    {
+      "id": "constitutional-revolution",
+      "year": 1906,
+      "type": "event",
+      "at": [51.39, 35.69],
+      "title": {
+        "fa": "انقلاب مشروطه",
+        "en": "The Constitutional Revolution"
+      },
+      "text": {
+        "fa": "مظفرالدین‌شاه فرمان مشروطه را امضا می‌کند و نخستین مجلس شورای ملی گشایش می‌یابد.",
+        "en": "Mozaffar al-Din Shah signs the decree for a constitution, and Iran's first parliament, the Majles, opens."
+      }
+    },
+    {
+      "id": "oil-discovered",
+      "year": 1908,
+      "type": "event",
+      "at": [49.29, 31.94],
+      "title": {
+        "fa": "کشف نفت",
+        "en": "Oil is struck"
+      },
+      "text": {
+        "fa": "نفت در مسجدسلیمان کشف می‌شود؛ نخستین چاه نفت در خاورمیانه. سال بعد شرکت نفت ایران و انگلیس بنیان گذاشته می‌شود.",
+        "en": "Oil is struck at Masjed Soleyman, the first oil find in the Middle East; the Anglo-Persian Oil Company is founded the following year."
+      }
+    },
+    {
+      "id": "coup-1921",
+      "year": 1921,
+      "type": "event",
+      "at": [51.39, 35.69],
+      "title": {
+        "fa": "کودتای ۱۲۹۹",
+        "en": "The 1921 coup"
+      },
+      "text": {
+        "fa": "رضاخان، افسر بریگاد قزاق، در کودتایی در تهران نقش اصلی را دارد؛ در ۱۹۲۵ مجلس به فرمانروایی قاجار پایان می‌دهد.",
+        "en": "Reza Khan, an officer of the Cossack Brigade, leads the troops in a coup in Tehran; in 1925 parliament ends Qajar rule."
+      }
+    }
+  ],
+  "references": [
+    {
+      "author": "Abbas Amanat",
+      "title": "Iran: A Modern History",
+      "publisher": "Yale University Press",
+      "year": 2017
+    },
+    {
+      "author": "Ervand Abrahamian",
+      "title": "A History of Modern Iran",
+      "publisher": "Cambridge University Press",
+      "year": 2008
+    }
+  ]
 }

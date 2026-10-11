@@ -1,0 +1,119 @@
+{
+  "id": "medes",
+  "start": -678,
+  "end": -550,
+  "color": "#8fb36a",
+  "title": {
+    "fa": "ماد",
+    "en": "Median Kingdom"
+  },
+  "summary": {
+    "fa": "مادها، مردمانی ایرانی‌زبان، در زاگرس و پیرامون هگمتانه یکپارچه می‌شوند و همراه با بابل، شاهنشاهی آشور را از پای درمی‌آورند.",
+    "en": "The Iranian-speaking Medes unite in the Zagros around Ecbatana and, together with Babylon, bring down the Assyrian empire."
+  },
+  "capitals": [
+    {
+      "name": {
+        "fa": "هگمتانه",
+        "en": "Ecbatana"
+      },
+      "at": [48.51, 34.8]
+    }
+  ],
+  "rulers": {
+    "fa": "دیاکو، فرورتیش، هووخشتره، آستیاگ",
+    "en": "Deioces, Phraortes, Cyaxares, Astyages"
+  },
+  "territory": [
+    [
+      [35.5, 41.5], [38.0, 41.2], [41.5, 41.4], [44.5, 41.5], [47.0, 41.8], [49.5, 40.5],
+      [51.0, 38.0], [54.0, 37.6], [57.0, 38.2], [60.0, 37.5], [61.5, 35.5], [60.5, 32.5],
+      [57.5, 30.5], [54.0, 31.0], [51.0, 32.0], [48.5, 32.8], [46.0, 33.8], [44.5, 35.5],
+      [42.5, 37.0], [39.5, 38.0], [36.5, 38.5], [34.8, 39.5]
+    ]
+  ],
+  "events": [
+    {
+      "id": "ecbatana",
+      "year": -678,
+      "circa": true,
+      "type": "city",
+      "at": [48.51, 34.8],
+      "title": {
+        "fa": "هگمتانه",
+        "en": "Ecbatana"
+      },
+      "text": {
+        "fa": "به روایت هرودوت، دیاکو قبیله‌های ماد را متحد می‌کند و هگمتانه (همدان) را می‌سازد؛ پایتختی با هفت بارو به هفت رنگ.",
+        "en": "According to Herodotus, Deioces unites the Median tribes and builds Ecbatana (Hamadan), a capital ringed by seven walls of different colours."
+      }
+    },
+    {
+      "id": "cyaxares-army",
+      "year": -625,
+      "circa": true,
+      "type": "event",
+      "at": [48.51, 34.8],
+      "title": {
+        "fa": "سپاه هووخشتره",
+        "en": "Cyaxares builds an army"
+      },
+      "text": {
+        "fa": "هووخشتره سپاه ماد را به دسته‌های جداگانهٔ نیزه‌داران، کمانداران و سواران سامان می‌دهد و مادها را از چیرگی سکاها آزاد می‌کند.",
+        "en": "Cyaxares reorganizes the Median army into separate units of spearmen, archers and cavalry, and frees the Medes from Scythian domination."
+      }
+    },
+    {
+      "id": "fall-of-nineveh",
+      "year": -612,
+      "type": "battle",
+      "at": [43.15, 36.36],
+      "title": {
+        "fa": "سقوط نینوا",
+        "en": "The fall of Nineveh"
+      },
+      "text": {
+        "fa": "هووخشتره و نبوپلسر، پادشاه بابل، نینوا پایتخت آشور را می‌گیرند و ویران می‌کنند و شاهنشاهی آشور به‌زودی فرو می‌پاشد.",
+        "en": "Cyaxares and the Babylonian king Nabopolassar capture and destroy Nineveh, the Assyrian capital; the Assyrian empire soon collapses."
+      }
+    },
+    {
+      "id": "battle-of-the-eclipse",
+      "year": -585,
+      "type": "battle",
+      "at": [35.0, 39.6],
+      "title": {
+        "fa": "نبرد خورشیدگرفتگی",
+        "en": "Battle of the Eclipse"
+      },
+      "text": {
+        "fa": "خورشیدگرفتگی، نبرد میان مادها و لیدیایی‌ها را متوقف می‌کند. آشتی برقرار می‌شود و رود هالیس مرز دو کشور می‌شود.",
+        "en": "A solar eclipse halts a battle between the Medes and the Lydians. Peace follows, and the Halys river becomes their border."
+      }
+    },
+    {
+      "id": "astyages-falls",
+      "year": -550,
+      "type": "battle",
+      "at": [53.17, 30.2],
+      "title": {
+        "fa": "پایان ماد",
+        "en": "The end of the Medes"
+      },
+      "text": {
+        "fa": "آستیاگ، آخرین پادشاه ماد، از کوروش پارسی، فرمانبر خود، شکست می‌خورد و سرزمین ماد هستهٔ شاهنشاهی تازهٔ پارس می‌شود.",
+        "en": "Astyages, the last Median king, is defeated by his vassal Cyrus of Persis, and Media becomes the core of the new Persian empire."
+      }
+    }
+  ],
+  "references": [
+    {
+      "author": "Herodotus",
+      "title": "The Histories, Book I"
+    },
+    {
+      "author": "Encyclopaedia Iranica",
+      "title": "Media"
+    }
+  ]
+}

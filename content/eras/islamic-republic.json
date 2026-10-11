@@ -1,0 +1,168 @@
+{
+  "id": "islamic-republic",
+  "start": 1979,
+  "color": "#3fa38a",
+  "title": {
+    "fa": "جمهوری اسلامی",
+    "en": "Islamic Republic"
+  },
+  "summary": {
+    "fa": "همه‌پرسی، جمهوری اسلامی را با رهبری در کنار رئیس‌جمهور و مجلسِ برگزیدهٔ مردم برقرار می‌کند. از آن پس جنگ، تحریم، جنبش‌های اصلاح‌طلبانه و اعتراض‌ها این کشور را شکل داده‌اند.",
+    "en": "A referendum establishes the Islamic Republic, with a Supreme Leader alongside an elected president and parliament. Since then the country has been shaped by war, sanctions, reform movements and protests."
+  },
+  "capitals": [
+    {
+      "name": {
+        "fa": "تهران",
+        "en": "Tehran"
+      },
+      "at": [51.39, 35.69]
+    }
+  ],
+  "rulers": {
+    "fa": "آیت‌الله خمینی، آیت‌الله خامنه‌ای (رهبران)",
+    "en": "Ayatollah Khomeini, Ayatollah Khamenei (Supreme Leaders)"
+  },
+  "territory": [
+    [
+      [44.0, 39.4], [44.8, 39.7], [45.5, 38.9], [46.5, 38.9], [48.0, 38.9], [48.6, 38.3],
+      [48.9, 38.4], [49.0, 37.6], [50.2, 37.3], [51.0, 36.8], [53.9, 36.9], [54.0, 37.4],
+      [55.4, 38.0], [57.3, 38.0], [59.2, 37.4], [60.4, 36.6], [61.2, 36.6], [61.1, 35.2],
+      [60.5, 34.3], [60.9, 33.5], [60.5, 32.6], [60.9, 31.5], [61.7, 31.3], [61.8, 30.8],
+      [60.9, 29.8], [61.4, 29.3], [62.7, 28.3], [62.8, 27.3], [63.3, 27.1], [63.2, 26.6],
+      [61.6, 25.2], [59.6, 25.4], [57.4, 25.7], [56.9, 27.1], [56.3, 27.2], [54.7, 26.5],
+      [53.5, 26.8], [52.5, 27.6], [51.5, 27.9], [50.6, 29.1], [50.1, 30.1], [49.6, 30.0],
+      [48.9, 30.3], [48.6, 29.9], [48.0, 30.5], [48.0, 31.0], [47.7, 31.0], [47.8, 31.7],
+      [47.3, 32.5], [46.1, 33.0], [45.4, 34.0], [45.6, 34.8], [45.9, 35.1], [46.1, 35.7],
+      [45.4, 36.0], [45.0, 36.6], [44.8, 37.2], [44.2, 37.9], [44.4, 38.3], [44.1, 39.0]
+    ]
+  ],
+  "events": [
+    {
+      "id": "referendum",
+      "year": 1979,
+      "type": "event",
+      "at": [51.39, 35.69],
+      "title": {
+        "fa": "همه‌پرسی جمهوری اسلامی",
+        "en": "The Islamic Republic referendum"
+      },
+      "text": {
+        "fa": "ایرانیان در همه‌پرسی به جمهوری اسلامی رأی می‌دهند و قانون اساسی تازه جایگاه رهبری را پدید می‌آورد.",
+        "en": "In a referendum Iranians approve the Islamic Republic, and a new constitution creates the office of Supreme Leader."
+      }
+    },
+    {
+      "id": "embassy-hostages",
+      "year": 1979,
+      "type": "event",
+      "at": [51.39, 35.69],
+      "title": {
+        "fa": "گروگان‌گیری سفارت آمریکا",
+        "en": "The US embassy hostage crisis"
+      },
+      "text": {
+        "fa": "دانشجویان سفارت آمریکا در تهران را تصرف می‌کنند و ۵۲ آمریکایی را ۴۴۴ روز گروگان نگه می‌دارند؛ رابطهٔ دو کشور قطع می‌شود.",
+        "en": "Students seize the US embassy in Tehran and hold 52 Americans hostage for 444 days; relations between the two countries are broken off."
+      }
+    },
+    {
+      "id": "iran-iraq-war",
+      "year": 1980,
+      "type": "battle",
+      "at": [48.17, 30.44],
+      "title": {
+        "fa": "جنگ ایران و عراق",
+        "en": "The Iran–Iraq War"
+      },
+      "text": {
+        "fa": "عراق به ایران حمله می‌کند و جنگی هشت‌ساله آغاز می‌شود که جان صدها هزار نفر را می‌گیرد؛ خرمشهر در ۱۹۸۲ آزاد می‌شود و آتش‌بس در ۱۹۸۸ برقرار می‌شود.",
+        "en": "Iraq invades Iran, starting an eight-year war that costs hundreds of thousands of lives; Khorramshahr is retaken in 1982, and a ceasefire comes in 1988."
+      }
+    },
+    {
+      "id": "khomeini-dies",
+      "year": 1989,
+      "type": "event",
+      "at": [51.39, 35.69],
+      "title": {
+        "fa": "درگذشت آیت‌الله خمینی",
+        "en": "Ayatollah Khomeini dies"
+      },
+      "text": {
+        "fa": "آیت‌الله خمینی درمی‌گذرد و مجلس خبرگان علی خامنه‌ای را به رهبری برمی‌گزیند.",
+        "en": "Ayatollah Khomeini dies, and the Assembly of Experts chooses Ali Khamenei as Supreme Leader."
+      }
+    },
+    {
+      "id": "khatami",
+      "year": 1997,
+      "type": "event",
+      "at": [51.39, 35.69],
+      "title": {
+        "fa": "پیروزی خاتمی",
+        "en": "Khatami elected"
+      },
+      "text": {
+        "fa": "محمد خاتمی با برنامه‌ای اصلاح‌طلبانه و پشتیبانی گستردهٔ زنان و جوانان در انتخابات ریاست‌جمهوری پیروز می‌شود.",
+        "en": "Mohammad Khatami wins the presidential election on a reform programme, with strong support from women and young voters."
+      }
+    },
+    {
+      "id": "green-movement",
+      "year": 2009,
+      "type": "event",
+      "at": [51.39, 35.69],
+      "title": {
+        "fa": "جنبش سبز",
+        "en": "The Green Movement"
+      },
+      "text": {
+        "fa": "اعتراض به نتیجهٔ انتخابات ریاست‌جمهوری، میلیون‌ها نفر را در جنبش سبز به خیابان‌ها می‌آورد.",
+        "en": "Protests over the disputed presidential election result bring millions onto the streets in the Green Movement."
+      }
+    },
+    {
+      "id": "nuclear-deal",
+      "year": 2015,
+      "type": "event",
+      "at": [16.37, 48.21],
+      "title": {
+        "fa": "برجام",
+        "en": "The nuclear deal (JCPOA)"
+      },
+      "text": {
+        "fa": "ایران و شش قدرت جهانی در وین توافق هسته‌ای (برجام) را امضا می‌کنند که برنامهٔ هسته‌ای ایران را در برابر لغو تحریم‌ها محدود می‌کند؛ آمریکا در ۲۰۱۸ از آن خارج می‌شود.",
+        "en": "Iran and six world powers sign a nuclear agreement (JCPOA) in Vienna, limiting Iran's nuclear programme in return for lifting sanctions; the United States withdraws from it in 2018."
+      }
+    },
+    {
+      "id": "woman-life-freedom",
+      "year": 2022,
+      "type": "event",
+      "at": [51.39, 35.69],
+      "title": {
+        "fa": "زن، زندگی، آزادی",
+        "en": "Woman, Life, Freedom"
+      },
+      "text": {
+        "fa": "جان باختن مهسا (ژینا) امینی در بازداشت گشت ارشاد، اعتراض‌هایی سراسری با شعار «زن، زندگی، آزادی» را برمی‌انگیزد.",
+        "en": "The death of Mahsa (Jina) Amini in the custody of the morality police sparks nationwide protests under the slogan 'Woman, Life, Freedom'."
+      }
+    }
+  ],
+  "references": [
+    {
+      "author": "Ervand Abrahamian",
+      "title": "A History of Modern Iran",
+      "publisher": "Cambridge University Press",
+      "year": 2008
+    },
+    {
+      "author": "Abbas Amanat",
+      "title": "Iran: A Modern History",
+      "publisher": "Yale University Press",
+      "year": 2017
+    }
+  ]
+}

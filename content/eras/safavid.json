@@ -47,6 +47,118 @@
       [45.0, 31.5], [44.0, 33.0], [43.5, 35.0], [42.0, 37.0], [43.5, 38.5], [42.5, 40.0]
     ]
   ],
-  "events": [],
-  "references": []
+  "events": [
+    {
+      "id": "ismail-tabriz",
+      "year": 1501,
+      "type": "event",
+      "at": [46.29, 38.08],
+      "title": {
+        "fa": "شاه اسماعیل در تبریز",
+        "en": "Shah Ismail in Tabriz"
+      },
+      "text": {
+        "fa": "اسماعیل یکم در تبریز به شاهی می‌رسد و تشیع دوازده‌امامی را مذهب رسمی کشور اعلام می‌کند.",
+        "en": "Ismail I is crowned shah in Tabriz and proclaims Twelver Shi'ism the state religion."
+      }
+    },
+    {
+      "id": "chaldiran",
+      "year": 1514,
+      "type": "battle",
+      "at": [44.0, 39.07],
+      "title": {
+        "fa": "نبرد چالدران",
+        "en": "Battle of Chaldiran"
+      },
+      "text": {
+        "fa": "سلطان سلیم یکم عثمانی با توپ و تفنگ شاه اسماعیل را در چالدران شکست می‌دهد و تبریز را برای مدتی کوتاه می‌گیرد.",
+        "en": "The Ottoman sultan Selim I defeats Ismail at Chaldiran with artillery and firearms and briefly occupies Tabriz."
+      }
+    },
+    {
+      "id": "amasya",
+      "year": 1555,
+      "type": "event",
+      "at": [50.0, 36.27],
+      "title": {
+        "fa": "پیمان آماسیه و پایتختی قزوین",
+        "en": "Peace of Amasya; Qazvin the capital"
+      },
+      "text": {
+        "fa": "شاه تهماسب و سلطان سلیمان پیمان آماسیه را می‌بندند و قزوین پایتخت صفویان می‌شود.",
+        "en": "Shah Tahmasp and Sultan Suleiman make the Peace of Amasya, and Qazvin becomes the Safavid capital."
+      }
+    },
+    {
+      "id": "isfahan-capital",
+      "year": 1598,
+      "type": "city",
+      "at": [51.67, 32.65],
+      "title": {
+        "fa": "اصفهان، نصف جهان",
+        "en": "Isfahan, half the world"
+      },
+      "text": {
+        "fa": "شاه عباس یکم پایتخت را به اصفهان می‌برد و میدان نقش جهان و مسجدها و بازارهایش را می‌سازد؛ «اصفهان نصف جهان» می‌شود.",
+        "en": "Shah Abbas I moves the capital to Isfahan and builds Naqsh-e Jahan Square with its mosques and bazaars; 'Isfahan is half the world', people say."
+      }
+    },
+    {
+      "id": "hormuz",
+      "year": 1622,
+      "type": "battle",
+      "at": [56.46, 27.1],
+      "title": {
+        "fa": "بازپس‌گیری هرمز",
+        "en": "Hormuz retaken"
+      },
+      "text": {
+        "fa": "شاه عباس با یاری کشتی‌های انگلیسی پرتغالی‌ها را از جزیرهٔ هرمز بیرون می‌راند و بندرعباس بندرگاه ایران می‌شود.",
+        "en": "With the help of English ships, Abbas I drives the Portuguese from the island of Hormuz, and Bandar Abbas grows as Iran's port."
+      }
+    },
+    {
+      "id": "zuhab",
+      "year": 1639,
+      "type": "event",
+      "at": [45.9, 34.5],
+      "title": {
+        "fa": "پیمان زهاب",
+        "en": "Treaty of Zuhab"
+      },
+      "text": {
+        "fa": "پیمان زهاب با عثمانی، عراق را به عثمانی وامی‌گذارد و مرزی نزدیک به مرز امروز ایران و عراق را تعیین می‌کند.",
+        "en": "The Treaty of Zuhab leaves Iraq to the Ottomans and sets a border close to today's border between Iran and Iraq."
+      }
+    },
+    {
+      "id": "fall-of-isfahan",
+      "year": 1722,
+      "type": "battle",
+      "at": [51.95, 32.55],
+      "title": {
+        "fa": "سقوط اصفهان",
+        "en": "The fall of Isfahan"
+      },
+      "text": {
+        "fa": "سپاه افغان به سرکردگی محمود هوتکی در گلون‌آباد پیروز می‌شود و اصفهان را ماه‌ها در محاصره می‌گیرد؛ شاه سلطان‌حسین تاج و تخت را واگذار می‌کند.",
+        "en": "Afghan forces under Mahmud Hotaki win at Gulnabad and besiege Isfahan for months; Shah Sultan Husayn gives up his throne."
+      }
+    }
+  ],
+  "references": [
+    {
+      "author": "Roger Savory",
+      "title": "Iran under the Safavids",
+      "publisher": "Cambridge University Press",
+      "year": 1980
+    },
+    {
+      "author": "Peter Jackson and Laurence Lockhart (eds.)",
+      "title": "The Cambridge History of Iran, Vol. 6: The Timurid and Safavid Periods",
+      "publisher": "Cambridge University Press",
+      "year": 1986
+    }
+  ]
 }

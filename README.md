@@ -16,12 +16,13 @@ A timeline bar at the bottom holds checkpoints. Pick one, and Ravi (راوی), t
       event, event list), bottom dock (play, year, timeline), map key, light/dark map colours, WebGL fallback.
 - [x] **Step 4b: 3D globe.** The whole world as a globe: drag to turn it, scroll or pinch to zoom; it tilts
       toward the horizon as you get close. Era card and map key collapse to icon buttons (remembered).
-- [ ] Step 5: relief (mountains), sea, routes and campaigns, more eras
+- [x] **Step 5: the full set of eras.** 14 eras from Elam to the Islamic Republic, each with an intro,
+      capitals, rulers, a territory, 5–9 events (type, place, fa + en) and references.
+- [ ] Next: relief (mountains), sea, routes and campaigns; compare civilizations
 - [ ] Step 6: compare civilizations at the same moment
 - [ ] Step 7: polish (narration character, deploy)
 
-The Achaemenid era has a full draft story; the other eras only have their intro so far.
-All texts are drafts that still need historical review.
+All texts, territories and coordinates are drafts that still need historical review.
 
 ## Develop
 ```bash
@@ -42,7 +43,8 @@ Each era is one file, `content/eras/<id>.json`, listed in `content/eras/index.ts
 ```jsonc
 {
   "id": "achaemenid",               // URL slug: /en/achaemenid/
-  "start": -550, "end": -330,       // negative = BCE, no year 0
+  "start": -550, "end": -330,       // negative = BCE, no year 0; leave out "end" for an era that continues
+  "shortTitle": { "fa": "…", "en": "…" }, // optional: shorter name for the timeline and map
   "title":   { "fa": "…", "en": "…" },
   "summary": { "fa": "…", "en": "…" },  // Ravi's intro
   "events": [                       // marked years, in chronological order

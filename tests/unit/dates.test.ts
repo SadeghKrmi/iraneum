@@ -36,3 +36,10 @@ describe("approximate years", () => {
     expect(formatYear(-547, "fa", true)).toBe("حدود ۵۴۷ پیش از میلاد");
   });
 });
+
+describe("open-ended ranges", () => {
+  it("reads 'today' for an era that continues", () => {
+    expect(formatYearRange(1979, undefined, "en")).toBe("1979 CE – today");
+    expect(formatYearRange(1979, undefined, "fa")).toBe("۱۹۷۹ میلادی – تاکنون");
+  });
+});

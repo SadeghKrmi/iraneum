@@ -1,0 +1,205 @@
+{
+  "id": "ilkhanate",
+  "start": 1219,
+  "end": 1501,
+  "color": "#b98a3e",
+  "title": {
+    "fa": "ایلخانان و تیموریان",
+    "en": "Ilkhanate & Timurids"
+  },
+  "shortTitle": {
+    "fa": "مغول و تیموریان",
+    "en": "Mongols & Timurids"
+  },
+  "summary": {
+    "fa": "سپاه مغول ایران را ویران می‌کند و سپس ایلخانان بر آن فرمان می‌رانند که اسلام و فرهنگ ایرانی را می‌پذیرند. در سده‌های چهاردهم و پانزدهم میلادی تیمور و جانشینانش از سمرقند و هرات فرمان می‌رانند؛ دوره‌ای درخشان در هنر و دانش.",
+    "en": "Mongol armies devastate Iran, then rule it as the Ilkhanate, which adopts Islam and Persian culture. In the 14th and 15th centuries Timur and his heirs rule from Samarkand and Herat, a golden age of art and science."
+  },
+  "capitals": [
+    {
+      "name": {
+        "fa": "مراغه",
+        "en": "Maragheh"
+      },
+      "at": [46.24, 37.39]
+    },
+    {
+      "name": {
+        "fa": "تبریز",
+        "en": "Tabriz"
+      },
+      "at": [46.29, 38.08]
+    },
+    {
+      "name": {
+        "fa": "سلطانیه",
+        "en": "Soltaniyeh"
+      },
+      "at": [48.8, 36.43]
+    },
+    {
+      "name": {
+        "fa": "سمرقند",
+        "en": "Samarkand"
+      },
+      "at": [66.97, 39.65]
+    },
+    {
+      "name": {
+        "fa": "هرات",
+        "en": "Herat"
+      },
+      "at": [62.2, 34.35]
+    }
+  ],
+  "rulers": {
+    "fa": "هولاکو، غازان‌خان، تیمور، شاهرخ",
+    "en": "Hulagu, Ghazan, Timur, Shah Rukh"
+  },
+  "territory": [
+    [
+      [29.5, 39.0], [33.0, 41.8], [38.0, 41.2], [41.5, 41.6], [44.5, 43.0], [47.5, 42.5],
+      [49.5, 40.8], [49.0, 38.5], [50.5, 37.0], [53.5, 36.8], [55.0, 38.0], [58.0, 39.0],
+      [61.5, 38.0], [64.0, 37.5], [66.0, 36.0], [66.5, 34.0], [64.5, 31.5], [62.5, 29.0],
+      [61.6, 25.2], [57.5, 25.5], [56.3, 26.8], [52.0, 27.3], [50.0, 29.5], [48.0, 30.0],
+      [47.0, 29.5], [45.5, 30.5], [43.0, 32.5], [40.5, 34.5], [38.5, 36.0], [36.5, 37.0],
+      [32.5, 37.5]
+    ]
+  ],
+  "events": [
+    {
+      "id": "mongol-invasion",
+      "year": 1219,
+      "type": "battle",
+      "at": [68.3, 42.85],
+      "title": {
+        "fa": "یورش چنگیزخان",
+        "en": "Genghis Khan invades"
+      },
+      "text": {
+        "fa": "پس از آنکه فرماندار خوارزمشاه در اترار کاروان بازرگانی مغول را می‌کشد، چنگیزخان یورش می‌آورد و بخارا، سمرقند، مرو و نیشابور ویران می‌شوند.",
+        "en": "After the Khwarazmshah's governor at Otrar kills a Mongol trade caravan, Genghis Khan invades; Bukhara, Samarkand, Merv and Nishapur are sacked."
+      }
+    },
+    {
+      "id": "fall-of-baghdad",
+      "year": 1258,
+      "type": "battle",
+      "at": [44.37, 33.31],
+      "title": {
+        "fa": "سقوط بغداد",
+        "en": "The fall of Baghdad"
+      },
+      "text": {
+        "fa": "هولاکو دژهای اسماعیلیان، از جمله الموت (۱۲۵۶)، را ویران می‌کند و سپس بغداد را غارت کرده به خلافت عباسی پایان می‌دهد.",
+        "en": "Hulagu destroys the Nizari Ismaili castles, including Alamut (1256), then sacks Baghdad and ends the Abbasid caliphate."
+      }
+    },
+    {
+      "id": "maragheh-observatory",
+      "year": 1259,
+      "type": "monument",
+      "at": [46.24, 37.39],
+      "title": {
+        "fa": "رصدخانهٔ مراغه",
+        "en": "The Maragheh observatory"
+      },
+      "text": {
+        "fa": "خواجه نصیرالدین طوسی رصدخانهٔ مراغه را بنیان می‌گذارد؛ یکی از مهم‌ترین مرکزهای ستاره‌شناسی روزگار خود.",
+        "en": "Nasir al-Din Tusi founds the Maragheh observatory, one of the most important centres of astronomy of its time."
+      }
+    },
+    {
+      "id": "ghazan-islam",
+      "year": 1295,
+      "type": "event",
+      "at": [46.29, 38.08],
+      "title": {
+        "fa": "غازان‌خان و رشیدالدین",
+        "en": "Ghazan and Rashid al-Din"
+      },
+      "text": {
+        "fa": "غازان‌خان مسلمان می‌شود و با وزیرش رشیدالدین فضل‌الله مالیات و اقتصاد را اصلاح می‌کند؛ رشیدالدین جامع‌التواریخ، تاریخی از جهان، را می‌نویسد.",
+        "en": "Ghazan Khan converts to Islam and, with his vizier Rashid al-Din, reforms taxes and the economy; Rashid al-Din writes a history of the world, the Jami' al-Tawarikh."
+      }
+    },
+    {
+      "id": "soltaniyeh",
+      "year": 1312,
+      "type": "monument",
+      "at": [48.8, 36.43],
+      "title": {
+        "fa": "گنبد سلطانیه",
+        "en": "The dome of Soltaniyeh"
+      },
+      "text": {
+        "fa": "الجایتو پایتخت خود سلطانیه و گنبد بزرگ آن را می‌سازد؛ یکی از بزرگ‌ترین گنبدهای آجری جهان.",
+        "en": "Öljeitü completes his capital, Soltaniyeh, and its great dome, one of the largest brick domes in the world."
+      }
+    },
+    {
+      "id": "hafez-shiraz",
+      "year": 1350,
+      "circa": true,
+      "type": "city",
+      "at": [52.53, 29.59],
+      "title": {
+        "fa": "شیرازِ حافظ",
+        "en": "Hafez's Shiraz"
+      },
+      "text": {
+        "fa": "با فروپاشی ایلخانان و برآمدن فرمانروایی‌های محلی، شیراز در روزگار اینجوها و آل‌مظفر شکوفا می‌شود و حافظ غزل‌هایش را در آنجا می‌سراید.",
+        "en": "As the Ilkhanate breaks up into local dynasties, Shiraz flourishes under the Injuids and Muzaffarids, and Hafez writes his ghazals there."
+      }
+    },
+    {
+      "id": "timur-isfahan",
+      "year": 1387,
+      "type": "battle",
+      "at": [51.67, 32.65],
+      "title": {
+        "fa": "لشکرکشی‌های تیمور",
+        "en": "Timur's conquests"
+      },
+      "text": {
+        "fa": "تیمور از ماوراءالنهر با لشکرکشی‌هایی بی‌رحمانه ایران را می‌گشاید؛ در ۱۳۸۷ سپاهیانش در اصفهان از سرهای کشتگان مناره می‌سازند.",
+        "en": "Timur, from Transoxiana, conquers Iran in a series of brutal campaigns; at Isfahan in 1387 his troops build towers of skulls."
+      }
+    },
+    {
+      "id": "timurid-renaissance",
+      "year": 1420,
+      "circa": true,
+      "type": "monument",
+      "at": [66.97, 39.65],
+      "title": {
+        "fa": "سمرقند و هرات",
+        "en": "Samarkand and Herat"
+      },
+      "text": {
+        "fa": "الغ‌بیگ در سمرقند رصدخانهٔ خود را می‌سازد و هرات در روزگار شاهرخ و گوهرشاد به کانون نگارگری، شعر و معماری بدل می‌شود.",
+        "en": "Ulugh Beg builds his observatory at Samarkand, while Herat under Shah Rukh and Goharshad becomes a centre of painting, poetry and architecture."
+      }
+    }
+  ],
+  "references": [
+    {
+      "author": "J. A. Boyle (ed.)",
+      "title": "The Cambridge History of Iran, Vol. 5: The Saljuq and Mongol Periods",
+      "publisher": "Cambridge University Press",
+      "year": 1968
+    },
+    {
+      "author": "Peter Jackson and Laurence Lockhart (eds.)",
+      "title": "The Cambridge History of Iran, Vol. 6: The Timurid and Safavid Periods",
+      "publisher": "Cambridge University Press",
+      "year": 1986
+    },
+    {
+      "author": "Beatrice Forbes Manz",
+      "title": "The Rise and Rule of Tamerlane",
+      "publisher": "Cambridge University Press",
+      "year": 1989
+    }
+  ]
+}

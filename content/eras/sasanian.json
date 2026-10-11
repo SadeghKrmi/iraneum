@@ -47,6 +47,133 @@
       [43.0, 32.0], [41.0, 34.0], [39.5, 35.5]
     ]
   ],
-  "events": [],
-  "references": []
+  "events": [
+    {
+      "id": "ardashir-crowned",
+      "year": 226,
+      "type": "event",
+      "at": [44.58, 33.09],
+      "title": {
+        "fa": "تاج‌گذاری اردشیر",
+        "en": "Ardashir is crowned"
+      },
+      "text": {
+        "fa": "اردشیر یکم در تیسفون شاهنشاه ایران خوانده می‌شود و دودمان ساسانی را بنیان می‌نهد.",
+        "en": "Ardashir I is crowned King of Kings of Iran at Ctesiphon, founding the Sasanian dynasty."
+      }
+    },
+    {
+      "id": "edessa",
+      "year": 260,
+      "type": "battle",
+      "at": [38.79, 37.16],
+      "title": {
+        "fa": "اسارت والرین",
+        "en": "Valerian captured"
+      },
+      "text": {
+        "fa": "شاپور یکم رومیان را در ادسا شکست می‌دهد و والرین، امپراتور روم، را اسیر می‌کند؛ رویدادی که بر سنگ‌نگاره‌های نقش رستم جاودانه شده است.",
+        "en": "Shapur I defeats the Romans at Edessa and captures the emperor Valerian, a victory carved in stone at Naqsh-e Rostam."
+      }
+    },
+    {
+      "id": "julian",
+      "year": 363,
+      "type": "battle",
+      "at": [44.58, 33.09],
+      "title": {
+        "fa": "شکست یولیانوس",
+        "en": "Julian's invasion fails"
+      },
+      "text": {
+        "fa": "یولیانوس، امپراتور روم، تا تیسفون پیش می‌آید اما در عقب‌نشینی کشته می‌شود و جانشینش پنج استان و شهر نصیبین را به شاپور دوم وامی‌گذارد.",
+        "en": "The Roman emperor Julian reaches Ctesiphon but is killed during the retreat; his successor cedes five provinces and the city of Nisibis to Shapur II."
+      }
+    },
+    {
+      "id": "khosrow-anushirvan",
+      "year": 531,
+      "type": "event",
+      "at": [48.52, 32.28],
+      "title": {
+        "fa": "خسرو انوشیروان",
+        "en": "Khosrow I Anushirvan"
+      },
+      "text": {
+        "fa": "خسرو انوشیروان مالیات و سپاه را سامانی تازه می‌دهد؛ در گندی‌شاپور آثار یونانی و هندی ترجمه می‌شود و کلیله و دمنه به زبان پهلوی می‌رسد.",
+        "en": "Khosrow I reforms taxation and the army; scholars at Gondishapur translate Greek and Indian works, and the fables of Kalila and Demna reach Middle Persian."
+      }
+    },
+    {
+      "id": "taq-kasra",
+      "year": 540,
+      "circa": true,
+      "type": "monument",
+      "at": [44.58, 33.09],
+      "title": {
+        "fa": "طاق کسری",
+        "en": "The Arch of Ctesiphon"
+      },
+      "text": {
+        "fa": "طاق کسری در تیسفون، بزرگ‌ترین طاق آجری روزگار خود، به‌عنوان تالار بار شاهان ساسانی برپا می‌شود.",
+        "en": "The great arch of Ctesiphon (Taq Kasra), the largest brick vault of its time, rises as the throne hall of the Sasanian kings."
+      }
+    },
+    {
+      "id": "jerusalem",
+      "year": 614,
+      "type": "battle",
+      "at": [35.23, 31.78],
+      "title": {
+        "fa": "جنگ با روم شرقی",
+        "en": "War with Byzantium"
+      },
+      "text": {
+        "fa": "در جنگ درازی که خسرو پرویز با روم شرقی آغاز کرده است، سپاه ایران بیت‌المقدس را می‌گیرد و تا مصر پیش می‌رود؛ اما هراکلیوس پاسخ می‌دهد و جنگ در ۶۲۸ هر دو شاهنشاهی را فرسوده رها می‌کند.",
+        "en": "In the long war Khosrow II has begun against Byzantium, Persian armies take Jerusalem and reach Egypt; but Heraclius strikes back, and by 628 both empires are exhausted."
+      }
+    },
+    {
+      "id": "qadisiyyah",
+      "year": 636,
+      "type": "battle",
+      "at": [44.5, 31.6],
+      "title": {
+        "fa": "نبرد قادسیه",
+        "en": "Battle of al-Qadisiyyah"
+      },
+      "text": {
+        "fa": "سپاه مسلمانان عرب سپاه ساسانی را در قادسیه شکست می‌دهد و اندکی بعد تیسفون سقوط می‌کند.",
+        "en": "Arab Muslim armies defeat the Sasanian army at al-Qadisiyyah; Ctesiphon falls soon after."
+      }
+    },
+    {
+      "id": "yazdegerd-iii",
+      "year": 651,
+      "type": "event",
+      "at": [61.84, 37.66],
+      "title": {
+        "fa": "پایان ساسانیان",
+        "en": "The end of the Sasanians"
+      },
+      "text": {
+        "fa": "یزدگرد سوم، آخرین شاه ساسانی، در نزدیکی مرو کشته می‌شود و شاهنشاهی ساسانی به پایان می‌رسد.",
+        "en": "Yazdegerd III, the last Sasanian king, is killed near Merv, and the Sasanian empire comes to an end."
+      }
+    }
+  ],
+  "references": [
+    {
+      "author": "Touraj Daryaee",
+      "title": "Sasanian Persia: The Rise and Fall of an Empire",
+      "publisher": "I.B. Tauris",
+      "year": 2009
+    },
+    {
+      "author": "Ehsan Yarshater (ed.)",
+      "title": "The Cambridge History of Iran, Vol. 3: The Seleucid, Parthian and Sasanian Periods",
+      "publisher": "Cambridge University Press",
+      "year": 1983
+    }
+  ]
 }

@@ -1,0 +1,168 @@
+{
+  "id": "caliphate",
+  "start": 651,
+  "end": 1037,
+  "color": "#6aa36f",
+  "title": {
+    "fa": "خلافت و دودمان‌های ایرانی",
+    "en": "Caliphates & Iranian dynasties"
+  },
+  "shortTitle": {
+    "fa": "خلافت",
+    "en": "Caliphates"
+  },
+  "summary": {
+    "fa": "ایران بخشی از خلافت اسلامی می‌شود. زبان و فرهنگ ایرانی پایدار می‌ماند و جان تازه می‌گیرد، و از سدهٔ نهم میلادی دودمان‌های ایرانی دوباره فرمان می‌رانند: طاهریان، صفاریان، سامانیان و آل‌بویه.",
+    "en": "Iran becomes part of the Islamic caliphate. Persian language and culture endure and revive, and from the 9th century Iranian dynasties rule again: the Tahirids, Saffarids, Samanids and Buyids."
+  },
+  "capitals": [
+    {
+      "name": {
+        "fa": "بغداد",
+        "en": "Baghdad"
+      },
+      "at": [44.37, 33.31]
+    },
+    {
+      "name": {
+        "fa": "بخارا",
+        "en": "Bukhara"
+      },
+      "at": [64.42, 39.77]
+    },
+    {
+      "name": {
+        "fa": "ری",
+        "en": "Rey"
+      },
+      "at": [51.43, 35.58]
+    }
+  ],
+  "rulers": {
+    "fa": "هارون‌الرشید، یعقوب لیث، اسماعیل سامانی، عضدالدوله",
+    "en": "Harun al-Rashid, Ya'qub ibn al-Layth, Isma'il Samani, 'Adud al-Dawla"
+  },
+  "territory": [
+    [
+      [43.5, 37.5], [44.5, 39.5], [46.5, 40.5], [49.0, 39.5], [49.5, 38.3], [50.5, 37.0],
+      [53.5, 36.8], [55.0, 38.5], [58.0, 39.5], [61.0, 41.5], [64.0, 43.0], [68.0, 43.5],
+      [71.0, 42.0], [72.0, 39.5], [70.5, 37.5], [69.0, 35.0], [66.0, 32.5], [64.0, 30.0],
+      [61.6, 27.0], [61.6, 25.2], [57.5, 25.5], [56.3, 26.8], [52.0, 27.3], [50.0, 29.5],
+      [48.0, 30.0], [47.5, 29.5], [46.0, 30.5], [44.0, 31.5], [42.5, 33.5], [41.5, 35.5]
+    ]
+  ],
+  "events": [
+    {
+      "id": "abbasid-revolution",
+      "year": 747,
+      "type": "event",
+      "at": [61.84, 37.66],
+      "title": {
+        "fa": "ابومسلم و درفش‌های سیاه",
+        "en": "Abu Muslim and the black banners"
+      },
+      "text": {
+        "fa": "ابومسلم در خراسان درفش‌های سیاه انقلاب عباسی را برمی‌افرازد و در کمتر از سه سال خلافت امویان فرو می‌افتد.",
+        "en": "In Khorasan, Abu Muslim raises the black banners of the Abbasid revolution; within three years the Umayyad caliphate falls."
+      }
+    },
+    {
+      "id": "baghdad-founded",
+      "year": 762,
+      "type": "city",
+      "at": [44.37, 33.31],
+      "title": {
+        "fa": "بنیان بغداد",
+        "en": "Baghdad is founded"
+      },
+      "text": {
+        "fa": "منصور، خلیفهٔ عباسی، بغداد را در نزدیکی تیسفون، پایتخت کهن ساسانی، بنیان می‌گذارد؛ دیوانیان و سنت‌های ایرانی دربار عباسی را شکل می‌دهند.",
+        "en": "The caliph al-Mansur founds Baghdad near the old Sasanian capital, Ctesiphon; Persian officials and traditions shape the Abbasid court."
+      }
+    },
+    {
+      "id": "tahirids",
+      "year": 821,
+      "type": "event",
+      "at": [58.8, 36.21],
+      "title": {
+        "fa": "طاهریان",
+        "en": "The Tahirids"
+      },
+      "text": {
+        "fa": "طاهر پسر حسین، فرماندار خراسان، نخستین دودمان ایرانیِ کمابیش مستقل در دوران خلافت را بنیان می‌گذارد.",
+        "en": "Tahir ibn Husayn, governor of Khorasan, founds the first largely independent Iranian dynasty under the caliphate."
+      }
+    },
+    {
+      "id": "yaqub-layth",
+      "year": 873,
+      "type": "battle",
+      "at": [58.8, 36.21],
+      "title": {
+        "fa": "یعقوب لیث صفاری",
+        "en": "Ya'qub the Coppersmith"
+      },
+      "text": {
+        "fa": "یعقوب لیث صفاری، رویگرزاده‌ای از سیستان، به فرمانروایی طاهریان پایان می‌دهد؛ در دربار او شعر فارسی دوباره جان می‌گیرد.",
+        "en": "Ya'qub ibn al-Layth, a coppersmith's son from Sistan, ends Tahirid rule; at his court poetry in Persian comes back to life."
+      }
+    },
+    {
+      "id": "samanid-bukhara",
+      "year": 900,
+      "type": "city",
+      "at": [64.42, 39.77],
+      "title": {
+        "fa": "بخارای سامانیان",
+        "en": "Bukhara of the Samanids"
+      },
+      "text": {
+        "fa": "در روزگار سامانیان بخارا، ادب فارسی نو شکوفا می‌شود و رودکی، پدر شعر فارسی، در دربار آنان می‌سراید.",
+        "en": "Under the Samanids of Bukhara, New Persian literature flourishes, and Rudaki, the father of Persian poetry, writes at their court."
+      }
+    },
+    {
+      "id": "buyids-baghdad",
+      "year": 945,
+      "type": "event",
+      "at": [44.37, 33.31],
+      "title": {
+        "fa": "آل‌بویه در بغداد",
+        "en": "The Buyids take Baghdad"
+      },
+      "text": {
+        "fa": "آل‌بویه، برخاسته از دیلم در کنارهٔ دریای خزر، بغداد را می‌گیرند؛ خلیفه نام خلافت را نگه می‌دارد اما قدرت در دست آنان است.",
+        "en": "The Buyids, from Daylam by the Caspian Sea, take Baghdad; the caliph keeps his title, but they hold the power."
+      }
+    },
+    {
+      "id": "shahnameh",
+      "year": 1010,
+      "type": "monument",
+      "at": [59.62, 36.43],
+      "title": {
+        "fa": "شاهنامه",
+        "en": "The Shahnameh"
+      },
+      "text": {
+        "fa": "فردوسی پس از نزدیک به سی سال کار، سرودن شاهنامه، حماسهٔ ملی ایرانیان، را در توس به پایان می‌رساند.",
+        "en": "In Tus, Ferdowsi completes the Shahnameh, the national epic of Iran, after some thirty years of work."
+      }
+    }
+  ],
+  "references": [
+    {
+      "author": "Richard N. Frye (ed.)",
+      "title": "The Cambridge History of Iran, Vol. 4: From the Arab Invasion to the Saljuqs",
+      "publisher": "Cambridge University Press",
+      "year": 1975
+    },
+    {
+      "author": "Hugh Kennedy",
+      "title": "The Prophet and the Age of the Caliphates",
+      "publisher": "Longman",
+      "year": 1986
+    }
+  ]
+}

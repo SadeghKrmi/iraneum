@@ -1,7 +1,7 @@
 import { readdirSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { eras, eventTypes, INTRO_SCENE_ID, reservedSlugs, scenesOf } from "@/lib/content";
+import { eraEnd, eras, eventTypes, INTRO_SCENE_ID, reservedSlugs, scenesOf } from "@/lib/content";
 import { locales } from "@/lib/i18n";
 
 const slug = /^[a-z0-9-]+$/;
@@ -24,8 +24,8 @@ describe("eras content", () => {
 
   it("has valid year ranges", () => {
     for (const e of eras) {
-      expect(validYear(e.start) && validYear(e.end), e.id).toBe(true);
-      expect(e.end, e.id).toBeGreaterThanOrEqual(e.start);
+      expect(validYear(e.start) && (e.end === undefined || validYear(e.end)), e.id).toBe(true);
+      expect(eraEnd(e), e.id).toBeGreaterThanOrEqual(e.start);
     }
   });
 
@@ -39,7 +39,7 @@ describe("eras content", () => {
         expect(ev.id, era.id).toMatch(slug);
         expect(validYear(ev.year), `${era.id}/${ev.id}`).toBe(true);
         expect(ev.year, `${era.id}/${ev.id}`).toBeGreaterThanOrEqual(era.start);
-        expect(ev.year, `${era.id}/${ev.id}`).toBeLessThanOrEqual(era.end);
+        expect(ev.year, `${era.id}/${ev.id}`).toBeLessThanOrEqual(eraEnd(era));
         expect(ev.year, `${era.id}/${ev.id} is out of order`).toBeGreaterThanOrEqual(previous);
         previous = ev.year;
       }
@@ -54,6 +54,24 @@ describe("eras content", () => {
           expect(scene.text[locale]?.trim(), `${era.id}/${scene.id} text.${locale}`).toBeTruthy();
         }
       }
+    }
+  });
+
+  it("tells every era's story with events and sources", () => {
+    for (const era of eras) {
+      expect(era.events.length, era.id).toBeGreaterThanOrEqual(5);
+      expect(era.references.length, era.id).toBeGreaterThanOrEqual(2);
+    }
+  });
+
+  it("only the last era may be open-ended", () => {
+    expect(eras.filter((e) => e.end === undefined).map((e) => e.id)).toEqual([eras[eras.length - 1].id]);
+  });
+
+  it("has short titles in both languages when it has one", () => {
+    for (const era of eras) {
+      if (!era.shortTitle) continue;
+      for (const locale of locales) expect(era.shortTitle[locale]?.trim(), era.id).toBeTruthy();
     }
   });
 

@@ -1,0 +1,183 @@
+{
+  "id": "pahlavi",
+  "start": 1925,
+  "end": 1979,
+  "color": "#5f7fd0",
+  "title": {
+    "fa": "پهلوی",
+    "en": "Pahlavi Era"
+  },
+  "summary": {
+    "fa": "رضاشاه و پسرش محمدرضا شاه با راه‌آهن، دانشگاه و صنعت ایران را به‌سرعت نوسازی می‌کنند، در سایهٔ پادشاهی‌ای که روزبه‌روز خودکامه‌تر می‌شود و با انقلاب به پایان می‌رسد.",
+    "en": "Reza Shah and his son Mohammad Reza Shah rapidly modernize Iran with railways, universities and industry, under an increasingly authoritarian monarchy that ends in revolution."
+  },
+  "capitals": [
+    {
+      "name": {
+        "fa": "تهران",
+        "en": "Tehran"
+      },
+      "at": [51.39, 35.69]
+    }
+  ],
+  "rulers": {
+    "fa": "رضاشاه، محمدرضا شاه",
+    "en": "Reza Shah, Mohammad Reza Shah"
+  },
+  "territory": [
+    [
+      [44.0, 39.4], [44.8, 39.7], [45.5, 38.9], [46.5, 38.9], [48.0, 38.9], [48.6, 38.3],
+      [48.9, 38.4], [49.0, 37.6], [50.2, 37.3], [51.0, 36.8], [53.9, 36.9], [54.0, 37.4],
+      [55.4, 38.0], [57.3, 38.0], [59.2, 37.4], [60.4, 36.6], [61.2, 36.6], [61.1, 35.2],
+      [60.5, 34.3], [60.9, 33.5], [60.5, 32.6], [60.9, 31.5], [61.7, 31.3], [61.8, 30.8],
+      [60.9, 29.8], [61.4, 29.3], [62.7, 28.3], [62.8, 27.3], [63.3, 27.1], [63.2, 26.6],
+      [61.6, 25.2], [59.6, 25.4], [57.4, 25.7], [56.9, 27.1], [56.3, 27.2], [54.7, 26.5],
+      [53.5, 26.8], [52.5, 27.6], [51.5, 27.9], [50.6, 29.1], [50.1, 30.1], [49.6, 30.0],
+      [48.9, 30.3], [48.6, 29.9], [48.0, 30.5], [48.0, 31.0], [47.7, 31.0], [47.8, 31.7],
+      [47.3, 32.5], [46.1, 33.0], [45.4, 34.0], [45.6, 34.8], [45.9, 35.1], [46.1, 35.7],
+      [45.4, 36.0], [45.0, 36.6], [44.8, 37.2], [44.2, 37.9], [44.4, 38.3], [44.1, 39.0]
+    ]
+  ],
+  "events": [
+    {
+      "id": "reza-shah",
+      "year": 1925,
+      "type": "event",
+      "at": [51.39, 35.69],
+      "title": {
+        "fa": "پادشاهی رضاشاه",
+        "en": "Reza Shah"
+      },
+      "text": {
+        "fa": "مجلس رضاخان را به پادشاهی برمی‌گزیند؛ او در ۱۹۲۶ تاج‌گذاری می‌کند و دودمان پهلوی را بنیان می‌گذارد.",
+        "en": "Parliament makes Reza Khan the new shah; he is crowned in 1926 and founds the Pahlavi dynasty."
+      }
+    },
+    {
+      "id": "iran-name",
+      "year": 1935,
+      "type": "event",
+      "at": [51.39, 35.69],
+      "title": {
+        "fa": "ایران، نه «پرشیا»",
+        "en": "Iran, not 'Persia'"
+      },
+      "text": {
+        "fa": "ایران از کشورهای دیگر می‌خواهد آن را به‌جای «پرشیا» «ایران» بنامند؛ دانشگاه تهران یک سال پیش‌تر گشایش یافته بود.",
+        "en": "Iran asks other countries to call it 'Iran' instead of 'Persia'; the University of Tehran had opened the year before."
+      }
+    },
+    {
+      "id": "trans-iranian-railway",
+      "year": 1938,
+      "type": "monument",
+      "at": [52.98, 35.9],
+      "title": {
+        "fa": "راه‌آهن سراسری",
+        "en": "The Trans-Iranian Railway"
+      },
+      "text": {
+        "fa": "راه‌آهن سراسری ایران از دریای خزر تا خلیج فارس به پایان می‌رسد و پل ورسک نماد آن دوران می‌شود.",
+        "en": "The Trans-Iranian Railway, from the Caspian Sea to the Persian Gulf, is completed; its Veresk Bridge becomes a symbol of the era."
+      }
+    },
+    {
+      "id": "allied-invasion",
+      "year": 1941,
+      "type": "battle",
+      "at": [51.39, 35.69],
+      "title": {
+        "fa": "اشغال ایران",
+        "en": "The Allied invasion"
+      },
+      "text": {
+        "fa": "نیروهای بریتانیا و شوروی به ایران حمله می‌کنند و رضاشاه به سود پسرش محمدرضا از پادشاهی کناره می‌گیرد.",
+        "en": "British and Soviet forces invade Iran, and Reza Shah abdicates in favour of his son Mohammad Reza."
+      }
+    },
+    {
+      "id": "oil-nationalization",
+      "year": 1951,
+      "type": "event",
+      "at": [48.3, 30.34],
+      "title": {
+        "fa": "ملی شدن صنعت نفت",
+        "en": "Oil nationalization"
+      },
+      "text": {
+        "fa": "به رهبری محمد مصدق، نخست‌وزیر، مجلس صنعت نفت را ملی می‌کند و آن را از شرکت نفت ایران و انگلیس پس می‌گیرد.",
+        "en": "Under Prime Minister Mohammad Mosaddegh, parliament nationalizes the oil industry, taking it from the Anglo-Iranian Oil Company."
+      }
+    },
+    {
+      "id": "coup-1953",
+      "year": 1953,
+      "type": "event",
+      "at": [51.39, 35.69],
+      "title": {
+        "fa": "کودتای ۲۸ مرداد",
+        "en": "The 1953 coup"
+      },
+      "text": {
+        "fa": "کودتایی با پشتیبانی سازمان‌های اطلاعاتی آمریکا و بریتانیا دولت مصدق را سرنگون می‌کند و قدرت شاه را استوارتر می‌سازد.",
+        "en": "A coup backed by the American and British intelligence services overthrows Mosaddegh's government and strengthens the shah's rule."
+      }
+    },
+    {
+      "id": "white-revolution",
+      "year": 1963,
+      "type": "event",
+      "at": [51.39, 35.69],
+      "title": {
+        "fa": "انقلاب سفید",
+        "en": "The White Revolution"
+      },
+      "text": {
+        "fa": "شاه «انقلاب سفید» را آغاز می‌کند: اصلاحات ارضی، حق رأی زنان و سپاه دانش. اعتراض‌ها به آن در خرداد ۱۳۴۲ سرکوب می‌شود.",
+        "en": "The shah launches the 'White Revolution': land reform, votes for women and a literacy corps. Protests against it in June 1963 are suppressed."
+      }
+    },
+    {
+      "id": "persepolis-celebration",
+      "year": 1971,
+      "type": "monument",
+      "at": [52.89, 29.93],
+      "title": {
+        "fa": "جشن‌های ۲۵۰۰ ساله",
+        "en": "The 2,500-year celebrations"
+      },
+      "text": {
+        "fa": "شاه جشن ۲۵۰۰ سالهٔ شاهنشاهی ایران را با حضور سران کشورها در تخت جمشید برگزار می‌کند.",
+        "en": "The shah celebrates 2,500 years of Persian monarchy at Persepolis, in front of leaders from around the world."
+      }
+    },
+    {
+      "id": "revolution",
+      "year": 1979,
+      "type": "event",
+      "at": [51.39, 35.69],
+      "title": {
+        "fa": "انقلاب ۱۳۵۷",
+        "en": "The 1979 revolution"
+      },
+      "text": {
+        "fa": "پس از یک سال اعتراض‌های گسترده، شاه در دی ۱۳۵۷ ایران را ترک می‌کند؛ آیت‌الله خمینی از تبعید بازمی‌گردد و در بهمن ۱۳۵۷ پادشاهی سرنگون می‌شود.",
+        "en": "After a year of mass protests the shah leaves Iran in January 1979; Ayatollah Khomeini returns from exile, and the monarchy falls in February."
+      }
+    }
+  ],
+  "references": [
+    {
+      "author": "Ervand Abrahamian",
+      "title": "A History of Modern Iran",
+      "publisher": "Cambridge University Press",
+      "year": 2008
+    },
+    {
+      "author": "Abbas Amanat",
+      "title": "Iran: A Modern History",
+      "publisher": "Yale University Press",
+      "year": 2017
+    }
+  ]
+}

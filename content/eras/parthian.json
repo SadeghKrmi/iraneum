@@ -47,6 +47,103 @@
       [41.5, 34.0], [40.0, 35.0]
     ]
   ],
-  "events": [],
-  "references": []
+  "events": [
+    {
+      "id": "arsacid-era",
+      "year": -247,
+      "type": "event",
+      "at": [58.5, 37.1],
+      "title": {
+        "fa": "آغاز گاه‌شماری اشکانی",
+        "en": "The Arsacid era begins"
+      },
+      "text": {
+        "fa": "پادشاهان اشکانی بعدها سال‌های خود را از ۲۴۷ پیش از میلاد می‌شمارند؛ سالی که گفته می‌شود ارشک یکم در اساک در سرزمین پارت تاج‌گذاری کرد.",
+        "en": "The Parthian kings later count their years from 247 BCE, when Arsaces I is said to have been crowned at Asaak in Parthia."
+      }
+    },
+    {
+      "id": "king-of-kings",
+      "year": -115,
+      "circa": true,
+      "type": "event",
+      "at": [44.58, 33.09],
+      "title": {
+        "fa": "مهرداد دوم، شاهنشاه",
+        "en": "Mithridates II, King of Kings"
+      },
+      "text": {
+        "fa": "مهرداد دوم لقب «شاهنشاه» را برمی‌گزیند و با چینِ روزگار هان پیوند برقرار می‌کند؛ جادهٔ ابریشم دو شاهنشاهی را به هم می‌پیوندد.",
+        "en": "Mithridates II takes the title 'King of Kings' and opens contact with Han China; the Silk Road links the two empires."
+      }
+    },
+    {
+      "id": "carrhae",
+      "year": -53,
+      "type": "battle",
+      "at": [39.03, 36.87],
+      "title": {
+        "fa": "نبرد حران",
+        "en": "Battle of Carrhae"
+      },
+      "text": {
+        "fa": "در حران (کاره)، سورنا، سردار اشکانی، با کمانداران سواره و سواره‌نظام زره‌پوش سپاه روم به فرماندهی کراسوس را درهم می‌شکند.",
+        "en": "At Carrhae the Parthian general Surena destroys a Roman army under Crassus with mounted archers and armoured cavalry."
+      }
+    },
+    {
+      "id": "armenia-rhandeia",
+      "year": 63,
+      "type": "event",
+      "at": [44.57, 39.88],
+      "title": {
+        "fa": "پادشاهی اشکانی در ارمنستان",
+        "en": "An Arsacid king for Armenia"
+      },
+      "text": {
+        "fa": "پس از سال‌ها جنگ، روم می‌پذیرد که تیرداد، برادر بلاش یکم، پادشاه ارمنستان باشد؛ نرون در سال ۶۶ میلادی در رم بر سر او تاج می‌گذارد.",
+        "en": "After years of war, Rome accepts Tiridates, brother of the Parthian king Vologases I, as king of Armenia; Nero crowns him in Rome in 66 CE."
+      }
+    },
+    {
+      "id": "trajan-ctesiphon",
+      "year": 116,
+      "type": "battle",
+      "at": [44.58, 33.09],
+      "title": {
+        "fa": "تراژان در تیسفون",
+        "en": "Trajan takes Ctesiphon"
+      },
+      "text": {
+        "fa": "تراژان، امپراتور روم، تیسفون پایتخت اشکانیان را می‌گیرد، اما جانشینش هادریان به‌زودی از این سرزمین‌ها چشم می‌پوشد.",
+        "en": "The Roman emperor Trajan captures Ctesiphon, the Parthian capital, but his successor Hadrian soon gives up the conquests."
+      }
+    },
+    {
+      "id": "hormozdgan",
+      "year": 224,
+      "type": "battle",
+      "at": [49.6, 31.3],
+      "title": {
+        "fa": "نبرد هرمزدگان",
+        "en": "Battle of Hormozdgan"
+      },
+      "text": {
+        "fa": "اردشیر، فرمانروای محلی پارس، اردوان چهارم، آخرین پادشاه اشکانی، را در نبرد هرمزدگان شکست می‌دهد و می‌کشد.",
+        "en": "Ardashir, a local ruler in Persis, defeats and kills the last Parthian king, Artabanus IV, at Hormozdgan."
+      }
+    }
+  ],
+  "references": [
+    {
+      "author": "Ehsan Yarshater (ed.)",
+      "title": "The Cambridge History of Iran, Vol. 3: The Seleucid, Parthian and Sasanian Periods",
+      "publisher": "Cambridge University Press",
+      "year": 1983
+    },
+    {
+      "author": "Encyclopaedia Iranica",
+      "title": "Arsacids"
+    }
+  ]
 }

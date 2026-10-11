@@ -1,0 +1,136 @@
+{
+  "id": "afsharid",
+  "start": 1736,
+  "end": 1796,
+  "color": "#a0b04a",
+  "title": {
+    "fa": "افشاریان و زندیان",
+    "en": "Afsharids & Zands"
+  },
+  "summary": {
+    "fa": "نادرشاه افغان‌ها و عثمانی‌ها را بیرون می‌راند و شاهنشاهی پهناور اما کوتاه‌عمری می‌سازد. پس از او کریم‌خان زند از شیراز با آرامش بر بیشتر ایران فرمان می‌راند.",
+    "en": "Nader Shah drives out the Afghans and Ottomans and builds a vast but short-lived empire. After him Karim Khan Zand rules much of Iran peacefully from Shiraz."
+  },
+  "capitals": [
+    {
+      "name": {
+        "fa": "مشهد",
+        "en": "Mashhad"
+      },
+      "at": [59.61, 36.3]
+    },
+    {
+      "name": {
+        "fa": "شیراز",
+        "en": "Shiraz"
+      },
+      "at": [52.53, 29.59]
+    }
+  ],
+  "rulers": {
+    "fa": "نادرشاه، کریم‌خان زند، لطفعلی‌خان زند",
+    "en": "Nader Shah, Karim Khan Zand, Lotf Ali Khan"
+  },
+  "territory": [
+    [
+      [43.0, 41.2], [45.0, 42.0], [47.5, 42.2], [49.5, 40.8], [49.0, 38.5], [50.5, 37.0],
+      [53.5, 36.8], [55.0, 38.5], [59.0, 40.5], [62.0, 41.5], [65.0, 40.5], [68.0, 38.0],
+      [71.0, 36.5], [72.0, 34.0], [71.0, 30.0], [69.0, 27.0], [67.5, 24.5], [64.0, 25.0],
+      [61.6, 25.2], [57.5, 25.5], [56.3, 26.8], [52.0, 27.3], [50.0, 29.5], [48.6, 30.0],
+      [47.5, 31.5], [46.5, 32.5], [45.5, 33.8], [45.8, 35.0], [45.0, 36.0], [44.3, 37.5],
+      [44.0, 39.0], [43.5, 40.0]
+    ]
+  ],
+  "events": [
+    {
+      "id": "nader-crowned",
+      "year": 1736,
+      "type": "event",
+      "at": [48.0, 39.5],
+      "title": {
+        "fa": "نادرشاه در دشت مغان",
+        "en": "Nader crowned on the Mughan plain"
+      },
+      "text": {
+        "fa": "نادر در دشت مغان به شاهی برگزیده می‌شود و فرمانروایی صفویان پایان می‌یابد.",
+        "en": "Nader is chosen as shah on the Mughan plain, ending Safavid rule."
+      }
+    },
+    {
+      "id": "karnal",
+      "year": 1739,
+      "type": "battle",
+      "at": [76.98, 29.69],
+      "title": {
+        "fa": "نبرد کرنال",
+        "en": "Battle of Karnal"
+      },
+      "text": {
+        "fa": "نادر سپاه گورکانیان هند را در کرنال شکست می‌دهد و دهلی را غارت می‌کند و تخت طاووس و الماس کوه نور را با خود می‌برد.",
+        "en": "Nader defeats the Mughal army at Karnal, sacks Delhi and carries away the Peacock Throne and the Koh-i-Noor diamond."
+      }
+    },
+    {
+      "id": "nader-killed",
+      "year": 1747,
+      "type": "event",
+      "at": [58.5, 37.1],
+      "title": {
+        "fa": "مرگ نادرشاه",
+        "en": "Nader Shah is killed"
+      },
+      "text": {
+        "fa": "نادرشاه به دست سردارانش در نزدیکی قوچان کشته می‌شود و شاهنشاهی‌اش به‌زودی از هم می‌پاشد.",
+        "en": "Nader Shah is assassinated by his own officers near Quchan, and his empire quickly falls apart."
+      }
+    },
+    {
+      "id": "karim-khan-shiraz",
+      "year": 1765,
+      "type": "city",
+      "at": [52.53, 29.59],
+      "title": {
+        "fa": "کریم‌خان وکیل در شیراز",
+        "en": "Karim Khan, the Vakil, in Shiraz"
+      },
+      "text": {
+        "fa": "کریم‌خان زند، که خود را «وکیل» می‌خواند و نه شاه، شیراز را پایتخت می‌کند و ارگ، بازار و مسجد وکیل را می‌سازد.",
+        "en": "Karim Khan Zand, who calls himself Vakil ('regent') rather than shah, makes Shiraz his capital and builds its citadel, bazaar and mosque."
+      }
+    },
+    {
+      "id": "kerman-falls",
+      "year": 1794,
+      "type": "battle",
+      "at": [57.08, 30.28],
+      "title": {
+        "fa": "سقوط کرمان",
+        "en": "The fall of Kerman"
+      },
+      "text": {
+        "fa": "آغا محمدخان قاجار کرمان را از لطفعلی‌خان، آخرین فرمانروای زند، می‌گیرد و قاجارها به قدرت می‌رسند.",
+        "en": "Agha Mohammad Khan Qajar takes Kerman from Lotf Ali Khan, the last Zand ruler, and the Qajars come to power."
+      }
+    }
+  ],
+  "references": [
+    {
+      "author": "Michael Axworthy",
+      "title": "The Sword of Persia: Nader Shah, from Tribal Warrior to Conquering Tyrant",
+      "publisher": "I.B. Tauris",
+      "year": 2006
+    },
+    {
+      "author": "John R. Perry",
+      "title": "Karim Khan Zand: A History of Iran, 1747–1779",
+      "publisher": "University of Chicago Press",
+      "year": 1979
+    },
+    {
+      "author": "Peter Avery, Gavin Hambly and Charles Melville (eds.)",
+      "title": "The Cambridge History of Iran, Vol. 7: From Nadir Shah to the Islamic Republic",
+      "publisher": "Cambridge University Press",
+      "year": 1991
+    }
+  ]
+}

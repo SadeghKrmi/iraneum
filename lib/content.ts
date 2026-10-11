@@ -37,11 +37,13 @@ export type Era = {
   id: string;
   /** First year of the era; negative numbers are BCE. */
   start: number;
-  /** Last year of the era; negative numbers are BCE. */
-  end: number;
+  /** Last year of the era; negative numbers are BCE. Left out for an era that continues today. */
+  end?: number;
   /** Territory colour on the map. */
   color: string;
   title: Localized;
+  /** A shorter name for tight spots (timeline, map label) when the title is long. */
+  shortTitle?: Localized;
   /** Ravi's introduction to the era (the first scene). */
   summary: Localized;
   capitals: Capital[];
@@ -73,6 +75,15 @@ export const reservedSlugs = ["about", "references", "contact", "eras"] as const
 /** All eras in chronological order. */
 // The JSON files are checked against these types by tests/unit/content.test.ts.
 export const eras: readonly Era[] = [...(eraFiles as unknown as Era[])].sort((a, b) => a.start - b.start);
+
+/** The era's last year, or the current year for an era that continues today. */
+export function eraEnd(era: Era): number {
+  return era.end ?? new Date().getFullYear();
+}
+
+export function shortTitleOf(era: Era): Localized {
+  return era.shortTitle ?? era.title;
+}
 
 export function getEra(id: string): Era | undefined {
   return eras.find((e) => e.id === id);

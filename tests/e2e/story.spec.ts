@@ -7,7 +7,7 @@ test("era page shows the intro, and the era's marked years as points on the time
   await page.goto("/en/achaemenid/");
   await expect(scene(page)).toHaveAttribute("data-scene", "intro");
   await expect(page.locator("svg.ravi")).toHaveCount(0);
-  const points = page.getByRole("navigation", { name: "Timeline" }).locator("a[data-event]");
+  const points = page.getByRole("navigation", { name: "Timeline" }).locator('a[data-event][href*="/achaemenid/"]');
   await expect(points).toHaveCount(9);
   await expect(points.nth(1)).toHaveAccessibleName("c. 547 BCE — The fall of Sardis");
 });
@@ -44,7 +44,7 @@ test("a deep link opens that event", async ({ page }) => {
 test("going past the last event continues into the next era", async ({ page }) => {
   await page.goto("/en/achaemenid/?e=alexander");
   await page.getByRole("button", { name: "Next event" }).click();
-  await expect(page).toHaveURL(/\/en\/parthian\/$/);
+  await expect(page).toHaveURL(/\/en\/seleucid\/$/);
   await page.getByRole("button", { name: "Previous event" }).click();
   await expect(page).toHaveURL(/\/en\/achaemenid\/$/);
 });

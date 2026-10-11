@@ -1,0 +1,179 @@
+{
+  "id": "seleucid",
+  "start": -330,
+  "end": -141,
+  "color": "#7a9cc6",
+  "title": {
+    "fa": "اسکندر و سلوکیان",
+    "en": "Alexander & the Seleucids"
+  },
+  "shortTitle": {
+    "fa": "سلوکیان",
+    "en": "Seleucids"
+  },
+  "summary": {
+    "fa": "اسکندر مقدونی شاهنشاهی پارس را می‌گشاید؛ پس از مرگ او، سلوکوس، یکی از سردارانش، بیشتر سرزمین‌های آسیایی آن را در دست می‌گیرد و شهرها و فرهنگ یونانی به ایران می‌رسد.",
+    "en": "Alexander of Macedon conquers the Persian empire; after his death his general Seleucus rules most of its Asian lands, bringing Greek cities and culture to Iran."
+  },
+  "capitals": [
+    {
+      "name": {
+        "fa": "سلوکیه",
+        "en": "Seleucia"
+      },
+      "at": [44.52, 33.1]
+    },
+    {
+      "name": {
+        "fa": "انطاکیه",
+        "en": "Antioch"
+      },
+      "at": [36.16, 36.2]
+    }
+  ],
+  "rulers": {
+    "fa": "اسکندر مقدونی، سلوکوس یکم، آنتیوخوس سوم",
+    "en": "Alexander III, Seleucus I, Antiochus III"
+  },
+  "territory": [
+    [
+      [27.0, 38.5], [30.0, 40.8], [35.0, 41.5], [40.0, 40.5], [44.0, 39.5], [47.5, 41.0],
+      [50.0, 39.0], [53.5, 40.0], [58.0, 40.5], [62.0, 41.0], [66.0, 40.5], [69.5, 40.0],
+      [71.0, 37.5], [69.5, 34.5], [66.5, 31.0], [63.5, 29.0], [61.5, 25.5], [57.5, 25.5],
+      [56.3, 26.8], [52.0, 27.3], [50.0, 29.5], [48.0, 30.0], [46.0, 30.5], [43.0, 32.0],
+      [40.0, 33.0], [38.0, 31.5], [35.0, 31.0], [34.5, 33.0], [35.8, 36.0], [31.0, 36.5],
+      [28.0, 36.6]
+    ]
+  ],
+  "events": [
+    {
+      "id": "bactria-roxana",
+      "year": -328,
+      "circa": true,
+      "type": "event",
+      "at": [66.9, 36.76],
+      "title": {
+        "fa": "اسکندر در باختر",
+        "en": "Alexander in Bactria"
+      },
+      "text": {
+        "fa": "اسکندر از باختر و سغد می‌گذرد و با پایداری سرسختانه‌ای روبه‌رو می‌شود. او با رُخسانه (رکسانا)، بانویی از بزرگان باختر، ازدواج می‌کند.",
+        "en": "Alexander marches through Bactria and Sogdiana, meeting fierce resistance, and marries Roxana, a Bactrian noblewoman."
+      }
+    },
+    {
+      "id": "susa-weddings",
+      "year": -324,
+      "type": "event",
+      "at": [48.25, 32.19],
+      "title": {
+        "fa": "عروسی‌های شوش",
+        "en": "The Susa weddings"
+      },
+      "text": {
+        "fa": "در شوش، اسکندر و ده‌ها تن از سردارانش در جشنی همگانی با بانوان پارسی و مادی ازدواج می‌کنند؛ نشانه‌ای از کوشش برای پیوند مقدونیان و پارسیان.",
+        "en": "At Susa, Alexander and dozens of his officers marry Persian and Median noblewomen in a mass ceremony, a gesture toward uniting Macedonians and Persians."
+      }
+    },
+    {
+      "id": "alexander-dies",
+      "year": -323,
+      "type": "event",
+      "at": [44.42, 32.54],
+      "title": {
+        "fa": "مرگ اسکندر",
+        "en": "Alexander dies"
+      },
+      "text": {
+        "fa": "اسکندر در ۳۲ سالگی در بابل درمی‌گذرد و سردارانش شاهنشاهی او را میان خود بخش می‌کنند.",
+        "en": "Alexander dies in Babylon at 32, and his generals divide his empire among themselves."
+      }
+    },
+    {
+      "id": "seleucus-babylon",
+      "year": -312,
+      "type": "event",
+      "at": [44.42, 32.54],
+      "title": {
+        "fa": "سلوکوس در بابل",
+        "en": "Seleucus in Babylon"
+      },
+      "text": {
+        "fa": "سلوکوس به بابل بازمی‌گردد و دودمانی را بنیان می‌گذارد که از دریای اژه تا آسیای میانه فرمان می‌راند؛ گاه‌شماری سلوکی از همین سال آغاز می‌شود.",
+        "en": "Seleucus returns to Babylon and founds a dynasty that will rule from the Aegean to Central Asia; the Seleucid calendar counts its years from here."
+      }
+    },
+    {
+      "id": "maurya-treaty",
+      "year": -305,
+      "circa": true,
+      "type": "event",
+      "at": [65.7, 31.6],
+      "title": {
+        "fa": "آشتی با موریاها",
+        "en": "Peace with the Mauryas"
+      },
+      "text": {
+        "fa": "سلوکوس سرزمین‌های کنار رود سند را در برابر ۵۰۰ فیل جنگی به چندراگوپتای موریا واگذار می‌کند.",
+        "en": "Seleucus gives up the lands along the Indus to Chandragupta Maurya in exchange for 500 war elephants."
+      }
+    },
+    {
+      "id": "arsaces-parthia",
+      "year": -238,
+      "circa": true,
+      "type": "event",
+      "at": [58.2, 37.97],
+      "title": {
+        "fa": "ارشک پارت را می‌گیرد",
+        "en": "Arsaces takes Parthia"
+      },
+      "text": {
+        "fa": "ارشک، سرکردهٔ قبیلهٔ پرنی، ساتراپی پارت را از سلوکیان می‌گیرد و پایهٔ شاهنشاهی اشکانی را می‌گذارد.",
+        "en": "Arsaces, leader of the Parni nomads, seizes the satrapy of Parthia from the Seleucids, laying the foundation of the Parthian empire."
+      }
+    },
+    {
+      "id": "antiochus-east",
+      "year": -209,
+      "type": "battle",
+      "at": [54.33, 36.16],
+      "title": {
+        "fa": "لشکرکشی آنتیوخوس سوم",
+        "en": "Antiochus III marches east"
+      },
+      "text": {
+        "fa": "آنتیوخوس سوم لشکرکشی بزرگی به خاور می‌کند و پارت و باختر را دوباره به پذیرش فرمانروایی سلوکی وادار می‌کند، هرچند تنها برای مدتی.",
+        "en": "Antiochus III leads a great campaign east, forcing Parthia and Bactria to accept Seleucid rule again, though only for a time."
+      }
+    },
+    {
+      "id": "seleucia-falls",
+      "year": -141,
+      "type": "battle",
+      "at": [44.52, 33.1],
+      "title": {
+        "fa": "مهرداد یکم در سلوکیه",
+        "en": "Mithridates I takes Seleucia"
+      },
+      "text": {
+        "fa": "مهرداد یکم اشکانی سلوکیه بر کنار دجله را می‌گیرد و سلوکیان ایران و میان‌رودان را برای همیشه از دست می‌دهند.",
+        "en": "Mithridates I of Parthia captures Seleucia on the Tigris; the Seleucids lose Iran and Mesopotamia for good."
+      }
+    }
+  ],
+  "references": [
+    {
+      "author": "Susan Sherwin-White and Amélie Kuhrt",
+      "title": "From Samarkhand to Sardis: A New Approach to the Seleucid Empire",
+      "publisher": "University of California Press",
+      "year": 1993
+    },
+    {
+      "author": "Ehsan Yarshater (ed.)",
+      "title": "The Cambridge History of Iran, Vol. 3: The Seleucid, Parthian and Sasanian Periods",
+      "publisher": "Cambridge University Press",
+      "year": 1983
+    }
+  ]
+}
