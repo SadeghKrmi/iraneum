@@ -212,12 +212,12 @@ export default function AtlasMap({
             glow={false}
           />
         ))}
-        {era && territory && <Territory key={territory.key} rings={territory.rings} color={era.color} />}
+        {era && territory && <Territory key={`era-${territory.key}`} rings={territory.rings} color={era.color} />}
         {era && <Capitals capitals={era.capitals} palette={palette} />}
-        {scene?.at && scene.type && <EventMarker key={scene.id} at={scene.at} type={scene.type} />}
+        {scene?.at && scene.type && <EventMarker key={`event-${scene.id}`} at={scene.at} type={scene.type} />}
         {scene?.route && (
           <Route
-            key={scene.id}
+            key={`route-${scene.id}`}
             points={scene.route}
             color={scene.type === "battle" ? routeColors.battle : routeColors.other}
           />

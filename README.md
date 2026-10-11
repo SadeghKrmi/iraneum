@@ -52,6 +52,7 @@ npm run dev          # http://localhost:3000/fa/
 npm run lint && npm run typecheck && npm test   # unit tests (Vitest)
 npm run build                                   # static site in out/
 npm run test:e2e                                # browser tests (Playwright) against out/
+npm run smoke:dev                               # now and then: console errors under `next dev` (slow)
 ```
 
 ## Writing an era
