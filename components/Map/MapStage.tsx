@@ -19,6 +19,8 @@ export function MapStage(props: Omit<AtlasMapProps, "onReady">) {
       data-map-event={props.scene?.at ? props.scene.id : ""}
       data-map-route={props.scene?.route ? props.scene.id : ""}
       data-map-territory={props.territory?.key ?? ""}
+      data-map-world={props.world.map((c) => c.id).join(" ")}
+      data-map-focus={props.highlight ?? ""}
     >
       <AtlasMap {...props} onReady={onReady} />
     </div>

@@ -1,17 +1,19 @@
 "use client";
 
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useEffectEvent, useRef, useState } from "react";
+import { Suspense, useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
 import { scenesOf, territoryAt, type Era } from "@/lib/content";
 import { formatYear } from "@/lib/dates";
 import type { Dictionary, Locale } from "@/lib/i18n";
 import { eraHref } from "@/lib/routes";
+import { worldAt } from "@/lib/world";
 import { MapStage } from "../Map/MapStage";
 import { Timeline } from "../Timeline/Timeline";
 import { usePersistentFlag } from "../usePersistentFlag";
 import { Dock } from "./Dock";
 import { EraCard } from "./EraCard";
 import { MapKey } from "./MapKey";
+import { Meanwhile } from "./Meanwhile";
 
 export type AtlasAppProps = {
   locale: Locale;
@@ -65,6 +67,10 @@ function Atlas({
   const [playing, setPlaying] = useState(false);
   const [cardOpen, setCardOpen] = usePersistentFlag("iraneum:card-open", true);
   const [keyOpen, setKeyOpen] = usePersistentFlag("iraneum:key-open", true);
+  const [compare, setCompare] = usePersistentFlag("iraneum:compare", true);
+  const [meanwhileOpen, setMeanwhileOpen] = usePersistentFlag("iraneum:meanwhile-open", true);
+  // A civilization picked in the panel, remembered only for the scene it was picked in.
+  const [picked, setPicked] = useState<{ scene: string; id: string } | null>(null);
   const audioEl = useRef<HTMLAudioElement>(null);
 
   const showScene = (i: number) => {
@@ -125,6 +131,12 @@ function Atlas({
   }, []);
 
   const year = scene ? formatYear(scene.year, locale, scene.circa) : null;
+  const sceneKey = era && scene ? `${era.id}/${scene.id}` : "";
+  const sceneYear = scene?.year ?? null;
+  const world = useMemo(() => (compare && sceneYear !== null ? worldAt(sceneYear) : []), [compare, sceneYear]);
+  const highlight = picked && picked.scene === sceneKey && world.some((c) => c.id === picked.id) ? picked.id : null;
+  // The right-hand column only shows on large screens (see the "lg:" classes below).
+  const endPanel = !!era && ((compare && meanwhileOpen && world.length > 0) || keyOpen);
 
   return (
     <>
@@ -133,7 +145,10 @@ function Atlas({
         era={era}
         scene={scene}
         territory={era ? territoryAt(era, index) : null}
+        world={world}
+        highlight={highlight}
         panelOpen={cardOpen}
+        endPanel={endPanel}
         noWebglText={t.noWebgl}
       />
       {era && scene && (
@@ -153,7 +168,23 @@ function Atlas({
           onStep={step}
         />
       )}
-      {era && <MapKey t={t} open={keyOpen} onToggle={setKeyOpen} />}
+      {era && (
+        <div className="pointer-events-none fixed bottom-[calc(var(--dock-h)+0.75rem)] end-4 top-24 z-10 hidden w-64 flex-col items-end gap-3 lg:flex">
+          {compare && world.length > 0 && year && (
+            <Meanwhile
+              locale={locale}
+              t={t}
+              year={year}
+              civilizations={world}
+              selectedId={highlight}
+              onSelect={(id) => setPicked(highlight === id ? null : { scene: sceneKey, id })}
+              open={meanwhileOpen}
+              onToggle={setMeanwhileOpen}
+            />
+          )}
+          <MapKey t={t} open={keyOpen} onToggle={setKeyOpen} />
+        </div>
+      )}
       <Dock
         t={t}
         year={year}
@@ -163,6 +194,7 @@ function Atlas({
         canGoForward={!era || index < scenes.length - 1 || eraIndex < eras.length - 1}
         onStep={step}
         onTogglePlay={togglePlay}
+        compare={era ? { on: compare, toggle: () => setCompare(!compare) } : null}
       >
         <Timeline
           locale={locale}

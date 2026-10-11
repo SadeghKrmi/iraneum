@@ -7,7 +7,6 @@ import { EqualStencilFunc, KeepStencilOp, type Material, type MeshBasicMaterial 
 import { closeRing, densify, lonLatShapes, shapesOnSphere, toSphere, type LonLat } from "@/lib/geo";
 import { LAND_RADIUS, LAND_STENCIL } from "./constants";
 
-const FILL_OPACITY = 0.5;
 
 /** Draws only where land was drawn, so a territory never spills over the sea. */
 function onLandOnly(material: Material) {
@@ -19,8 +18,17 @@ function onLandOnly(material: Material) {
   material.stencilZPass = KeepStencilOp;
 }
 
-/** An era's territory: a translucent fill with a glowing edge, fading in when the era changes. */
-export function Territory({ rings, color }: { rings: LonLat[][]; color: string }) {
+type Props = {
+  rings: LonLat[][];
+  color: string;
+  /** How strongly the area is tinted (Iran's era is strong, other civilizations are faint). */
+  fillOpacity?: number;
+  edgeWidth?: number;
+  glow?: boolean;
+};
+
+/** A territory: a translucent fill with an edge (optionally glowing), fading in when it appears. */
+export function Territory({ rings, color, fillOpacity = 0.5, edgeWidth = 2, glow = true }: Props) {
   const { fill, outlines } = useMemo(() => {
     const closed = rings.map((ring) => closeRing(ring));
     const fill = shapesOnSphere(lonLatShapes(closed.map((ring) => [ring])), LAND_RADIUS + 0.03, 2);
@@ -36,13 +44,13 @@ export function Territory({ rings, color }: { rings: LonLat[][]; color: string }
     for (const line of edges.current) if (line) onLandOnly(line.material);
   }, [fill, outlines]);
 
-  // Fade in (asking for the next frame until done, since the map only redraws on request).
+  // Fade toward the target opacity (asking for the next frame until done: the map redraws on request).
   useFrame(({ invalidate }, dt) => {
     const m = fillMaterial.current;
-    if (m && m.opacity < FILL_OPACITY) {
-      m.opacity = Math.min(FILL_OPACITY, m.opacity + Math.min(dt, 0.1) * 1.2);
-      invalidate();
-    }
+    if (!m || Math.abs(m.opacity - fillOpacity) < 0.005) return;
+    const stepBy = Math.min(dt, 0.1) * 1.2;
+    m.opacity += Math.max(-stepBy, Math.min(stepBy, fillOpacity - m.opacity));
+    invalidate();
   });
 
   return (
@@ -52,25 +60,29 @@ export function Territory({ rings, color }: { rings: LonLat[][]; color: string }
       </mesh>
       {outlines.map((points, i) => (
         <group key={i}>
-          <Line
-            ref={(el) => {
-              edges.current[i * 2] = el;
-            }}
-            points={points}
-            color={color}
-            lineWidth={7}
-            transparent
-            opacity={0.25}
-            depthWrite={false}
-            renderOrder={4}
-          />
+          {glow && (
+            <Line
+              ref={(el) => {
+                edges.current[i * 2] = el;
+              }}
+              points={points}
+              color={color}
+              lineWidth={7}
+              transparent
+              opacity={0.25}
+              depthWrite={false}
+              renderOrder={4}
+            />
+          )}
           <Line
             ref={(el) => {
               edges.current[i * 2 + 1] = el;
             }}
             points={points}
             color={color}
-            lineWidth={2}
+            lineWidth={edgeWidth}
+            transparent={!glow}
+            opacity={glow ? 1 : 0.8}
             depthWrite={false}
             renderOrder={4}
           />

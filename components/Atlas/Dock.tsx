@@ -1,7 +1,7 @@
 "use client";
 
 import type { Dictionary } from "@/lib/i18n";
-import { ChevronBackIcon, ChevronForwardIcon, PauseIcon, PlayIcon } from "../icons";
+import { ChevronBackIcon, ChevronForwardIcon, GlobeIcon, PauseIcon, PlayIcon } from "../icons";
 
 type Props = {
   t: Dictionary;
@@ -12,11 +12,24 @@ type Props = {
   canGoForward: boolean;
   onStep: (delta: 1 | -1) => void;
   onTogglePlay: () => void;
+  /** "Compare with the world" switch (on era pages). */
+  compare: { on: boolean; toggle: () => void } | null;
   children: React.ReactNode;
 };
 
 /** Bottom dock: playback controls, the current year and era, and the timeline. */
-export function Dock({ t, year, eraName, playing, canGoBack, canGoForward, onStep, onTogglePlay, children }: Props) {
+export function Dock({
+  t,
+  year,
+  eraName,
+  playing,
+  canGoBack,
+  canGoForward,
+  onStep,
+  onTogglePlay,
+  compare,
+  children,
+}: Props) {
   return (
     <footer className="fixed inset-x-0 bottom-0 z-20 flex h-[var(--dock-h)] flex-col justify-end bg-gradient-to-t from-bg from-55% to-transparent pb-[env(safe-area-inset-bottom)]">
       <div className="flex items-center gap-2 px-3 sm:px-5">
@@ -43,6 +56,21 @@ export function Dock({ t, year, eraName, playing, canGoBack, canGoForward, onSte
         )}
         {eraName && (
           <p className="ms-3 hidden truncate text-sm uppercase ltr:tracking-[0.15em] text-muted md:block">{eraName}</p>
+        )}
+        {compare && (
+          <button
+            type="button"
+            onClick={compare.toggle}
+            aria-pressed={compare.on}
+            aria-label={t.compare}
+            title={t.compare}
+            className={`ms-auto flex h-10 shrink-0 items-center gap-2 rounded-full border px-3 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-gold ${
+              compare.on ? "border-gold bg-gold/15 text-gold" : "border-line bg-bg/60 text-muted hover:border-gold hover:text-gold"
+            }`}
+          >
+            <GlobeIcon className="size-5" />
+            <span className="hidden sm:inline">{t.compare}</span>
+          </button>
         )}
       </div>
       {children}

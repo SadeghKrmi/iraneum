@@ -21,9 +21,11 @@ A timeline bar at the bottom holds checkpoints. Pick one, and Ravi (راوی), t
 - [x] **Step 6: a richer map.** Stylized mountain ranges (`content/map/mountains.json`), a wave-patterned sea,
       campaign routes as animated arrows (37 events), and borders that change within an era
       (Achaemenids, Afsharids).
-- [ ] Next: compare civilizations; publish online
-- [ ] Step 6: compare civilizations at the same moment
-- [ ] Step 7: polish (narration character, deploy)
+- [x] **Step 7: compare civilizations.** At each scene's year the globe also shows the world's other
+      civilizations (`content/world/civilizations.json`, 58 entries from ancient Egypt to today) with their
+      territory and name. A "Meanwhile in the world" panel lists them; picking one flies the camera there.
+      The dock's "Compare with the world" button turns the layer on and off (remembered).
+- [ ] Step 8: polish (narration character, more border stages, publish online)
 
 All texts, territories and coordinates are drafts that still need historical review.
 

@@ -98,7 +98,7 @@ test("map key collapses to a layers button and expands again", async ({ page }, 
   await expect(key).toHaveAttribute("data-open", "true");
   await key.getByRole("button", { name: "Hide panel" }).click();
   await expect(key).toHaveAttribute("data-open", "false");
-  await key.getByRole("button", { name: "Map key" }).click();
+  await page.getByRole("button", { name: "Map key" }).click();
   await expect(key).toHaveAttribute("data-open", "true");
 });
 
@@ -111,4 +111,42 @@ test("campaign routes and changing borders follow the story", async ({ page }) =
   await page.getByRole("link", { name: /Persepolis rises/ }).first().click();
   await expect(map(page)).toHaveAttribute("data-map-route", "");
   await expect(map(page)).toHaveAttribute("data-map-territory", "achaemenid");
+});
+
+test("other civilizations of the scene's year are shown on the map", async ({ page }) => {
+  await page.goto("/en/achaemenid/?e=xerxes-greece");
+  await expect(map(page)).toHaveAttribute("data-map-world", /\bgreek-poleis\b/);
+  await expect(map(page)).toHaveAttribute("data-map-world", /\bzhou\b/);
+  await expect(map(page)).not.toHaveAttribute("data-map-world", /\busa\b/);
+  await page.goto("/en/pahlavi/");
+  await expect(map(page)).toHaveAttribute("data-map-world", /\busa\b/);
+});
+
+test("Meanwhile panel lists civilizations and picks one on the map", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name === "mobile", "the Meanwhile panel is shown on wide screens only");
+  await page.goto("/en/achaemenid/?e=xerxes-greece");
+  const panel = page.locator("[data-meanwhile]");
+  await expect(panel).toBeVisible();
+  const greeks = panel.locator('[data-civ="greek-poleis"]');
+  await expect(greeks).toHaveAttribute("aria-pressed", "false");
+  await greeks.click();
+  await expect(greeks).toHaveAttribute("aria-pressed", "true");
+  await expect(map(page)).toHaveAttribute("data-map-focus", "greek-poleis");
+  // The pick belongs to its scene.
+  await page.getByRole("button", { name: "Next event" }).click();
+  await expect(map(page)).toHaveAttribute("data-map-focus", "");
+});
+
+test("the compare toggle hides the other civilizations", async ({ page }, testInfo) => {
+  await page.goto("/en/achaemenid/?e=xerxes-greece");
+  const toggle = page.getByRole("button", { name: "Compare with the world" });
+  await expect(toggle).toHaveAttribute("aria-pressed", "true");
+  await toggle.click();
+  await expect(toggle).toHaveAttribute("aria-pressed", "false");
+  await expect(map(page)).toHaveAttribute("data-map-world", "");
+  await expect(page.locator("[data-meanwhile]")).toHaveCount(0);
+  if (testInfo.project.name !== "mobile") {
+    await toggle.click();
+    await expect(page.locator("[data-meanwhile]")).toBeVisible();
+  }
 });

@@ -6,6 +6,7 @@ import type { PerspectiveCamera } from "three";
 import { shortTitleOf, type Era, type Scene } from "@/lib/content";
 import { centroidOf, extentOf, pointsFocus, type LonLat } from "@/lib/geo";
 import { dirOf, type Locale } from "@/lib/i18n";
+import type { WorldCivilization } from "@/lib/world";
 import { Globe } from "./Globe";
 import { GlobeRig, MAX_ALTITUDE, type GlobeGoal } from "./GlobeRig";
 import { LabelLayer, LabelProjector, type LabelElements, type MapLabel } from "./Labels";
@@ -22,8 +23,14 @@ export type AtlasMapProps = {
   scene: Scene | null;
   /** The territory at the current scene: the era at its height, or a border change within the era. */
   territory: { key: string; rings: LonLat[][] } | null;
+  /** Other civilizations that existed at the current scene's year (empty when comparing is off). */
+  world: WorldCivilization[];
+  /** A civilization picked in the "Meanwhile" panel: highlighted, and the camera flies to it. */
+  highlight: string | null;
   /** The era card is showing, so the view's centre moves out from under it. */
   panelOpen: boolean;
+  /** The right-hand column (meanwhile panel, map key) is showing on a wide screen. */
+  endPanel: boolean;
   noWebglText: string;
   onReady?: () => void;
 };
@@ -40,14 +47,33 @@ function webglAvailable() {
   }
 }
 
-export default function AtlasMap({ locale, era, scene, territory, panelOpen, noWebglText, onReady }: AtlasMapProps) {
+export default function AtlasMap({
+  locale,
+  era,
+  scene,
+  territory,
+  world,
+  highlight,
+  panelOpen,
+  endPanel,
+  noWebglText,
+  onReady,
+}: AtlasMapProps) {
   const palette = useMapPalette();
   const [webgl] = useState(webglAvailable);
   const [elements] = useState<LabelElements>(() => new Map());
 
   const eraCentre = useMemo(() => (era ? centroidOf(era.territory) : null), [era]);
 
+  const worldCentres = useMemo(() => new Map(world.map((c) => [c.id, centroidOf(c.territory)])), [world]);
+
   const goal = useMemo<GlobeGoal>(() => {
+    const picked = world.find((c) => c.id === highlight);
+    if (picked) {
+      const centre = worldCentres.get(picked.id)!;
+      const altitude = Math.min(MAX_ALTITUDE, Math.max(45, extentOf(picked.territory) * 1.75 * 1.2));
+      return { lon: centre[0], lat: centre[1], altitude };
+    }
     if (scene?.at && scene.route) {
       // Frame the whole campaign, from its start to the event's place.
       const { centre, extent } = pointsFocus([...scene.route, scene.at]);
@@ -60,7 +86,7 @@ export default function AtlasMap({ locale, era, scene, territory, panelOpen, noW
       return { lon: eraCentre[0], lat: eraCentre[1], altitude };
     }
     return HOME;
-  }, [era, eraCentre, scene]);
+  }, [era, eraCentre, scene, world, worldCentres, highlight]);
 
   const labels = useMemo<MapLabel[]>(() => {
     if (!era || !eraCentre) return [];
@@ -93,6 +119,23 @@ export default function AtlasMap({ locale, era, scene, territory, panelOpen, noW
         </span>
       ),
     });
+    for (const c of world) {
+      const strong = c.id === highlight;
+      list.push({
+        id: `world-${c.id}`,
+        at: worldCentres.get(c.id)!,
+        height: 0.4,
+        content: (
+          <span
+            className={`flex items-center gap-1.5 whitespace-nowrap ${strong ? "text-sm font-bold" : "text-xs font-medium"}`}
+            style={{ color: palette.label, ...shadow, opacity: strong ? 1 : 0.85 }}
+          >
+            <span aria-hidden className="size-2 rounded-full" style={{ background: c.color }} />
+            {c.name[locale]}
+          </span>
+        ),
+      });
+    }
     if (scene?.at && scene.type) {
       list.push({
         id: `event-${scene.id}`,
@@ -109,7 +152,7 @@ export default function AtlasMap({ locale, era, scene, territory, panelOpen, noW
       });
     }
     return list;
-  }, [era, eraCentre, scene, locale, palette]);
+  }, [era, eraCentre, scene, locale, palette, world, worldCentres, highlight]);
 
   if (!webgl) {
     return (
@@ -134,6 +177,16 @@ export default function AtlasMap({ locale, era, scene, territory, panelOpen, noW
         <Globe palette={palette} />
         <Land palette={palette} onReady={onReady} />
         <Mountains palette={palette} />
+        {world.map((c) => (
+          <Territory
+            key={`world-${c.id}`}
+            rings={c.territory}
+            color={c.color}
+            fillOpacity={c.id === highlight ? 0.38 : 0.16}
+            edgeWidth={c.id === highlight ? 2 : 1.2}
+            glow={false}
+          />
+        ))}
         {era && territory && <Territory key={territory.key} rings={territory.rings} color={era.color} />}
         {era && <Capitals capitals={era.capitals} palette={palette} />}
         {scene?.at && scene.type && <EventMarker key={scene.id} at={scene.at} type={scene.type} />}
@@ -146,7 +199,9 @@ export default function AtlasMap({ locale, era, scene, territory, panelOpen, noW
         )}
         <GlobeRig goal={goal} />
         <LabelProjector labels={labels} elements={elements} />
-        {era && panelOpen && <PanelOffset rtl={dirOf(locale) === "rtl"} />}
+        {era && (panelOpen || endPanel) && (
+          <PanelOffset rtl={dirOf(locale) === "rtl"} start={panelOpen} end={endPanel} />
+        )}
       </Canvas>
       <LabelLayer labels={labels} elements={elements} />
     </>
@@ -154,17 +209,20 @@ export default function AtlasMap({ locale, era, scene, territory, panelOpen, noW
 }
 
 /**
- * Moves the map's visual centre away from the era card, so what the camera looks at isn't hidden behind it:
- * sideways on wide screens (card at the start side), upward on phones (card at the bottom).
+ * Moves the map's visual centre away from the panels, so what the camera looks at isn't hidden behind them:
+ * sideways on wide screens (era card at the start side, meanwhile/key column at the end side on large
+ * screens), upward on phones (card at the bottom).
  */
-function PanelOffset({ rtl }: { rtl: boolean }) {
+function PanelOffset({ rtl, start, end }: { rtl: boolean; start: boolean; end: boolean }) {
   const camera = useThree((s) => s.camera) as PerspectiveCamera;
   const { width, height } = useThree((s) => s.size);
   const invalidate = useThree((s) => s.invalidate);
   useEffect(() => {
     const wide = width >= 640;
-    const x = wide ? (rtl ? 1 : -1) * Math.min(210, width * 0.16) : 0;
-    const y = wide ? 0 : height * 0.2;
+    const startShift = wide && start ? Math.min(210, width * 0.16) : 0;
+    const endShift = width >= 1024 && end ? 130 : 0;
+    const x = (rtl ? 1 : -1) * (startShift - endShift);
+    const y = !wide && start ? height * 0.2 : 0;
     camera.setViewOffset(width, height, x, y, width, height);
     camera.updateProjectionMatrix();
     invalidate();
@@ -173,6 +231,6 @@ function PanelOffset({ rtl }: { rtl: boolean }) {
       camera.updateProjectionMatrix();
       invalidate();
     };
-  }, [camera, width, height, rtl, invalidate]);
+  }, [camera, width, height, rtl, start, end, invalidate]);
   return null;
 }
