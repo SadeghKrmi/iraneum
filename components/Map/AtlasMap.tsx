@@ -6,7 +6,7 @@ import type { PerspectiveCamera } from "three";
 import { shortTitleOf, type Era, type Scene } from "@/lib/content";
 import { centroidOf, extentOf, pointsFocus, type LonLat } from "@/lib/geo";
 import { dirOf, type Locale } from "@/lib/i18n";
-import type { WorldCivilization } from "@/lib/world";
+import { worldTerritory, type WorldCivilization } from "@/lib/world";
 import { Globe } from "./Globe";
 import { GlobeRig, MAX_ALTITUDE, type GlobeGoal } from "./GlobeRig";
 import { LabelLayer, LabelProjector, type LabelElements, type MapLabel } from "./Labels";
@@ -25,6 +25,8 @@ export type AtlasMapProps = {
   territory: { key: string; rings: LonLat[][] } | null;
   /** Other civilizations that existed at the current scene's year (empty when comparing is off). */
   world: WorldCivilization[];
+  /** The current scene's year, for the other civilizations' borders at that time. */
+  year: number | null;
   /** A civilization picked in the "Meanwhile" panel: highlighted, and the camera flies to it. */
   highlight: string | null;
   /** The era card is showing, so the view's centre moves out from under it. */
@@ -53,6 +55,7 @@ export default function AtlasMap({
   scene,
   territory,
   world,
+  year,
   highlight,
   panelOpen,
   endPanel,
@@ -65,19 +68,29 @@ export default function AtlasMap({
 
   const eraCentre = useMemo(() => (era ? centroidOf(era.territory) : null), [era]);
 
-  const worldCentres = useMemo(() => new Map(world.map((c) => [c.id, centroidOf(c.territory)])), [world]);
+  // Each civilization with its borders in the scene's year, the centre of those borders and their size.
+  const shown = useMemo(
+    () =>
+      world.map((c) => {
+        const { key, rings } = worldTerritory(c, year ?? c.from);
+        return { c, key, rings, centre: centroidOf(rings), extent: extentOf(rings) };
+      }),
+    [world, year],
+  );
 
   const goal = useMemo<GlobeGoal>(() => {
-    const picked = world.find((c) => c.id === highlight);
+    const picked = shown.find((s) => s.c.id === highlight);
     if (picked) {
-      const centre = worldCentres.get(picked.id)!;
-      const altitude = Math.min(MAX_ALTITUDE, Math.max(45, extentOf(picked.territory) * 1.75 * 1.2));
-      return { lon: centre[0], lat: centre[1], altitude };
+      const altitude = Math.min(MAX_ALTITUDE, Math.max(45, picked.extent * 1.75 * 1.2));
+      return { lon: picked.centre[0], lat: picked.centre[1], altitude };
     }
-    if (scene?.at && scene.route) {
-      // Frame the whole campaign, from its start to the event's place.
-      const { centre, extent } = pointsFocus([...scene.route, scene.at]);
-      return { lon: centre[0], lat: centre[1], altitude: Math.min(220, Math.max(40, extent * 1.75 * 1.3)) };
+    if (scene?.at && (scene.route || (scene.borders && territory))) {
+      // Frame the whole campaign, from its start to the event's place, and the new borders when they change.
+      const points = [scene.at, ...(scene.route ?? []), ...(scene.borders && territory ? territory.rings.flat() : [])];
+      const { centre, extent } = pointsFocus(points);
+      // A little more room when framing borders: the panels at the sides cover their edges.
+      const margin = scene.borders ? 1.5 : 1.3;
+      return { lon: centre[0], lat: centre[1], altitude: Math.min(220, Math.max(40, extent * 1.75 * margin)) };
     }
     if (scene?.at) return { lon: scene.at[0], lat: scene.at[1], altitude: 40 };
     if (era && eraCentre) {
@@ -86,15 +99,17 @@ export default function AtlasMap({
       return { lon: eraCentre[0], lat: eraCentre[1], altitude };
     }
     return HOME;
-  }, [era, eraCentre, scene, world, worldCentres, highlight]);
+  }, [era, eraCentre, scene, territory, shown, highlight]);
 
   const labels = useMemo<MapLabel[]>(() => {
     if (!era || !eraCentre) return [];
     const shadow = { textShadow: palette.labelShadow };
+    // Iran's own labels always show; the other civilizations' names give way to them and to larger neighbours.
     const list: MapLabel[] = era.capitals.map((c) => ({
       id: `capital-${c.name.en}`,
       at: c.at,
       height: 1.6,
+      priority: 1000,
       content: (
         <span className="block whitespace-nowrap text-xs font-medium" style={{ color: palette.label, ...shadow }}>
           {c.name[locale]}
@@ -105,6 +120,7 @@ export default function AtlasMap({
       id: `era-${era.id}`,
       at: eraCentre,
       height: 0.5,
+      priority: 1000,
       content: (
         <span
           className="flex flex-col items-center text-center transition-opacity duration-500"
@@ -119,12 +135,14 @@ export default function AtlasMap({
         </span>
       ),
     });
-    for (const c of world) {
+    for (const { c, centre, extent } of shown) {
       const strong = c.id === highlight;
       list.push({
         id: `world-${c.id}`,
-        at: worldCentres.get(c.id)!,
+        at: centre,
         height: 0.4,
+        priority: strong ? 500 : extent,
+        yields: true,
         content: (
           <span
             className={`flex items-center gap-1.5 whitespace-nowrap ${strong ? "text-sm font-bold" : "text-xs font-medium"}`}
@@ -141,6 +159,7 @@ export default function AtlasMap({
         id: `event-${scene.id}`,
         at: scene.at,
         height: 2.6,
+        priority: 2000,
         content: (
           <span
             className="block whitespace-nowrap text-sm font-bold"
@@ -152,7 +171,7 @@ export default function AtlasMap({
       });
     }
     return list;
-  }, [era, eraCentre, scene, locale, palette, world, worldCentres, highlight]);
+  }, [era, eraCentre, scene, locale, palette, shown, highlight]);
 
   if (!webgl) {
     return (
@@ -177,10 +196,10 @@ export default function AtlasMap({
         <Globe palette={palette} />
         <Land palette={palette} onReady={onReady} />
         <Mountains palette={palette} />
-        {world.map((c) => (
+        {shown.map(({ c, key, rings }) => (
           <Territory
-            key={`world-${c.id}`}
-            rings={c.territory}
+            key={`world-${key}`}
+            rings={rings}
             color={c.color}
             fillOpacity={c.id === highlight ? 0.38 : 0.16}
             edgeWidth={c.id === highlight ? 2 : 1.2}

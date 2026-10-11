@@ -22,10 +22,15 @@ A timeline bar at the bottom holds checkpoints. Pick one, and Ravi (راوی), t
       campaign routes as animated arrows (37 events), and borders that change within an era
       (Achaemenids, Afsharids).
 - [x] **Step 7: compare civilizations.** At each scene's year the globe also shows the world's other
-      civilizations (`content/world/civilizations.json`, 58 entries from ancient Egypt to today) with their
+      civilizations (`content/world/civilizations.json`, from ancient Egypt to today) with their
       territory and name. A "Meanwhile in the world" panel lists them; picking one flies the camera there.
       The dock's "Compare with the world" button turns the layer on and off (remembered).
-- [ ] Step 8: polish (narration character, more border stages, publish online)
+- [x] **Step 8: more border stages and a bigger world.** Iran's borders now change from event to event in
+      12 of the 14 eras (the camera frames the new border). The world data grows to 169 civilizations
+      across every continent, and 29 of them change their borders over time (Rome, the Ottomans, the Mongols,
+      Russia, the USA, Qing China, the Mughals…). Nearest neighbours lead the "Meanwhile" list, and map
+      labels that would overlap give way to Iran's own and to larger civilizations.
+- [ ] Step 9: polish (narration character, publish online)
 
 All texts, territories and coordinates are drafts that still need historical review.
 
@@ -66,6 +71,10 @@ Map fields: `color` (territory colour), `capitals` (`{ "name": {fa, en}, "at": [
 (`{fa, en}`), `territory` (one ring of `[lon, lat]` points per area, drawn on land only), and for each event
 `type` (`battle`, `monument`, `city` or `event`) and `at` (`[lon, lat]`). All territories are simplified
 drafts.
+
+Other civilizations live in `content/world/civilizations.json`: `id`, `color`, `from` / `to` (years, `to`
+left out if it still exists), `name` and `summary` (`{fa, en}`), `capital` (`{ "name", "at" }`), `territory`
+(rings), and optional `stages` (`[{ "from": 1517, "territory": [rings] }, …]`, the borders from that year on).
 
 `npm test` fails if an id is duplicated, an event falls outside its era or is out of order, or a text is
 missing in either language. About and Contact texts live in `content/pages.json`; general references in

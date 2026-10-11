@@ -1,6 +1,7 @@
 "use client";
 
 import { useFrame } from "@react-three/fiber";
+import { useMemo, useState } from "react";
 import { Vector3 } from "three";
 import { toSphere, type LonLat } from "@/lib/geo";
 import { LAND_RADIUS } from "./constants";
@@ -10,6 +11,10 @@ export type MapLabel = {
   at: LonLat;
   /** Height above the land, in scene units. */
   height: number;
+  /** Labels with a higher priority are placed first. */
+  priority?: number;
+  /** Hidden while it would overlap a label placed before it (otherwise always shown). */
+  yields?: boolean;
   content: React.ReactNode;
 };
 
@@ -44,10 +49,21 @@ const point = new Vector3();
 const normal = new Vector3();
 const toCamera = new Vector3();
 
-/** Inside the canvas: moves each label to its point on screen; hides it on the far side of the globe. */
+/** Screen boxes (x0, y0, x1, y1) of the labels placed so far in a frame. */
+const placed: number[] = [];
+const GAP = 4;
+
+/**
+ * Inside the canvas: moves each label to its point on screen; hides it on the far side of the globe,
+ * and hides a label that yields when it would overlap one placed before it.
+ */
 export function LabelProjector({ labels, elements }: { labels: MapLabel[]; elements: LabelElements }) {
+  const ordered = useMemo(() => [...labels].sort((a, b) => (b.priority ?? 0) - (a.priority ?? 0)), [labels]);
+  // Label sizes, measured once per label (a label whose content changes is a new object).
+  const [sizes] = useState(() => new WeakMap<MapLabel, { w: number; h: number }>());
   useFrame(({ camera, size }) => {
-    for (const label of labels) {
+    placed.length = 0;
+    for (const label of ordered) {
       const el = elements.get(label.id);
       if (!el) continue;
       toSphere(label.at, LAND_RADIUS + label.height, point);
@@ -60,8 +76,23 @@ export function LabelProjector({ labels, elements }: { labels: MapLabel[]; eleme
       if (!visible) continue;
       const x = ((point.x + 1) / 2) * size.width;
       const y = ((1 - point.y) / 2) * size.height;
+      let box = sizes.get(label);
+      if (!box) sizes.set(label, (box = { w: el.offsetWidth, h: el.offsetHeight }));
+      const [x0, y0, x1, y1] = [x - box.w / 2 - GAP, y - box.h / 2 - GAP, x + box.w / 2 + GAP, y + box.h / 2 + GAP];
+      if (label.yields && overlapsPlaced(x0, y0, x1, y1)) {
+        el.style.visibility = "hidden";
+        continue;
+      }
+      placed.push(x0, y0, x1, y1);
       el.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
     }
   });
   return null;
+}
+
+function overlapsPlaced(x0: number, y0: number, x1: number, y1: number) {
+  for (let i = 0; i < placed.length; i += 4) {
+    if (x0 < placed[i + 2] && x1 > placed[i] && y0 < placed[i + 3] && y1 > placed[i + 1]) return true;
+  }
+  return false;
 }

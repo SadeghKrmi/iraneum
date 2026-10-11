@@ -70,8 +70,19 @@ describe("border changes within an era", () => {
   });
 
   it("fall back to the era's territory where nothing changes", () => {
+    const pahlavi = getEra("pahlavi")!;
+    expect(territoryAt(pahlavi, 3)).toEqual({ key: "pahlavi", rings: pahlavi.territory });
+    // Parthia's height ("full") from Mithridates II on.
     const parthian = getEra("parthian")!;
+    expect(territoryAt(parthian, 1).key).toBe("parthian/arsacid-era");
     expect(territoryAt(parthian, 3)).toEqual({ key: "parthian", rings: parthian.territory });
+  });
+
+  it("are drawn for every era whose borders moved", () => {
+    const staged = eras.filter((era) => era.events.some((ev) => ev.territory)).map((era) => era.id);
+    expect(staged).toHaveLength(12);
+    expect(staged).not.toContain("pahlavi");
+    expect(staged).not.toContain("islamic-republic");
   });
 });
 

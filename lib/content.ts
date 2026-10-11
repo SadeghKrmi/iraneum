@@ -68,6 +68,8 @@ export type Scene = {
   type?: EventType;
   at?: LonLat;
   route?: LonLat[];
+  /** The borders change at this event (the map frames the new territory). */
+  borders?: boolean;
   title: Localized;
   text: Localized;
 };
@@ -97,13 +99,14 @@ export function getEra(id: string): Era | undefined {
 export function scenesOf(era: Era): Scene[] {
   return [
     { id: INTRO_SCENE_ID, year: era.start, title: era.title, text: era.summary },
-    ...era.events.map(({ id, year, circa, type, at, route, title, text }) => ({
+    ...era.events.map(({ id, year, circa, type, at, route, territory, title, text }) => ({
       id,
       year,
       circa,
       type,
       at,
       route,
+      ...(territory && { borders: true }),
       title,
       text,
     })),

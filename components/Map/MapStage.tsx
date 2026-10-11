@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useCallback, useState } from "react";
+import { worldTerritory } from "@/lib/world";
 import type { AtlasMapProps } from "./AtlasMap";
 
 // Three.js only runs in the browser, and the map is decoration around the story, so it loads after the page.
@@ -20,6 +21,7 @@ export function MapStage(props: Omit<AtlasMapProps, "onReady">) {
       data-map-route={props.scene?.route ? props.scene.id : ""}
       data-map-territory={props.territory?.key ?? ""}
       data-map-world={props.world.map((c) => c.id).join(" ")}
+      data-map-world-stages={props.world.map((c) => worldTerritory(c, props.year ?? c.from).key).join(" ")}
       data-map-focus={props.highlight ?? ""}
     >
       <AtlasMap {...props} onReady={onReady} />

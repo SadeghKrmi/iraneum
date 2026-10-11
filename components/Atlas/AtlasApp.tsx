@@ -133,7 +133,12 @@ function Atlas({
   const year = scene ? formatYear(scene.year, locale, scene.circa) : null;
   const sceneKey = era && scene ? `${era.id}/${scene.id}` : "";
   const sceneYear = scene?.year ?? null;
-  const world = useMemo(() => (compare && sceneYear !== null ? worldAt(sceneYear) : []), [compare, sceneYear]);
+  // Nearest to the era's (first) capital first, so Iran's neighbours lead the list.
+  const near = era?.capitals[0]?.at;
+  const world = useMemo(
+    () => (compare && sceneYear !== null ? worldAt(sceneYear, near) : []),
+    [compare, sceneYear, near],
+  );
   const highlight = picked && picked.scene === sceneKey && world.some((c) => c.id === picked.id) ? picked.id : null;
   // The right-hand column only shows on large screens (see the "lg:" classes below).
   const endPanel = !!era && ((compare && meanwhileOpen && world.length > 0) || keyOpen);
@@ -146,6 +151,7 @@ function Atlas({
         scene={scene}
         territory={era ? territoryAt(era, index) : null}
         world={world}
+        year={sceneYear}
         highlight={highlight}
         panelOpen={cardOpen}
         endPanel={endPanel}

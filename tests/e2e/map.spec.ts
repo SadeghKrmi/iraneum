@@ -150,3 +150,25 @@ test("the compare toggle hides the other civilizations", async ({ page }, testIn
     await expect(page.locator("[data-meanwhile]")).toBeVisible();
   }
 });
+
+test("Iran's borders change from event to event", async ({ page }) => {
+  await page.goto("/en/seleucid/?e=bactria-roxana");
+  await expect(map(page)).toHaveAttribute("data-map-territory", "seleucid/bactria-roxana");
+  await page.goto("/en/seleucid/?e=arsaces-parthia");
+  await expect(map(page)).toHaveAttribute("data-map-territory", "seleucid/arsaces-parthia");
+  await page.getByRole("button", { name: "Next event" }).click();
+  await expect(map(page)).toHaveAttribute("data-map-territory", "seleucid/antiochus-east");
+  await page.goto("/en/qajar/?e=turkmenchay");
+  await expect(map(page)).toHaveAttribute("data-map-territory", "qajar/turkmenchay");
+});
+
+test("other civilizations' borders follow the scene's year", async ({ page }) => {
+  await page.goto("/en/parthian/?e=carrhae");
+  await expect(map(page)).toHaveAttribute("data-map-world-stages", /\brome-republic@-146\b/);
+  await page.goto("/en/parthian/?e=trajan-ctesiphon");
+  await expect(map(page)).toHaveAttribute("data-map-world-stages", /\brome-empire@114\b/);
+  await page.goto("/en/safavid/?e=chaldiran");
+  await expect(map(page)).toHaveAttribute("data-map-world-stages", /\bottoman@1453\b/);
+  await page.getByRole("button", { name: "Next event" }).click();
+  await expect(map(page)).toHaveAttribute("data-map-world-stages", /\bottoman@1534\b/);
+});
