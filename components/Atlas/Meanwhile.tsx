@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { formatYearRange } from "@/lib/dates";
 import type { Dictionary, Locale } from "@/lib/i18n";
 import type { WorldCivilization } from "@/lib/world";
@@ -19,6 +20,16 @@ type Props = {
 
 /** "Meanwhile in the world": the other civilizations that existed in the current scene's year. */
 export function Meanwhile({ locale, t, year, civilizations, selectedId, onSelect, open, onToggle }: Props) {
+  const list = useRef<HTMLUListElement>(null);
+  // Bring the selected entry into view, e.g. after a civilization is clicked on the map.
+  useEffect(() => {
+    if (!open || !selectedId) return;
+    list.current?.querySelector(`[data-civ="${CSS.escape(selectedId)}"]`)?.scrollIntoView({
+      block: "nearest",
+      behavior: "smooth",
+    });
+  }, [open, selectedId]);
+
   if (!open) {
     return (
       <button
@@ -42,6 +53,7 @@ export function Meanwhile({ locale, t, year, civilizations, selectedId, onSelect
         <div>
           <p className="font-num text-xs uppercase text-muted ltr:tracking-widest">{t.meanwhile}</p>
           <p className="font-num text-sm text-turquoise">{year}</p>
+          <p className="mt-1 text-[0.7rem] leading-snug text-muted">{t.pickHint}</p>
         </div>
         <button
           type="button"
@@ -53,7 +65,7 @@ export function Meanwhile({ locale, t, year, civilizations, selectedId, onSelect
           <ChevronUpIcon className="size-4" />
         </button>
       </header>
-      <ul className="scrollbar-modern mt-2 flex min-h-0 flex-col overflow-y-auto px-1.5 pb-2">
+      <ul ref={list} className="scrollbar-modern mt-2 flex min-h-0 flex-col overflow-y-auto px-1.5 pb-2">
         {civilizations.map((c) => {
           const selected = c.id === selectedId;
           return (

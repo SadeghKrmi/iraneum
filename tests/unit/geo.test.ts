@@ -10,14 +10,18 @@ import {
   GLOBE_RADIUS,
   centroidOf,
   closeRing,
+  containsPoint,
   densify,
   extentOf,
   fixWinding,
+  lonLatOf,
   lonLatShapes,
   shapesOnSphere,
   shortestLonDelta,
+  smallestContaining,
   toSphere,
   wrapLon,
+  type LonLat,
 } from "@/lib/geo";
 
 describe("globe coordinates", () => {
@@ -97,5 +101,37 @@ describe("world land data", () => {
     ["Africa", [20, 5]],
   ])("covers %s", (_, point) => {
     expect(land.features.some((f) => geoContains(f, point as [number, number]))).toBe(true);
+  });
+});
+
+describe("picking on the globe", () => {
+  it("turns a point on the globe back into longitude and latitude", () => {
+    for (const p of [[52, 30], [-75.5, 40.2], [139.7, -35.7], [0, 0], [179, 60]] as LonLat[]) {
+      const [lon, lat] = lonLatOf(toSphere(p, 123));
+      expect(lon).toBeCloseTo(p[0], 6);
+      expect(lat).toBeCloseTo(p[1], 6);
+    }
+  });
+
+  const square = (lon: number, lat: number, size: number): LonLat[] => [
+    [lon, lat], [lon + size, lat], [lon + size, lat + size], [lon, lat + size],
+  ];
+
+  it("finds a point inside a ring drawn either way round", () => {
+    const ring = square(40, 30, 10);
+    expect(containsPoint([ring], [45, 35])).toBe(true);
+    expect(containsPoint([[...ring].reverse()], [45, 35])).toBe(true);
+    expect(containsPoint([ring], [55, 35])).toBe(false);
+    expect(containsPoint([square(0, 0, 2), ring], [45, 35])).toBe(true);
+  });
+
+  it("picks the smallest territory under the point", () => {
+    const entries = [
+      { id: "empire", rings: [square(30, 20, 30)] },
+      { id: "kingdom", rings: [square(40, 30, 5)] },
+    ];
+    expect(smallestContaining(entries, [42, 32])).toBe("kingdom");
+    expect(smallestContaining(entries, [55, 45])).toBe("empire");
+    expect(smallestContaining(entries, [-10, 0])).toBeNull();
   });
 });

@@ -16,6 +16,7 @@ import { Mountains } from "./Mountains";
 import { routeColors, useMapPalette } from "./palette";
 import { Route } from "./Route";
 import { Territory } from "./Territory";
+import { WorldPicker } from "./WorldPicker";
 
 export type AtlasMapProps = {
   locale: Locale;
@@ -34,6 +35,8 @@ export type AtlasMapProps = {
   /** The right-hand column (meanwhile panel, map key) is showing on a wide screen. */
   endPanel: boolean;
   noWebglText: string;
+  /** A civilization was clicked on the map (null: a click on nothing pickable). */
+  onPick?: (id: string | null) => void;
   onReady?: () => void;
 };
 
@@ -60,6 +63,7 @@ export default function AtlasMap({
   panelOpen,
   endPanel,
   noWebglText,
+  onPick,
   onReady,
 }: AtlasMapProps) {
   const palette = useMapPalette();
@@ -73,7 +77,7 @@ export default function AtlasMap({
     () =>
       world.map((c) => {
         const { key, rings } = worldTerritory(c, year ?? c.from);
-        return { c, key, rings, centre: centroidOf(rings), extent: extentOf(rings) };
+        return { id: c.id, c, key, rings, centre: centroidOf(rings), extent: extentOf(rings) };
       }),
     [world, year],
   );
@@ -217,6 +221,7 @@ export default function AtlasMap({
           />
         )}
         <GlobeRig goal={goal} />
+        {onPick && shown.length > 0 && <WorldPicker entries={shown} onPick={onPick} />}
         <LabelProjector labels={labels} elements={elements} />
         {era && (panelOpen || endPanel) && (
           <PanelOffset rtl={dirOf(locale) === "rtl"} start={panelOpen} end={endPanel} />

@@ -30,7 +30,11 @@ A timeline bar at the bottom holds checkpoints. Pick one, and Ravi (راوی), t
       across every continent, and 29 of them change their borders over time (Rome, the Ottomans, the Mongols,
       Russia, the USA, Qing China, the Mughals…). Nearest neighbours lead the "Meanwhile" list, and map
       labels that would overlap give way to Iran's own and to larger civilizations.
-- [ ] Step 9: polish (narration character, publish online)
+- [x] **Step 9: pick civilizations on the map.** Click a coloured territory on the globe to pick that
+      civilization (the smallest one where they overlap); the "Meanwhile" panel opens and scrolls to its entry.
+      A click anywhere else clears it, a drag still turns the globe, and the cursor shows what can be clicked.
+      On phones a small card shows the picked civilization.
+- [ ] Step 10: polish (narration character, publish online)
 
 All texts, territories and coordinates are drafts that still need historical review.
 

@@ -1,4 +1,4 @@
-import { geoArea, geoBounds, geoCentroid, geoDistance, geoInterpolate } from "d3-geo";
+import { geoArea, geoBounds, geoCentroid, geoContains, geoDistance, geoInterpolate } from "d3-geo";
 import type { MultiPolygon, Polygon } from "geojson";
 import {
   BufferGeometry,
@@ -25,6 +25,12 @@ const DEG = Math.PI / 180;
 export function toSphere([lon, lat]: LonLat, radius = GLOBE_RADIUS, target = new Vector3()): Vector3 {
   const cosLat = Math.cos(lat * DEG);
   return target.set(radius * cosLat * Math.sin(lon * DEG), radius * Math.sin(lat * DEG), radius * cosLat * Math.cos(lon * DEG));
+}
+
+/** The [longitude, latitude] of a point in the globe's space (the inverse of `toSphere`). */
+export function lonLatOf(point: Vector3): LonLat {
+  const r = point.length() || 1;
+  return [Math.atan2(point.x, point.z) / DEG, Math.asin(Math.max(-1, Math.min(1, point.y / r))) / DEG];
 }
 
 /** Unit vectors pointing east and north on the surface at a point. */
@@ -64,6 +70,25 @@ export function fixWinding(rings: LonLat[][]): Polygon {
 
 function asMulti(rings: LonLat[][]): MultiPolygon {
   return { type: "MultiPolygon", coordinates: rings.map((ring) => fixWinding([ring]).coordinates) };
+}
+
+/** Whether a point lies inside one of the territory's rings. */
+export function containsPoint(rings: LonLat[][], point: LonLat): boolean {
+  return geoContains(asMulti(rings), point);
+}
+
+/**
+ * The territory under a point, for picking on the map: when several overlap, the smallest one
+ * (the most specific place). `null` if the point is in none of them.
+ */
+export function smallestContaining(entries: readonly { id: string; rings: LonLat[][] }[], point: LonLat): string | null {
+  let best: { id: string; area: number } | null = null;
+  for (const { id, rings } of entries) {
+    if (!containsPoint(rings, point)) continue;
+    const area = geoArea(asMulti(rings));
+    if (!best || area < best.area) best = { id, area };
+  }
+  return best?.id ?? null;
 }
 
 /** Centre of one or more territory rings. */

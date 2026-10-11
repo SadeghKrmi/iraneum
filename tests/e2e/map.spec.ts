@@ -172,3 +172,76 @@ test("other civilizations' borders follow the scene's year", async ({ page }) =>
   await page.getByRole("button", { name: "Next event" }).click();
   await expect(map(page)).toHaveAttribute("data-map-world-stages", /\bottoman@1534\b/);
 });
+
+/** Where a world civilization's label sits once the camera has stopped moving (labels mark its centre). */
+async function settledLabel(page: import("@playwright/test").Page, id: string) {
+  const label = page.locator(`[data-label="world-${id}"]`);
+  let last: { x: number; y: number } | null = null;
+  let centre = { x: 0, y: 0 };
+  await expect
+    .poll(
+      async () => {
+        const box = await label.boundingBox();
+        const visible = await label.evaluate((el) => getComputedStyle(el).visibility === "visible");
+        if (!box || !visible) return false;
+        centre = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+        const still = !!last && Math.abs(last.x - centre.x) < 1 && Math.abs(last.y - centre.y) < 1;
+        last = centre;
+        return still;
+      },
+      { timeout: 40_000, intervals: [700] },
+    )
+    .toBe(true);
+  return centre;
+}
+
+test("clicking a civilization on the map picks it and shows its entry", async ({ page }, testInfo) => {
+  test.setTimeout(90_000);
+  await page.goto("/en/parthian/?e=carrhae");
+  await expect(map(page)).toHaveAttribute("data-map", "ready", { timeout: 30_000 });
+  const wide = testInfo.project.name !== "mobile";
+  if (wide) {
+    // Even with the panel folded away, a click on the map opens it at the picked entry.
+    await page.locator("[data-meanwhile]").getByRole("button", { name: "Hide panel" }).click();
+    await expect(page.locator("[data-meanwhile]")).toHaveCount(0);
+  }
+  const { x, y } = await settledLabel(page, "armenia");
+  await page.mouse.click(x, y);
+  await expect(map(page)).toHaveAttribute("data-map-focus", "armenia");
+  if (wide) {
+    const entry = page.locator('[data-meanwhile] [data-civ="armenia"]');
+    await expect(entry).toHaveAttribute("aria-pressed", "true");
+    await expect(entry).toBeInViewport();
+    await expect(page.locator("[data-civ-card]")).toBeHidden();
+  } else {
+    const card = page.locator('[data-civ-card="armenia"]');
+    await expect(card).toBeVisible();
+    await expect(card).toContainText("Kingdom of Armenia");
+    await card.getByRole("button", { name: "Close" }).click();
+    await expect(map(page)).toHaveAttribute("data-map-focus", "");
+  }
+});
+
+test("clicking away clears the pick, and dragging never picks", async ({ page }) => {
+  test.setTimeout(90_000);
+  await page.goto("/en/parthian/?e=carrhae");
+  await expect(map(page)).toHaveAttribute("data-map", "ready", { timeout: 30_000 });
+  const { x, y } = await settledLabel(page, "armenia");
+
+  // A drag that starts on the territory turns the globe instead.
+  await page.mouse.move(x, y);
+  await page.mouse.down();
+  await page.mouse.move(x - 40, y + 20, { steps: 5 });
+  await page.mouse.up();
+  await expect(map(page)).toHaveAttribute("data-map-focus", "");
+
+  await page.reload();
+  await expect(map(page)).toHaveAttribute("data-map", "ready", { timeout: 30_000 });
+  const again = await settledLabel(page, "armenia");
+  await page.mouse.click(again.x, again.y);
+  await expect(map(page)).toHaveAttribute("data-map-focus", "armenia");
+  // Top corner, beyond the globe's edge: nothing there.
+  const box = (await map(page).boundingBox())!;
+  await page.mouse.click(box.x + 4, box.y + box.height * 0.18);
+  await expect(map(page)).toHaveAttribute("data-map-focus", "");
+});

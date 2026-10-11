@@ -10,6 +10,7 @@ import { worldAt } from "@/lib/world";
 import { MapStage } from "../Map/MapStage";
 import { Timeline } from "../Timeline/Timeline";
 import { usePersistentFlag } from "../usePersistentFlag";
+import { CivCard } from "./CivCard";
 import { Dock } from "./Dock";
 import { EraCard } from "./EraCard";
 import { MapKey } from "./MapKey";
@@ -140,6 +141,13 @@ function Atlas({
     [compare, sceneYear, near],
   );
   const highlight = picked && picked.scene === sceneKey && world.some((c) => c.id === picked.id) ? picked.id : null;
+  const highlighted = world.find((c) => c.id === highlight);
+  /** A civilization clicked on the map: picked, and its entry shown in the (re-opened) panel. */
+  const pickFromMap = (id: string | null) => {
+    if (!id) return setPicked(null);
+    setPicked({ scene: sceneKey, id });
+    setMeanwhileOpen(true);
+  };
   // The right-hand column only shows on large screens (see the "lg:" classes below).
   const endPanel = !!era && ((compare && meanwhileOpen && world.length > 0) || keyOpen);
 
@@ -156,7 +164,11 @@ function Atlas({
         panelOpen={cardOpen}
         endPanel={endPanel}
         noWebglText={t.noWebgl}
+        onPick={pickFromMap}
       />
+      {highlighted && (
+        <CivCard key={highlighted.id} locale={locale} t={t} civilization={highlighted} onClose={() => setPicked(null)} />
+      )}
       {era && scene && (
         <EraCard
           locale={locale}
