@@ -22,7 +22,7 @@ test("era card shows capitals and rulers, and its event list selects events", as
   await page.goto("/en/achaemenid/");
   const card = page.locator("[data-story]");
   await expect(card.getByRole("heading", { level: 1 })).toHaveText("Achaemenid Empire");
-  await expect(card).toContainText("Persepolis, Susa, Babylon, Ecbatana");
+  await expect(card).toContainText("Persepolis, Pasargadae, Susa, Babylon, Ecbatana");
   await expect(card).toContainText("Cyrus II, Cambyses II, Darius I, Xerxes I");
   await card.getByRole("button", { name: /The fall of Sardis/ }).click();
   await expect(page).toHaveURL(/\?e=fall-of-sardis$/);
