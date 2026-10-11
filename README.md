@@ -34,9 +34,12 @@ A timeline bar at the bottom holds checkpoints. Pick one, and Ravi (راوی), t
       civilization (the smallest one where they overlap); the "Meanwhile" panel opens and scrolls to its entry.
       A click anywhere else clears it, a drag still turns the globe, and the cursor shows what can be clicked.
       On phones a small card shows the picked civilization.
-- [ ] Step 10: polish (narration character, publish online)
+- [x] **Step 10: content review.** Dates, places, borders and Persian texts reviewed and corrected; Persian
+      dates use the Gregorian calendar only. See [docs/content-review.md](docs/content-review.md) for every
+      change and the open judgement calls; `tests/unit/review.test.ts` guards Persian typography and capitals.
+- [ ] Step 11: polish (narration character, publish online)
 
-All texts, territories and coordinates are drafts that still need historical review.
+Texts, territories and coordinates have had one review pass but are still simplified; see the review's open questions.
 
 ## Develop
 ```bash

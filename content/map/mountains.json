@@ -284,7 +284,7 @@
   {
     "id": "atlas",
     "name": {
-      "fa": "اطلس",
+      "fa": "کوه‌های اطلس",
       "en": "Atlas Mountains"
     },
     "width": 0.8,
@@ -309,7 +309,7 @@
   {
     "id": "rockies",
     "name": {
-      "fa": "راکی",
+      "fa": "کوه‌های راکی",
       "en": "Rocky Mountains"
     },
     "width": 1.5,

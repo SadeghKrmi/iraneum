@@ -108,12 +108,14 @@ export default function AtlasMap({
   const labels = useMemo<MapLabel[]>(() => {
     if (!era || !eraCentre) return [];
     const shadow = { textShadow: palette.labelShadow };
-    // Iran's own labels always show; the other civilizations' names give way to them and to larger neighbours.
-    const list: MapLabel[] = era.capitals.map((c) => ({
+    // Iran's own labels always show (only a capital gives way to an earlier capital right next to it, such as
+    // Pasargadae beside Persepolis); the other civilizations' names give way to them and to larger neighbours.
+    const list: MapLabel[] = era.capitals.map((c, i) => ({
       id: `capital-${c.name.en}`,
       at: c.at,
       height: 1.6,
-      priority: 1000,
+      priority: 1500 - i,
+      yields: i > 0,
       content: (
         <span className="block whitespace-nowrap text-xs font-medium" style={{ color: palette.label, ...shadow }}>
           {c.name[locale]}

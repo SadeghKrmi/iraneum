@@ -21,6 +21,13 @@
     },
     {
       "name": {
+        "fa": "پاسارگاد",
+        "en": "Pasargadae"
+      },
+      "at": [53.17, 30.2]
+    },
+    {
+      "name": {
         "fa": "شوش",
         "en": "Susa"
       },
@@ -223,7 +230,7 @@
         "en": "Xerxes invades Greece"
       },
       "text": {
-        "fa": "خشایارشای یکم، پسر داریوش، با سپاهی بزرگ به یونان می‌رود. او در ترموپیل پیروز می‌شود و آتن را به آتش می‌کشد، اما ناوگانش در سالامیس شکست می‌خورد و سال بعد سپاهش در پلاته شکست می‌یابد. گسترش شاهنشاهی به سوی غرب در اینجا پایان می‌یابد.",
+        "fa": "خشایارشای یکم، پسر داریوش، با سپاهی بزرگ به یونان می‌رود. او در ترموپیل پیروز می‌شود و آتن را به آتش می‌کشد، اما ناوگانش در سالامیس شکست می‌خورد و سال بعد سپاهش در پلاته درهم شکسته می‌شود. گسترش شاهنشاهی به سوی غرب در اینجا پایان می‌یابد.",
         "en": "Darius's son Xerxes I leads a huge army into Greece. He wins at Thermopylae and burns Athens, but his fleet is defeated at Salamis, and the next year his army is beaten at Plataea. The empire's westward expansion ends here."
       }
     },

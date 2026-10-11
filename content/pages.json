@@ -5,14 +5,14 @@
       "fa": [
         "ایرانیوم سفری تعاملی در تاریخ ایران است. یک دوره را روی خط زمان انتخاب کنید تا راوی، قصه‌گوی ما، رویدادهای مهم آن دوره را سال به سال برایتان روایت کند.",
         "راوی، صدای قصه‌گوی این سفر است؛ همچون نقالان قهوه‌خانه‌های ایران که داستان‌ها را با صدای خود زنده می‌کردند.",
-        "این وب‌سایت به دو زبان فارسی و انگلیسی است. در گام‌های بعدی، نقشهٔ جهان نشان خواهد داد که در همان زمان در دیگر سرزمین‌ها و تمدن‌ها چه می‌گذشت.",
-        "متن‌ها با دقت و بر پایهٔ منابعی که در صفحهٔ منابع آمده نوشته می‌شوند. اگر اشتباهی دیدید، لطفاً به ما خبر دهید."
+        "این وب‌سایت به دو زبان فارسی و انگلیسی است. نقشهٔ جهان نشان می‌دهد که در همان زمان در دیگر سرزمین‌ها و تمدن‌ها چه می‌گذشت.",
+        "متن‌ها با دقت و بر پایهٔ منابعی که در صفحهٔ منابع آمده نوشته می‌شوند. مرزهای روی نقشه ساده‌شده و تقریبی‌اند. اگر اشتباهی دیدید، لطفاً به ما خبر دهید."
       ],
       "en": [
         "Iraneum is an interactive journey through the history of Iran. Choose an era on the timeline and Ravi, our storyteller, narrates the key moments of that period, year by year.",
         "Ravi (راوی) means “narrator” in Persian: the storyteller’s voice of this journey, in the spirit of the naqqals who brought stories to life in Iranian coffeehouses.",
-        "The site is available in Persian and English. In coming steps, a world map will show what was happening in other lands and civilizations at the same time.",
-        "The texts are written carefully from the sources listed on the References page. If you spot a mistake, please let us know."
+        "The site is available in Persian and English. A world map shows what was happening in other lands and civilizations at the same time.",
+        "The texts are written carefully from the sources listed on the References page. The borders on the map are simplified and approximate. If you spot a mistake, please let us know."
       ]
     }
   },
@@ -21,7 +21,7 @@
     "body": {
       "fa": [
         "اشتباهی در یک تاریخ یا روایت دیدید، یا پیشنهادی برای دورهٔ تازه‌ای دارید؟ خوشحال می‌شویم بشنویم.",
-        "بهترین راه، ثبت یک «issue» در مخزن گیت‌هاب پروژه است:"
+        "بهترین راه، ثبت یک گزارش در مخزن گیت‌هاب پروژه است:"
       ],
       "en": [
         "Found a mistake in a date or a story, or have an idea for a new era? We would love to hear from you.",
