@@ -126,3 +126,21 @@ test("the page never scrolls horizontally", async ({ page }) => {
     expect(overflow, path).toBeLessThanOrEqual(0);
   }
 });
+
+test("the open era unfolds its marked years as checkpoints; the other eras fold", async ({ page }) => {
+  await page.goto("/en/parthian/");
+  const timeline = page.getByRole("navigation", { name: "Timeline" });
+  const carrhae = timeline.locator('a[data-event="carrhae"]');
+  await carrhae.scrollIntoViewIfNeeded();
+  await expect(carrhae).toBeVisible();
+  await expect(carrhae).toContainText("53 BCE");
+  await expect(carrhae).toContainText("Battle of Carrhae");
+  await expect(timeline.locator("a[data-event]")).toHaveCount(6); // only the Parthian events
+  await expect(timeline.locator('a[data-event="cyrus-defeats-media"]')).toHaveCount(0);
+  await expect(timeline.locator("a[data-era]")).toHaveCount(14); // every era stays reachable
+
+  await carrhae.click();
+  await expect(page).toHaveURL(/\/en\/parthian\/\?e=carrhae$/);
+  await expect(carrhae).toHaveAttribute("aria-current", "true");
+  await expect(carrhae).toBeInViewport();
+});

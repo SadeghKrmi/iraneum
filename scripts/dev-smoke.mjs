@@ -1,5 +1,6 @@
-// Opens the site under `next dev` and fails on any console error. React reports some mistakes, such as
-// duplicate keys, only in development, so the browser tests (which run against the production build) miss them.
+// Opens the site under `next dev` and fails on any console error or three.js warning, and on errors logged by the
+// dev server itself. React reports some mistakes, such as duplicate keys, only in development, so the browser
+// tests (which run against the production build) miss them.
 // Slow (each page compiles on first visit): run it now and then, not with every change.
 import { spawn } from "node:child_process";
 import { readdirSync, readFileSync } from "node:fs";
@@ -51,9 +52,20 @@ const base = `http://localhost:${port}`;
 // Its own process group, so stopping it also stops the next-server it starts.
 const dev = spawn(path.join(ROOT, "node_modules/.bin/next"), ["dev", "-p", String(port)], {
   cwd: ROOT,
-  stdio: "ignore",
+  stdio: ["ignore", "pipe", "pipe"],
   detached: true,
 });
+// The dev server's own errors (e.g. a route that fails to render) never reach the browser console.
+const serverErrors = new Set();
+for (const stream of [dev.stdout, dev.stderr]) {
+  let buffer = "";
+  stream.on("data", (chunk) => {
+    buffer += chunk;
+    const lines = buffer.split("\n");
+    buffer = lines.pop();
+    for (const line of lines) if (/⨯|\bError:/.test(line)) serverErrors.add(line.trim());
+  });
+}
 
 let stopped = false;
 const stop = () => {
@@ -81,7 +93,9 @@ const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 const problems = new Set();
 let current = "";
 page.on("console", (msg) => {
-  if (msg.type() === "error") problems.add(`${current}: ${msg.text().split("\n")[0]}`);
+  // Errors, and three.js warnings (deprecations and misuse show up there first).
+  if (msg.type() === "error" || (msg.type() === "warning" && msg.text().startsWith("THREE.")))
+    problems.add(`${current}: ${msg.text().split("\n")[0]}`);
 });
 page.on("pageerror", (err) => problems.add(`${current}: ${err.message}`));
 
@@ -94,6 +108,12 @@ for (const url of pages) {
   console.log(`checked ${url}`);
 }
 
+// The icons browsers ask for on every page.
+for (const icon of ["/favicon.ico", "/icon.svg"]) {
+  const res = await fetch(base + icon);
+  if (!res.ok) problems.add(`${icon}: HTTP ${res.status}`);
+}
+
 // Pick a civilization in the panel, then move on to the next event (the pick is dropped).
 current = "/en/parthian/?e=carrhae (pick)";
 await page.goto(`${base}/en/parthian/?e=carrhae`);
@@ -104,6 +124,7 @@ await page.waitForTimeout(1500);
 await browser.close();
 stop();
 
+for (const line of serverErrors) problems.add(`next dev: ${line}`);
 if (problems.size) {
   console.error(`\n${problems.size} console error(s):\n${[...problems].map((p) => `- ${p}`).join("\n")}`);
   process.exit(1);

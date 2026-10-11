@@ -2,7 +2,7 @@
 
 import { Canvas, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useState } from "react";
-import type { PerspectiveCamera } from "three";
+import { setConsoleFunction, type PerspectiveCamera } from "three";
 import { shortTitleOf, type Era, type Scene } from "@/lib/content";
 import { centroidOf, extentOf, pointsFocus, type LonLat } from "@/lib/geo";
 import { dirOf, type Locale } from "@/lib/i18n";
@@ -39,6 +39,13 @@ export type AtlasMapProps = {
   onPick?: (id: string | null) => void;
   onReady?: () => void;
 };
+
+// @react-three/fiber 9.8 still creates a THREE.Clock, which three r183+ reports as deprecated on every load.
+// Drop just that notice (remove this once fiber moves to THREE.Timer); everything else goes to the console.
+setConsoleFunction((type: "log" | "warn" | "error", message: string, ...params: unknown[]) => {
+  if (type === "warn" && message.startsWith("THREE.Clock: This module has been deprecated")) return;
+  console[type](message, ...params);
+});
 
 /** Iran, seen from far enough away to show the whole globe. */
 const HOME: GlobeGoal = { lon: 52, lat: 30, altitude: 230 };

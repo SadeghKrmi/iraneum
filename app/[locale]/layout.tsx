@@ -11,6 +11,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { findAudio } from "@/lib/audio";
 import { eras, scenesOf } from "@/lib/content";
 import { dirOf, getDictionary, isLocale, locales } from "@/lib/i18n";
+import { siteIcons } from "@/lib/routes";
 
 export const dynamicParams = false;
 
@@ -27,6 +28,7 @@ export async function generateMetadata({ params }: Omit<Props, "children">): Pro
   return {
     title: { default: `${t.siteTitle} — ${t.tagline}`, template: `%s | ${t.siteTitle}` },
     description: t.welcomeBody,
+    icons: siteIcons,
   };
 }
 

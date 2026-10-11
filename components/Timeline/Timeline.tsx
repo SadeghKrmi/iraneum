@@ -17,7 +17,9 @@ type Props = {
 
 /**
  * Timeline in the bottom dock. Each era is a segment: its checkpoint, then small points for its marked
- * years, up to the next era's checkpoint. In Persian (RTL) time flows right-to-left, matching the reading direction.
+ * years, up to the next era's checkpoint. Once an era is open, its segment widens and its marked years become
+ * checkpoints with their year and title, while the other eras fold to their own checkpoint.
+ * In Persian (RTL) time flows right-to-left, matching the reading direction.
  */
 export function Timeline({ locale, eras, labels, currentEventId }: Props & { currentEventId: string | null }) {
   const ids = eras.map((e) => e.id);
@@ -62,13 +64,21 @@ export function Timeline({ locale, eras, labels, currentEventId }: Props & { cur
             <li aria-hidden className="pointer-events-none absolute inset-x-6 top-[calc(1.625rem-0.5px)] h-px bg-line" />
             {eras.map((era) => {
               const selected = era.id === selectedId;
-              const count = era.events.length;
+              const folded = !!selectedEra && !selected;
+              const count = folded ? 0 : era.events.length;
               return (
                 <li
                   key={era.id}
                   className="flex"
-                  // Eras with more marked years get a longer segment.
-                  style={{ flex: `${1 + count * 0.12} 1 0`, minWidth: `${9 + count * 1.5}rem` }}
+                  style={
+                    folded
+                      ? { flex: "0 0 auto", marginInlineEnd: "1rem" }
+                      : selected
+                        ? // The open era: room for each marked year's label.
+                          { flex: `${count} 1 0`, minWidth: `${9 + count * 8.5}rem` }
+                        : // Eras with more marked years get a longer segment.
+                          { flex: `${1 + count * 0.12} 1 0`, minWidth: `${9 + count * 1.5}rem` }
+                  }
                 >
                   <Link
                     ref={setRef(era.id)}
@@ -93,10 +103,10 @@ export function Timeline({ locale, eras, labels, currentEventId }: Props & { cur
                     </span>
                     <span className="whitespace-nowrap text-xs text-muted">{formatYear(era.start, locale)}</span>
                   </Link>
-                  {count > 0 && (
+                  {count > 0 && selected && (
                     <span className="flex flex-1 justify-around px-1">
                       {era.events.map((ev) => {
-                        const current = selected && ev.id === currentEvent?.id;
+                        const current = ev.id === currentEvent?.id;
                         const year = formatYear(ev.year, locale, ev.circa);
                         return (
                           <Link
@@ -107,22 +117,50 @@ export function Timeline({ locale, eras, labels, currentEventId }: Props & { cur
                             title={`${year} — ${ev.title[locale]}`}
                             aria-current={current ? "true" : undefined}
                             data-event={ev.id}
-                            className="group relative flex h-7 w-5 justify-center rounded-full py-1 focus-visible:outline-2 focus-visible:outline-gold"
+                            className="group flex w-32 shrink-0 animate-fade-in flex-col items-center gap-1 rounded-lg px-1 py-1 text-center focus-visible:outline-2 focus-visible:outline-gold"
                           >
                             <span className="flex h-5 items-center">
                               <span
                                 className={
                                   current
-                                    ? "size-3 rounded-full bg-gold ring-2 ring-gold/30"
-                                    : "size-2 rounded-full bg-turquoise transition-transform group-hover:scale-150"
+                                    ? "size-3.5 rotate-45 rounded-[3px] bg-gold ring-4 ring-gold/30"
+                                    : "size-2.5 rotate-45 rounded-[2px] bg-turquoise transition-transform group-hover:scale-125"
                                 }
                               />
                             </span>
-                            {current && (
-                              <span className="absolute top-full whitespace-nowrap text-[0.7rem] font-medium text-gold">
-                                {year}
-                              </span>
-                            )}
+                            <span
+                              className={`font-num whitespace-nowrap text-xs ${current ? "font-medium text-gold" : "text-muted group-hover:text-gold"}`}
+                            >
+                              {year}
+                            </span>
+                            <span
+                              className={`max-w-full truncate text-[0.7rem] leading-4 ${current ? "text-gold" : "text-fg/80 group-hover:text-gold"}`}
+                            >
+                              {ev.title[locale]}
+                            </span>
+                          </Link>
+                        );
+                      })}
+                    </span>
+                  )}
+                  {count > 0 && !selected && (
+                    // No era open (e.g. the landing page): every era shows small points for its marked years.
+                    <span className="flex flex-1 justify-around px-1">
+                      {era.events.map((ev) => {
+                        const label = `${formatYear(ev.year, locale, ev.circa)} — ${ev.title[locale]}`;
+                        return (
+                          <Link
+                            key={ev.id}
+                            ref={setRef(`${era.id}/${ev.id}`)}
+                            href={`${eraHref(locale, era.id)}?e=${ev.id}`}
+                            aria-label={label}
+                            title={label}
+                            data-event={ev.id}
+                            className="group flex h-7 w-5 justify-center rounded-full py-1 focus-visible:outline-2 focus-visible:outline-gold"
+                          >
+                            <span className="flex h-5 items-center">
+                              <span className="size-2 rounded-full bg-turquoise transition-transform group-hover:scale-150" />
+                            </span>
                           </Link>
                         );
                       })}
