@@ -3,6 +3,7 @@
 import { Line } from "@react-three/drei";
 import { useEffect, useMemo, useState } from "react";
 import { BufferGeometry, DoubleSide, Float32BufferAttribute, ReplaceStencilOp } from "three";
+import { withBase } from "@/lib/basePath";
 import { toSphere, type LonLat } from "@/lib/geo";
 import { LAND_RADIUS, LAND_STENCIL } from "./constants";
 import type { LandBuffers } from "./land.worker";
@@ -27,13 +28,13 @@ function loadLand(): Promise<LandBuffers> {
       reject(e);
       worker.terminate();
     };
-    worker.postMessage({ url: new URL("/geo/land-50m.json", location.href).href });
+    worker.postMessage({ url: new URL(withBase("/geo/land-50m.json"), location.href).href });
   });
   return landOnce;
 }
 
 function loadIran(): Promise<IranBorder> {
-  iranOnce ??= fetch("/geo/iran.json").then((r) => r.json() as Promise<IranBorder>);
+  iranOnce ??= fetch(withBase("/geo/iran.json")).then((r) => r.json() as Promise<IranBorder>);
   return iranOnce;
 }
 

@@ -1,5 +1,6 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
+import { withBase } from "./basePath";
 import type { Locale } from "./i18n";
 
 /** Audio formats Ravi can play, in order of preference. */
@@ -22,5 +23,5 @@ export function findAudio(
 ): string | undefined {
   const base = audioBasePath(locale, eraId, sceneId);
   const ext = AUDIO_EXTENSIONS.find((e) => existsSync(path.join(publicDir, `${base}.${e}`)));
-  return ext ? `/${base}.${ext}` : undefined;
+  return ext ? withBase(`/${base}.${ext}`) : undefined;
 }

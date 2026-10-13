@@ -37,7 +37,9 @@ A timeline bar at the bottom holds checkpoints. Pick one, and Ravi (راوی), t
 - [x] **Step 10: content review.** Dates, places, borders and Persian texts reviewed and corrected; Persian
       dates use the Gregorian calendar only. See [docs/content-review.md](docs/content-review.md) for every
       change and the open judgement calls; `tests/unit/review.test.ts` guards Persian typography and capitals.
-- [ ] Step 11: polish (narration character, publish online)
+- [x] **Step 11: published.** GitHub Pages, deployed from `main` by `.github/workflows/deploy.yml`:
+      https://sadeghkrmi.github.io/iraneum/
+- [ ] Next: narration audio, narrator character
 
 Texts, territories and coordinates have had one review pass but are still simplified; see the review's open questions.
 
@@ -57,6 +59,22 @@ npm run lint && npm run typecheck && npm test   # unit tests (Vitest)
 npm run build                                   # static site in out/
 npm run test:e2e                                # browser tests (Playwright) against out/
 npm run smoke:dev                               # now and then: console errors under `next dev` (slow)
+```
+
+## Publish
+The site is plain static files (`out/`), published to GitHub Pages by `.github/workflows/deploy.yml` on every
+push to `main` (lint, typecheck and unit tests run first). It lives under a sub-path,
+`https://sadeghkrmi.github.io/iraneum/`; the workflow passes that path to the build as `NEXT_PUBLIC_BASE_PATH`
+(see `lib/basePath.ts`). With a custom domain the path is empty and nothing else changes.
+
+One-time setup on GitHub: **Settings → Pages → Build and deployment → Source: "GitHub Actions"**, then
+**Actions → Deploy → Run workflow** (or push to `main`).
+
+To try a sub-path build locally:
+```bash
+NEXT_PUBLIC_BASE_PATH=/iraneum npm run build
+mkdir -p /tmp/site && rm -rf /tmp/site/iraneum && cp -r out /tmp/site/iraneum && npx serve /tmp/site
+# open http://localhost:3000/iraneum/
 ```
 
 ## Writing an era
