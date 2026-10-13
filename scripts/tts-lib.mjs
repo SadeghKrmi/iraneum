@@ -37,3 +37,42 @@ export function listScenes() {
   }
   return rows;
 }
+
+/** Whether a buffer holds a WAV file ("RIFF" … "WAVE") with more than a bare header. */
+export function isWav(buffer) {
+  return (
+    buffer.length > 44 &&
+    buffer.toString("ascii", 0, 4) === "RIFF" &&
+    buffer.toString("ascii", 8, 12) === "WAVE"
+  );
+}
+
+/** Length of a WAV file in seconds, from its "fmt " chunk (byte rate) and "data" chunk (size). */
+export function wavDurationSeconds(buffer) {
+  let byteRate = 0;
+  for (let offset = 12; offset + 8 <= buffer.length; ) {
+    const id = buffer.toString("ascii", offset, offset + 4);
+    const size = buffer.readUInt32LE(offset + 4);
+    if (id === "fmt ") byteRate = buffer.readUInt32LE(offset + 16);
+    if (id === "data") {
+      // Streaming servers sometimes write a placeholder size: fall back to what is actually there.
+      const dataSize = Math.min(size, buffer.length - offset - 8);
+      return byteRate ? dataSize / byteRate : 0;
+    }
+    offset += 8 + size + (size % 2);
+  }
+  return 0;
+}
+
+/**
+ * The scenes to synthesize: in the given languages, limited to `only` ("<era>" or "<era>/<scene>") when given,
+ * and without those that already have audio unless `force` is set.
+ */
+export function selectScenes(rows, { locales, only = [], force = false }) {
+  return rows.filter(
+    (r) =>
+      locales.includes(r.locale) &&
+      (only.length === 0 || only.some((o) => o === r.era || o === `${r.era}/${r.scene}`)) &&
+      (force || !r.existing),
+  );
+}

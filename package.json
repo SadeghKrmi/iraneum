@@ -13,6 +13,7 @@
     "smoke:dev": "node scripts/dev-smoke.mjs",
     "tts:export": "node scripts/tts-export.mjs",
     "tts:check": "node scripts/tts-check.mjs",
+    "tts:generate": "node scripts/tts-generate.mjs",
     "geo": "node scripts/build-geo.mjs"
   },
   "dependencies": {

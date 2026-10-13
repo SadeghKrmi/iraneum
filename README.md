@@ -39,7 +39,8 @@ A timeline bar at the bottom holds checkpoints. Pick one, and Ravi (راوی), t
       change and the open judgement calls; `tests/unit/review.test.ts` guards Persian typography and capitals.
 - [x] **Step 11: published.** GitHub Pages, deployed from `main` by `.github/workflows/deploy.yml`:
       https://sadeghkrmi.github.io/iraneum/
-- [ ] Next: narration audio, narrator character
+- [x] **Narration tooling.** `npm run tts:generate` synthesizes every scene with a TTS server (see below).
+- [ ] Next: generate the narration, narrator character
 
 Texts, territories and coordinates have had one review pass but are still simplified; see the review's open questions.
 
@@ -121,7 +122,35 @@ Ravi plays one audio file per scene per language, if it exists:
 ```
 public/audio/<fa|en>/<era-id>/<scene-id>.mp3     (scene-id = "intro" or the event id; .m4a/.ogg/.wav also work)
 ```
+Each scene's text is its title, then its story. There are 115 scenes per language.
 
+### With a TTS server (one command)
+`npm run tts:generate` sends every scene still missing audio to a TTS server and saves the result in place.
+The server receives `POST {"text": "…", "voice": "…"}` as JSON and answers with a WAV file, for example:
+```bash
+curl -X POST http://localhost:8000/synthesis/wav -H 'Content-Type: application/json' \
+  -d '{"text": "…", "voice": "ganji_formal_poetic"}' -o out.wav
+```
+
+```bash
+npm run tts:generate -- --only achaemenid/babylon --locale fa   # 1. try one scene, then listen to it:
+#                                                                  public/audio/fa/achaemenid/babylon.mp3
+npm run tts:generate -- --only achaemenid                       # 2. one era (both languages if --voice-en is set)
+npm run tts:generate -- --voice-en <english-voice>              # 3. everything still missing
+npm run tts:check                                               # what is left
+```
+- Options (or environment variables): `--url` (`TTS_URL`, default `http://localhost:8000/synthesis/wav`),
+  `--voice-fa` (`TTS_VOICE_FA`, default `ganji_formal_poetic`), `--voice-en` (`TTS_VOICE_EN`; without it
+  English is skipped), `--locale fa|en|all`, `--only <era>[/<scene>]` (repeatable), `--force` (redo scenes that
+  already have audio), `--dry-run` (list what would be sent).
+- Scenes that already have audio are skipped, so an interrupted run can simply be started again. Failed scenes
+  are listed at the end; if the server is not answering, the run stops at once.
+- With `ffmpeg` installed the WAV is converted to MP3 (mono, 96 kbps, about 10× smaller); without it the WAV is
+  kept, and the site plays that too.
+- Then `npm run build && npm run start` to listen in the site, and commit `public/audio/` and push to `main` to
+  publish it.
+
+### With any other TTS (files)
 1. `npm run tts:export` writes every text Ravi speaks, with the file it should be saved to:
    - `tts/fa.tsv`, `tts/en.tsv`: `output<TAB>text`, one scene per line
    - `tts/script.json`: the same, with locale, era and scene ids
@@ -129,8 +158,7 @@ public/audio/<fa|en>/<era-id>/<scene-id>.mp3     (scene-id = "intro" or the even
 2. Run your TTS over those rows and save each result at its `output` path.
 3. `npm run tts:check` lists scenes still missing audio, and audio files that match no scene
    (for example after renaming an event).
-4. `npm run build`: the play button now uses the audio. Scenes without audio are still told: Ravi
-   advances at reading pace.
 
-Use the event `id`, not its position, to name files, so adding or reordering events never breaks audio.
-If you change a text, re-synthesize that scene.
+Scenes without audio are still told: Ravi advances at reading pace. Files are named after the event `id`, not
+its position, so adding or reordering events never breaks audio. If you change a text, regenerate that scene
+(`npm run tts:generate -- --only <era>/<scene> --force`).
